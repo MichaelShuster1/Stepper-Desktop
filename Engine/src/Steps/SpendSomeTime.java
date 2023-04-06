@@ -4,8 +4,6 @@ import DataDefinitions.DataNumber;
 
 public class SpendSomeTime extends Step
 {
-    private DataNumber TIME_TO_SPEND;
-
     public SpendSomeTime(String name,int number) throws RuntimeException
     {
         super(name,true);
@@ -21,7 +19,7 @@ public class SpendSomeTime extends Step
     {
         try
         {
-            Thread.sleep(TIME_TO_SPEND.getNumber()* 1000L);
+            Thread.sleep(((DataNumber)inputs.get(0)).getNumber() * 1000L);
         }
         catch (InterruptedException e)
         {

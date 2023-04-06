@@ -1,6 +1,7 @@
 package Steps;
 
 import DataDefinitions.DataDefinition;
+import DataDefinitions.DataOutput;
 
 import java.util.ArrayList;
 import java.util.List;
