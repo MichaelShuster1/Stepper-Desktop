@@ -2,23 +2,26 @@ package Steps;
 
 import DataDefinitions.DataNumber;
 
-public class SpendSomeTime
+public class SpendSomeTime extends Step
 {
     private DataNumber TIME_TO_SPEND;
 
-    public SpendSomeTime(int number) throws RuntimeException
+    public SpendSomeTime(String name,int number) throws RuntimeException
     {
+        super(name,true);
         if(number<=0)
         {
             throw new RuntimeException("entered non-positive number");
         }
-        TIME_TO_SPEND = new DataNumber(number,"DataNumber","INPUT",true);
+        inputs.add(new DataNumber(number,"DataNumber","INPUT",true));
     }
+
+
     public void Sleep()
     {
         try
         {
-            Thread.sleep(TIME_TO_SPEND.getNumber()*1000);
+            Thread.sleep(TIME_TO_SPEND.getNumber()* 1000L);
         }
         catch (InterruptedException e)
         {

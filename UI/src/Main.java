@@ -11,7 +11,7 @@ public class Main
         Scanner input=new Scanner(System.in);
         System.out.println("please enter number of seconds to sleep: ");
         number=input.nextInt();
-        SpendSomeTime s1 =new SpendSomeTime(number);
+        SpendSomeTime s1 =new SpendSomeTime("s1",number);
         System.out.println("Start of delay: "+ new Date());
         s1.Sleep();
         System.out.println("End of delay: "+ new Date());
