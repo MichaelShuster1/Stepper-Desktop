@@ -1,6 +1,7 @@
 package DataDefinitions;
 
-public abstract class DataDefinition {
+public abstract class DataDefinition
+{
     protected String name;
     protected String type;
     protected String typeStream;

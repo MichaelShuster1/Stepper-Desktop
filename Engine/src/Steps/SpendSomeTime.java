@@ -1,13 +1,10 @@
 package Steps;
 
-import DataDefinitions.Number;
+import DataDefinitions.DataNumber;
 
 public class SpendSomeTime
 {
-    private Number TIME_TO_SPEND;
-
-
-
+    private DataNumber TIME_TO_SPEND;
 
     public SpendSomeTime(int number) throws RuntimeException
     {
@@ -15,7 +12,7 @@ public class SpendSomeTime
         {
             throw new RuntimeException("entered non-positive number");
         }
-        TIME_TO_SPEND = new Number(number,true);
+        TIME_TO_SPEND = new DataNumber(number,"DataNumber","INPUT",true);
     }
     public void Sleep()
     {
