@@ -4,6 +4,7 @@ import DataDefinitions.Input;
 import DataDefinitions.Output;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ public abstract class Step
         this.read_only = read_only;
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
+        nameToInputIndex=new HashMap<>();
+        nameToOutputIndex=new HashMap<>();
     }
 
     public String getName() {
@@ -76,6 +79,17 @@ public abstract class Step
     public List<Output> getOutputs()
     {
         return outputs;
+    }
+
+
+    public Map<String, Integer> getNameToInputIndex()
+    {
+        return nameToInputIndex;
+    }
+
+    public Map<String, Integer> getNameToOutputIndex()
+    {
+        return nameToOutputIndex;
     }
 
     public abstract void Run();
