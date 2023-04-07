@@ -13,7 +13,7 @@ public class Flow
     private boolean read_only;
     private List<String> formal_outputs;
     private List<Step> steps;
-    private List<List<List<Pair<Integer,Integer>>>> connections ;
+    private List<List<List<Pair<Integer,Integer>>>> connections;
 
     public Flow(String name, String description, boolean read_only)
     {
