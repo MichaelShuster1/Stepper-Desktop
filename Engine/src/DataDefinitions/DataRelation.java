@@ -1,26 +1,31 @@
 package DataDefinitions;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/*
-public class DataRelation extends DataDefinition{
-    private List<Map<String, String>> rows;
+
+public class DataRelation extends DataDefinition<Pair<List<Map<String, DataDefinition>>,List<String>>> {
+    private List<Map<String, DataDefinition>> rows;
     private List<String> columnNames;
 
-    public DataRelation(String name, String typeStream, boolean mandatory, List<String> columnNames)
+
+
+
+    public DataRelation(String name)
     {
-        super(name, "DataRelation", typeStream, mandatory, false);
+        super(name, "DataRelation");
         this.rows = new ArrayList<>();
-        this.columnNames = columnNames;
+        this.columnNames = new ArrayList<>();
     }
 
-    public void addRow(Map<String, String> row) {
+    public void addRow(Map<String, DataDefinition> row) {
         rows.add(row);
     }
 
-    public List<Map<String, String>> getRows() {
+    public List<Map<String, DataDefinition>> getRows() {
         return rows;
     }
 
@@ -37,5 +42,16 @@ public class DataRelation extends DataDefinition{
 
         return res;
     }
+
+    @Override
+    public void setData(Pair<List<Map<String, DataDefinition>>, List<String>> data) {
+        this.rows = data.getKey();
+        this.columnNames = data.getValue();
+    }
+
+    @Override
+    public Pair<List<Map<String, DataDefinition>>, List<String>> getData() {
+        return new Pair<List<Map<String, DataDefinition>>, List<String>>(rows,columnNames);
+    }
 }
-*/
+
