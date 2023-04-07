@@ -50,5 +50,11 @@ public class Main
         steps.get(0).Run();
         System.out.println("End of delay: "+ new Date());
         */
+
+        Map<Pair<String,String>,Pair<String,String>> customMappingInput = new HashMap<>();
+        customMappingInput.put(new Pair<>("Collect Files In Folders","FILES_LIST"), new Pair<>("Files Renamer","FILES_TO_RENAME"));
+        customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
+        customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
+
     }
 }

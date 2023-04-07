@@ -15,7 +15,7 @@ public class CollectFiles extends Step
 
         dataString=new DataString("FILTER");
         inputs.add(new Input(dataString,true,false));
-        nameToInputIndex.put("FILTER",0);
+        nameToInputIndex.put("FILTER",1);
 
         outputs.add(new Output(new DataList("FILES_LIST")));
         nameToOutputIndex.put("FILES_LIST",0);
