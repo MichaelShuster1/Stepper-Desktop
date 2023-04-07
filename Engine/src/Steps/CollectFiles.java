@@ -11,9 +11,11 @@ public class CollectFiles extends Step
 
         DataString dataString=new DataString("FOLDER_NAME");
         inputs.add(new Input(dataString,true,true));
+        nameToInputIndex.put("FOLDER_NAME",0);
 
         dataString=new DataString("FILTER");
         inputs.add(new Input(dataString,true,false));
+        nameToInputIndex.put("FILTER",0);
 
         outputs.add(new Output(new DataList("FILES_LIST")));
         outputs.add(new Output(new DataNumber("TOTAL_FOUND")));

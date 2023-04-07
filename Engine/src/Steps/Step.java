@@ -5,13 +5,17 @@ import DataDefinitions.Output;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Step
 {
     protected String name;
     protected boolean read_only;
+
     protected List<Input> inputs;
+    protected Map<String,Integer> nameToInputIndex;
     protected List<Output> outputs;
+    protected Map<String,Integer> nameToOutputIndex;
 
     public Step(String name, boolean read_only)
     {
@@ -29,9 +33,26 @@ public abstract class Step
         return read_only;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
+
+    public void ChangeInputName(String oldName,String newName)
+    {
+        Integer index=nameToInputIndex.remove(oldName);
+        nameToInputIndex.put(newName,index);
+        inputs.get(index).setName(newName);
+    }
+
+    public void ChangeOutputName(String oldName,String newName)
+    {
+        Integer index=nameToOutputIndex.remove(oldName);
+        nameToOutputIndex.put(newName,index);
+        outputs.get(index).setName(newName);
+    }
+
+
 
     public void setRead_only(boolean read_only) {
         this.read_only = read_only;
