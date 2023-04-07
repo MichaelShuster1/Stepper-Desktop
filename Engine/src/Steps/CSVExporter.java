@@ -12,9 +12,11 @@ public class CSVExporter extends Step
         super(name, true);
         DataRelation dataRelation =new DataRelation("SOURCE");
         inputs.add(new Input(dataRelation,false,true));
+        nameToInputIndex.put("SOURCE",0);
 
         DataString dataString =new DataString("RESULT");
         outputs.add(new Output(dataString));
+        nameToOutputIndex.put("RESULT",0);
     }
 
     @Override

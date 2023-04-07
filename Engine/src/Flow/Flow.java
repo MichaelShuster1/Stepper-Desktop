@@ -6,6 +6,7 @@ import Steps.Step;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class Flow
     private boolean read_only;
     private List<String> formal_outputs;
     private List<Step> steps;
-    private Map<String,Step> nameToIndex;
+    private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
 
 
@@ -24,13 +25,15 @@ public class Flow
     {
         this.name = name;
         this.description = description;
-        steps=new ArrayList<>();
-        connections=new ArrayList<>();
+        steps = new ArrayList<>();
+        connections = new ArrayList<>();
+        nameToIndex = new HashMap<>();
     }
 
     public void AddStep(Step step)
     {
         steps.add(step);
+        nameToIndex.put(step.getName(),steps.size()-1);
     }
 
     public void CustomMapping()

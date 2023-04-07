@@ -11,6 +11,7 @@ public class SpendSomeTime extends Step
         super(name,true);
         DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");
         inputs.add(new Input(dataNumber,true,true));
+        nameToInputIndex.put("TIME_TO_SPEND",0);
 
     }
 
