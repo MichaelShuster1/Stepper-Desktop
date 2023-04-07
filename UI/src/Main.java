@@ -27,7 +27,7 @@ public class Main
         flow.AddStep(new FileDumper("CSV File Dumper"));
         flow.AddStep(new PropertiesExporter( "Properties Exporter"));
         flow.AddStep(new FileDumper("Properties File Dumper"));
-
+        /*
         flow.getStep(1).getOutput(0).setName("SOURCE");
         flow.getStep(2).getOutput(0).setName("CSV_RESULT");
         flow.getStep(3).getInput(1).setName("CSV_FILE_NAME");
@@ -35,10 +35,20 @@ public class Main
         flow.getStep(4).getOutput(0).setName("PROP_RESULT");
         flow.getStep(5).getInput(1).setName("PROP_FILE_NAME");
         flow.getStep(5).getOutput(0).setName("PROP_FILE_DUMP_RESULT");
+        */
+
+
+        flow.getStep(1).ChangeOutputName("RENAME_RESULT","SOURCE");
+        flow.getStep(2).ChangeOutputName("RESULT","CSV_RESULT");
+        flow.getStep(3).ChangeInputName("FILE_NAME","CSV_FILE_NAME");
+        flow.getStep(3).ChangeOutputName("RESULT","CSV_FILE_DUMP_RESULT");
+        flow.getStep(4).ChangeOutputName("RESULT","PROP_RESULT");
+        flow.getStep(5).ChangeInputName("FILE_NAME","PROP_FILE_NAME");
+        flow.getStep(5).ChangeOutputName("RESULT","PROP_FILE_DUMP_RESULT");
 
 
         Map<Pair<String,String>,Pair<String,String>> customMappingInput = new HashMap<>();
-        customMappingInput.put(new Pair<>("Collect Files In Folders","FILES_LIST"), new Pair<>("Files Renamer","FILES_TO_RENAME"));
+        customMappingInput.put(new Pair<>("Collect Files In Folder","FILES_LIST"), new Pair<>("Files Renamer","FILES_TO_RENAME"));
         customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
 

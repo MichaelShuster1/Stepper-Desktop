@@ -41,9 +41,13 @@ public class Flow
         initConnections();
         for(Pair<String,String> key: customMapping.keySet())
         {
-            Pair<String,String> currMapping = customMapping.get(key);
-           // Integer outPutStep = nameToIndex;
-
+            Pair<String,String> currValue = customMapping.get(key);
+            Integer outPutStepIndex = nameToIndex.get(key.getKey());
+            Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(key.getValue());
+            Integer inputStepIndex = nameToIndex.get(currValue.getKey());
+            Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(currValue.getValue());
+            connections.get(outPutStepIndex).get(outPutIndex).add(new Pair<>(inputStepIndex,inputIndex));
+            steps.get(inputStepIndex).getInput(inputIndex).setConnected(true);
         }
 
     }
@@ -107,7 +111,8 @@ public class Flow
                     for (Input input:inputs)
                     {
                         if(input.getName().equals(output.getName())
-                                && input.getType().equals(output.getType()))
+                                && input.getType().equals(output.getType())
+                                && !input.isConnected())
                         {
                             pairs.add(new Pair<>(j,b));
                             System.out.println(step.getName()+": "+input.getName());

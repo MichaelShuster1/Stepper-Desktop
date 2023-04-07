@@ -6,11 +6,14 @@ public class Input
     private final boolean user_friendly;
     private  final boolean mandatory;
 
+    private boolean isConnected;
+
     public Input(DataDefinition dataDefinition, boolean user_friendly, boolean mandatory)
     {
         this.dataDefinition = dataDefinition;
         this.user_friendly = user_friendly;
         this.mandatory = mandatory;
+        this.isConnected = false;
     }
 
     public DataDefinition getDataDefinition()
@@ -44,6 +47,13 @@ public class Input
         return  dataDefinition.getType();
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
 
     public void setDataDefinition(DataDefinition dataDefinition)
     {

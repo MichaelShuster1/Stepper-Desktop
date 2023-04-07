@@ -12,7 +12,7 @@ public class FilesRenamer extends Step
 
         DataList dataList=new DataList("FILES_TO_RENAME");
         inputs.add(new Input(dataList,false,true));
-        nameToInputIndex.put("FILES_TO_REMAKE",0);
+        nameToInputIndex.put("FILES_TO_RENAME",0);
 
         DataString dataString=new DataString("PREFIX");
         inputs.add(new Input(dataString,true,false));
