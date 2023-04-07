@@ -9,7 +9,7 @@ public class DataMapping extends DataDefinition{
 
     public DataMapping(String name, String typeStream, boolean mandatory, DataDefinition data1 , DataDefinition data2)
     {
-        super(name,"Mapping", typeStream, mandatory , false);
+        super(name,"DataMapping", typeStream, mandatory , false);
         data = new HashMap<>();
         data.put("car", data1);
         data.put("cdr", data2);

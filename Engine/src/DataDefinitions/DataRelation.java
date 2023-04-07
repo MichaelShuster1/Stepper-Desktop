@@ -10,7 +10,7 @@ public class DataRelation extends DataDefinition{
 
     public DataRelation(String name, String typeStream, boolean mandatory, List<String> columnNames)
     {
-        super(name, "Relation", typeStream, mandatory, false);
+        super(name, "DataRelation", typeStream, mandatory, false);
         this.rows = new ArrayList<>();
         this.columnNames = columnNames;
     }
