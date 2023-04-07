@@ -1,7 +1,7 @@
 package Steps;
 
-import DataDefinitions.DataDefinition;
-import DataDefinitions.DataOutput;
+import DataDefinitions.Input;
+import DataDefinitions.Output;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ public abstract class Step
 {
     protected String name;
     protected boolean read_only;
-    protected List<DataDefinition> inputs;
-    protected List<DataDefinition> outputs;
+    protected List<Input> inputs;
+    protected List<Output> outputs;
 
     public Step(String name, boolean read_only)
     {
@@ -36,4 +36,16 @@ public abstract class Step
     public void setRead_only(boolean read_only) {
         this.read_only = read_only;
     }
+
+    public Input getInput(int index)
+    {
+        return inputs.get(index);
+    }
+
+    public Output getOutput(int index)
+    {
+        return outputs.get(index);
+    }
+
+    public abstract void Run();
 }

@@ -2,15 +2,29 @@ package Steps;
 
 
 import DataDefinitions.DataString;
+import DataDefinitions.Input;
 
 public class CollectFiles extends Step
 {
-
-    CollectFiles(String name,String folderName,String filter)
+    public CollectFiles()
+    {
+        super("CollectFiles",true);
+        DataString dataString=new DataString("FOLDER_NAME");
+        inputs.add(new Input(dataString,true,true));
+        dataString=new DataString("FILTER");
+        inputs.add(new Input(dataString,true,false));
+    }
+    public CollectFiles(String name)
     {
         super(name,true);
-        inputs.add(new DataString("FOLDER_NAME","INPUT",true,folderName));
-        inputs.add(new DataString("FILTER","INPUT",false,filter));
+        DataString dataString=new DataString("FOLDER_NAME");
+        inputs.add(new Input(dataString,true,true));
+        dataString=new DataString("FILTER");
+        inputs.add(new Input(dataString,true,false));
     }
 
+    @Override
+    public void Run() {
+
+    }
 }

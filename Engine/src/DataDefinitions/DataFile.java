@@ -1,5 +1,6 @@
 package DataDefinitions;
 
+/*
 public class DataFile extends  DataDefinition
 {
     private String path;
@@ -19,3 +20,4 @@ public class DataFile extends  DataDefinition
     }
 
 }
+*/

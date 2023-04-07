@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/*
 public class DataRelation extends DataDefinition{
     private List<Map<String, String>> rows;
     private List<String> columnNames;
@@ -37,3 +38,4 @@ public class DataRelation extends DataDefinition{
         return res;
     }
 }
+*/

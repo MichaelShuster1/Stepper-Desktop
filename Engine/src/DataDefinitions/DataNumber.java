@@ -1,25 +1,31 @@
 package DataDefinitions;
 
 
-public class DataNumber extends DataDefinition
+public class DataNumber extends DataDefinition<Integer>
 {
-    private Integer number;
+    private Integer data;
 
-    public DataNumber(int number,String name,String typeStream ,boolean mandatory)
+    public DataNumber(String name,Integer number)
     {
-        super("DataNumber","DataNumber",typeStream,mandatory,true);
-        this.number = number;
-        this.mandatory = mandatory;
-    }
-
-    public int getNumber()
-    {
-        return number;
+        super("DataNumber","DataNumber");
+        this.data = number;
     }
 
     @Override
     public String toString()
     {
-        return number.toString();
+        return data.toString();
+    }
+
+    @Override
+    public void setData(Integer data)
+    {
+        this.data=data;
+    }
+
+    @Override
+    public Integer getData()
+    {
+        return data;
     }
 }
