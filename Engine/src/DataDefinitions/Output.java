@@ -28,4 +28,9 @@ public class Output
     {
         dataDefinition.setData(data);
     }
+
+    public void setName(String name)
+    {
+        dataDefinition.setName(name);
+    }
 }

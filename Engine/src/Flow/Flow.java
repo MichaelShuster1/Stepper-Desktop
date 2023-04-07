@@ -15,11 +15,10 @@ public class Flow
     private List<Step> steps;
     private List<List<List<Pair<Integer,Integer>>>> connections ;
 
-    public Flow(String name, String description, boolean read_only)
+    public Flow(String name, String description)
     {
         this.name = name;
         this.description = description;
-        this.read_only = read_only;
     }
 
     public void AddStep(Step step)
@@ -28,6 +27,8 @@ public class Flow
     }
     public void CustomMapping()
     {
+
+
 
     }
 
