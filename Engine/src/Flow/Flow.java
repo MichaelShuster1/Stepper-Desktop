@@ -36,8 +36,9 @@ public class Flow
         nameToIndex.put(step.getName(),steps.size()-1);
     }
 
-    public void CustomMapping()
+    public void CustomMapping(Map<Pair<String,String>,Pair<String,String>> customMapping)
     {
+        
 
     }
 
