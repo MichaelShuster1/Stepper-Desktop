@@ -28,6 +28,7 @@ public class Flow
         steps = new ArrayList<>();
         connections = new ArrayList<>();
         nameToIndex = new HashMap<>();
+        initConnections();
     }
 
     public void AddStep(Step step)
@@ -38,12 +39,17 @@ public class Flow
 
     public void CustomMapping(Map<Pair<String,String>,Pair<String,String>> customMapping)
     {
-        
+        for(Pair<String,String> key: customMapping.keySet())
+        {
+            Pair<String,String> currMapping = customMapping.get(key);
+           // Integer outPutStep = nameToIndex;
+
+        }
 
     }
 
 
-    public void AutomaticMapping()
+  /*  public void AutomaticMapping()
     {
         int b;
         for(int i=0;i<steps.size();i++)
@@ -77,7 +83,43 @@ public class Flow
             connections.add(list);
         }
     }
+*/
 
+    public void AutomaticMapping()
+    {
+        int b;
+        int a;
+        for(int i=0;i<steps.size();i++)
+        {
+            Step step = steps.get(i);
+            System.out.println("in step: "+step.getName());
+            List<Output> outputs =step.getOutputs();
+            a = 0;
+            for(Output output:outputs)
+            {
+                System.out.println("the output "+ output.getName()+ " connects to the following inputs");
+                List<Pair<Integer,Integer>> pairs=new ArrayList<>();
+                for(int j=i+1;j<steps.size();j++)
+                {
+                    step=steps.get(j);
+                    List<Input> inputs =step.getInputs();
+                    b=0;
+                    for (Input input:inputs)
+                    {
+                        if(input.getName().equals(output.getName())
+                                && input.getType().equals(output.getType()))
+                        {
+                            pairs.add(new Pair<>(j,b));
+                            System.out.println(step.getName()+": "+input.getName());
+                        }
+                        b++;
+                    }
+                    a++;
+                }
+                connections.get(i).get(a).addAll(pairs);
+            }
+        }
+    }
 
     public Step getStep(int index)
     {
@@ -96,6 +138,19 @@ public class Flow
             input.setData(step.getOuput("name of output").getData());
             */
 
+        }
+    }
+
+    public void initConnections()
+    {
+        for (Step step : steps) {
+            List<Output> outputs = step.getOutputs();
+            List<List<Pair<Integer, Integer>>> list = new ArrayList<>();
+            for (Output output : outputs) {
+                List<Pair<Integer, Integer>> pairs = new ArrayList<>();
+                list.add(pairs);
+            }
+            connections.add(list);
         }
     }
 
