@@ -2,6 +2,7 @@ package DataDefinitions;
 
 import javafx.beans.binding.DoubleExpression;
 
+/*
 public class DataDouble extends DataDefinition
 {
     private  Double number;
@@ -24,3 +25,4 @@ public class DataDouble extends DataDefinition
         return number.toString();
     }
 }
+*/

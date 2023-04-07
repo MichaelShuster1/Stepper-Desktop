@@ -1,23 +1,28 @@
 package DataDefinitions;
 
-public class DataString extends DataDefinition{
+public class DataString extends DataDefinition<String>
+{
     private String data;
 
-    public DataString(String name, String typeStream, boolean mandatory, String data) {
-        super(name, "DataString", typeStream, mandatory, true);
-        this.data = data;
+    public DataString(String name)
+    {
+        super(name, "String");
     }
 
-    public String getData() {
+    @Override
+    public String getData()
+    {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(String data)
+    {
         this.data = data;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return data;
     }
 }

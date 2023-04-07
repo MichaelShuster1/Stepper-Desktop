@@ -2,7 +2,7 @@ package DataDefinitions;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class DataList extends DataDefinition
 {
     List<DataDefinition> list;
@@ -34,3 +34,5 @@ public class DataList extends DataDefinition
         return user_presentation;
     }
 }
+
+*/

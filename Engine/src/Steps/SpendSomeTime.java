@@ -1,25 +1,25 @@
 package Steps;
 
+import DataDefinitions.DataDefinition;
 import DataDefinitions.DataNumber;
+import DataDefinitions.Input;
 
 public class SpendSomeTime extends Step
 {
-    public SpendSomeTime(String name,int number) throws RuntimeException
+    public SpendSomeTime(String name) throws RuntimeException
     {
         super(name,true);
-        if(number<=0)
-        {
-            throw new RuntimeException("entered non-positive number");
-        }
-        inputs.add(new DataNumber(number,"DataNumber","INPUT",true));
+        DataNumber dataNumber=new DataNumber("TIME_TO_SPEND",0);
+        inputs.add(new Input(dataNumber,true,true));
+
     }
 
-
-    public void Sleep()
+    @Override
+    public void Run()
     {
         try
         {
-            Thread.sleep(((DataNumber)inputs.get(0)).getNumber() * 1000L);
+            Thread.sleep((Integer)inputs.get(0).getData() * 1000);
         }
         catch (InterruptedException e)
         {

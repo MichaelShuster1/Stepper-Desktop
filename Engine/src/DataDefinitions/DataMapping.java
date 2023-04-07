@@ -3,6 +3,7 @@ package DataDefinitions;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
 public class DataMapping extends DataDefinition{
 
     private Map<String,DataDefinition> data;
@@ -28,3 +29,4 @@ public class DataMapping extends DataDefinition{
         return "car: " + data.get("car").toString() + "\n" + "cdr: " + data.get("cdr").toString();
     }
 }
+*/
