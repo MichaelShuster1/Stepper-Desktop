@@ -33,4 +33,14 @@ public class Output
     {
         dataDefinition.setName(name);
     }
+
+    public String getName()
+    {
+        return  dataDefinition.getName();
+    }
+
+    public String getType()
+    {
+        return  dataDefinition.getType();
+    }
 }

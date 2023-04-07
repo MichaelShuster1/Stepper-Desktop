@@ -47,5 +47,15 @@ public abstract class Step
         return outputs.get(index);
     }
 
+    public List<Input> getInputs()
+    {
+        return inputs;
+    }
+
+    public List<Output> getOutputs()
+    {
+        return outputs;
+    }
+
     public abstract void Run();
 }

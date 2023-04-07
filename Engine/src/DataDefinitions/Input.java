@@ -29,6 +29,22 @@ public class Input
         dataDefinition.setData(data);
     }
 
+    public void setName(String name)
+    {
+        dataDefinition.setName(name);
+    }
+
+    public String getName()
+    {
+        return  dataDefinition.getName();
+    }
+
+    public String getType()
+    {
+        return  dataDefinition.getType();
+    }
+
+
     public void setDataDefinition(DataDefinition dataDefinition)
     {
         this.dataDefinition = dataDefinition;

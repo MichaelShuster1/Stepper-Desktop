@@ -7,7 +7,7 @@ public class DataNumber extends DataDefinition<Integer>
 
     public DataNumber(String name)
     {
-        super("DataNumber","DataNumber");
+        super(name,"DataNumber");
     }
 
     @Override
