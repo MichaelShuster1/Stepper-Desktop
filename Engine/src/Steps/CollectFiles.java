@@ -18,7 +18,10 @@ public class CollectFiles extends Step
         nameToInputIndex.put("FILTER",0);
 
         outputs.add(new Output(new DataList("FILES_LIST")));
+        nameToOutputIndex.put("FILES_LIST",0);
+
         outputs.add(new Output(new DataNumber("TOTAL_FOUND")));
+        nameToOutputIndex.put("TOTAL_FOUND",1);
     }
 
 
