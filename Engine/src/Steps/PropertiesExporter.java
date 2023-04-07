@@ -10,6 +10,7 @@ public class PropertiesExporter extends Step{
         super(name, true);
         DataRelation input = new DataRelation("SOURCE");
         inputs.add(new Input(input,false,true));
+
         outputs.add(new Output(new DataString("RESULT")));
     }
 

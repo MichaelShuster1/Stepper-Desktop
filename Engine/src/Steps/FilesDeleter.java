@@ -12,6 +12,7 @@ public class FilesDeleter extends Step {
         super(name, false);
         DataList listData = new DataList("FILES_LIST");
         inputs.add(new Input(listData,false,true));
+
         listData = new DataList("DELETED_LIST");
         outputs.add(new Output(listData));
         outputs.add(new Output(new DataMapping("DELETION_STATS")));
