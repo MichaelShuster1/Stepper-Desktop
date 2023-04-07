@@ -16,6 +16,7 @@ public class CollectFiles extends Step
         outputs.add(new Output(new DataNumber("TOTAL_FOUND")));
     }
 
+
     @Override
     public void Run() {
 
