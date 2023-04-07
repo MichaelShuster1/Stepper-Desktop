@@ -1,9 +1,6 @@
-import DataDefinitions.Input;
-import DataDefinitions.Output;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
-import sun.java2d.loops.CustomComponent;
 
 import java.util.*;
 
@@ -40,21 +37,15 @@ public class Main
         flow.getStep(5).getOutput(0).setName("PROP_FILE_DUMP_RESULT");
 
 
-        flow.AutomaticMapping();
-        /*
-        System.out.println("please enter number of seconds to sleep: ");
-        number=inputStream.nextInt();
-        Input input=steps.get(0).getInput(0);
-        input.setData(number);
-        System.out.println("Start of delay: "+ new Date());
-        steps.get(0).Run();
-        System.out.println("End of delay: "+ new Date());
-        */
-
         Map<Pair<String,String>,Pair<String,String>> customMappingInput = new HashMap<>();
         customMappingInput.put(new Pair<>("Collect Files In Folders","FILES_LIST"), new Pair<>("Files Renamer","FILES_TO_RENAME"));
         customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
+
+        flow.CustomMapping(customMappingInput);
+        flow.AutomaticMapping();
+
+
 
     }
 }

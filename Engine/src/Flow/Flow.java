@@ -28,7 +28,6 @@ public class Flow
         steps = new ArrayList<>();
         connections = new ArrayList<>();
         nameToIndex = new HashMap<>();
-        initConnections();
     }
 
     public void AddStep(Step step)
@@ -39,6 +38,7 @@ public class Flow
 
     public void CustomMapping(Map<Pair<String,String>,Pair<String,String>> customMapping)
     {
+        initConnections();
         for(Pair<String,String> key: customMapping.keySet())
         {
             Pair<String,String> currMapping = customMapping.get(key);
@@ -114,9 +114,10 @@ public class Flow
                         }
                         b++;
                     }
-                    a++;
+
                 }
                 connections.get(i).get(a).addAll(pairs);
+                a++;
             }
         }
     }
@@ -143,7 +144,8 @@ public class Flow
 
     public void initConnections()
     {
-        for (Step step : steps) {
+        for (Step step : steps)
+        {
             List<Output> outputs = step.getOutputs();
             List<List<Pair<Integer, Integer>>> list = new ArrayList<>();
             for (Output output : outputs) {
