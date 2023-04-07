@@ -2,21 +2,21 @@ package DataDefinitions;
 
 import java.util.ArrayList;
 import java.util.List;
-/*
-public class DataList extends DataDefinition
-{
-    List<DataDefinition> list;
 
-    public DataList(String name,String typeStream ,boolean mandatory)
+public class DataList extends DataDefinition<List<DataDefinition>>
+{
+    List<DataDefinition> data;
+
+    public DataList(String name)
     {
-        super(name,"DataList",typeStream,mandatory,false);
-        list=new ArrayList<>();
+        super(name,"DataList");
+        data =new ArrayList<>();
     }
 
 
     public void AddElement(DataDefinition element)
     {
-        list.add(element);
+        data.add(element);
     }
 
 
@@ -25,7 +25,7 @@ public class DataList extends DataDefinition
     {
         int index=1;
         String user_presentation="";
-        for(DataDefinition element:list)
+        for(DataDefinition element: data)
         {
             user_presentation = user_presentation + index+".";
             user_presentation = user_presentation + element.toString() +", ";
@@ -33,6 +33,18 @@ public class DataList extends DataDefinition
         }
         return user_presentation;
     }
+
+    @Override
+    public void setData(List<DataDefinition> data)
+    {
+        this.data=data;
+    }
+
+    @Override
+    public List<DataDefinition> getData()
+    {
+        return  data;
+    }
 }
 
-*/
+

@@ -6,6 +6,7 @@ import DataDefinitions.DataNumber;
 
 import java.util.List;
 
+/*
 public class FilesDeleter extends Step {
 
     public FilesDeleter(String name, DataList list)
@@ -23,3 +24,4 @@ public class FilesDeleter extends Step {
 
 
 }
+*/

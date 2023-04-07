@@ -9,12 +9,15 @@ public class DataString extends DataDefinition<String>
         super(name, "String");
     }
 
+
+
     @Override
     public String getData()
     {
         return data;
     }
 
+    @Override
     public void setData(String data)
     {
         this.data = data;

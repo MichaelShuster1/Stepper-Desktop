@@ -17,7 +17,6 @@ public class Main
         System.out.println("please enter number of seconds to sleep: ");
         number=inputStream.nextInt();
 
-
         List<Step> steps=new ArrayList<>();
         steps.add(new SpendSomeTime("s1"));
         steps.add(new CollectFiles("S2"));

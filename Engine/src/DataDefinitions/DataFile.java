@@ -1,23 +1,24 @@
 package DataDefinitions;
 
-/*
-public class DataFile extends  DataDefinition
+
+public class DataFile extends  DataDefinition<String>
 {
-    private String path;
+    private String data;
 
-    public DataFile(String name,String typeStream,boolean mandatory , String path)
+    public DataFile(String name)
     {
-        super(name, "DataFile", typeStream, mandatory, false);
-        this.path = path;
+        super(name, "DataFile");
     }
 
-    public String getPath() {
-        return path;
+    public String getData()
+    {
+        return data;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setData(String data)
+    {
+        this.data = data;
     }
 
 }
-*/
+

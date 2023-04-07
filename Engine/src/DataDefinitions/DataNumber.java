@@ -5,10 +5,9 @@ public class DataNumber extends DataDefinition<Integer>
 {
     private Integer data;
 
-    public DataNumber(String name,Integer number)
+    public DataNumber(String name)
     {
         super("DataNumber","DataNumber");
-        this.data = number;
     }
 
     @Override

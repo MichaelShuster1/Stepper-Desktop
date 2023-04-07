@@ -1,28 +1,28 @@
 package DataDefinitions;
 
-import javafx.beans.binding.DoubleExpression;
 
-/*
-public class DataDouble extends DataDefinition
+public class DataDouble extends DataDefinition<Double>
 {
-    private  Double number;
-    public DataDouble(Double number, String typeStream , boolean mandatory)
+    private  Double data;
+    public DataDouble(String name)
     {
-        super("DataDouble","DataDouble",typeStream,mandatory,true);
-        this.number = number;
-        this.mandatory = mandatory;
+        super(name,"DataDouble");
     }
-
-
-    public Double getNumber()
-    {
-        return number;
-    }
-
     @Override
     public String  toString()
     {
-        return number.toString();
+        return data.toString();
+    }
+
+    @Override
+    public Double getData()
+    {
+        return data;
+    }
+
+    @Override
+    public void setData(Double data)
+    {
+        this.data=data;
     }
 }
-*/

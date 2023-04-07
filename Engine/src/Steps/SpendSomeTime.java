@@ -6,10 +6,10 @@ import DataDefinitions.Input;
 
 public class SpendSomeTime extends Step
 {
-    public SpendSomeTime(String name) throws RuntimeException
+    public SpendSomeTime(String name)
     {
         super(name,true);
-        DataNumber dataNumber=new DataNumber("TIME_TO_SPEND",0);
+        DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");
         inputs.add(new Input(dataNumber,true,true));
 
     }
