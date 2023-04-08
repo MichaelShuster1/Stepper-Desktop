@@ -88,9 +88,10 @@ public class Flow
     }
 */
 
-    /*
+/*
     public void AutomaticMapping()
     {
+        initFlowInputs();
         int b;
         int a;
         for(int i=0;i<steps.size();i++)
@@ -126,7 +127,7 @@ public class Flow
             }
         }
     }
-     */
+*/
 
     public void AutomaticMapping()
     {
@@ -151,7 +152,7 @@ public class Flow
                         Step step1 = steps.get(stepIndex);
                         if (stepIndex > i)
                         {
-                            Integer inputIndex = step1.getNameToOutputIndex().get(output.getName());
+                            Integer inputIndex = step1.getNameToInputIndex().get(output.getName());
                             Input input = step1.getInput(inputIndex);
                             if (input.getType().equals(output.getType())
                                     && !input.isConnected())
@@ -172,6 +173,7 @@ public class Flow
 
 
     }
+
 
     public Step getStep(int index)
     {
