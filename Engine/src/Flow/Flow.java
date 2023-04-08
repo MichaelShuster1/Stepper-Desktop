@@ -20,6 +20,7 @@ public class Flow
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
     private Map<String,List<Integer>> flowInputs;
+    private Map<String,List<Integer>> flowFreeInputs;
 
     public Flow(String name, String description)
     {
@@ -151,7 +152,7 @@ public class Flow
                         Step step1 = steps.get(stepIndex);
                         if (stepIndex > i)
                         {
-                            Integer inputIndex = step1.getNameToOutputIndex().get(output.getName());
+                            Integer inputIndex = step1.getNameToInputIndex().get(output.getName());
                             Input input = step1.getInput(inputIndex);
                             if (input.getType().equals(output.getType())
                                     && !input.isConnected())
@@ -172,6 +173,55 @@ public class Flow
 
 
     }
+
+
+    public void CalculateFreeInputs()
+    {
+        flowFreeInputs =new HashMap<>();
+        for (String inputName:flowInputs.keySet())
+        {
+            List<Integer> integerList =flowInputs.get(inputName);
+            for(Integer stepIndex:integerList)
+            {
+                Step step = steps.get(stepIndex);
+                Integer inputIndex = step.getNameToInputIndex().get(inputName);
+                Input input = step.getInput(inputIndex);
+                if(!input.isConnected())
+                {
+                    if(flowFreeInputs.containsKey(inputName))
+                        flowFreeInputs.get(inputName).add(stepIndex);
+                    else
+                    {
+                        List<Integer> indexList = new ArrayList<>();
+                        indexList.add(stepIndex);
+                        flowFreeInputs.put(inputName,indexList);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public String getInputMenu()
+    {
+        int i=1;
+        String inputMenu="",mandatory;
+        for (String inputName:flowFreeInputs.keySet())
+        {
+            Integer inputIndex,stepIndex=flowFreeInputs.get(inputName).get(0);
+            Step step= steps.get(stepIndex);
+            inputIndex=step.getNameToInputIndex().get(inputName);
+            if(step.getInput(inputIndex).isMandatory())
+                mandatory="mandatory";
+            else
+                mandatory="optional";
+
+            inputMenu+= i + "." + inputName+ "["+ mandatory+ "]\n";
+            i++;
+        }
+        return inputMenu;
+    }
+
 
     public Step getStep(int index)
     {
