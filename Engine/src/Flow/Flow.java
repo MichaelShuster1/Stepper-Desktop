@@ -26,9 +26,9 @@ public class Flow
         this.name = name;
         this.description = description;
         steps = new ArrayList<>();
-        connections = new ArrayList<>();
         nameToIndex = new HashMap<>();
-        flowInputs = new HashMap<>();
+        initFlowInputs();
+        initConnections();
     }
 
     public void AddStep(Step step)
@@ -54,7 +54,7 @@ public class Flow
     }
 
 
-  /*  public void AutomaticMapping()
+    /*  public void AutomaticMapping()
     {
         int b;
         for(int i=0;i<steps.size();i++)
@@ -142,6 +142,7 @@ public class Flow
             a=0;
             for(Output output:outputs)
             {
+                System.out.println("the output "+ output.getName()+ " connects to the following inputs");
                 List<Pair<Integer,Integer>> pairs=new ArrayList<>();
                 List<Integer> integerList =flowInputs.get(output.getName());
                 for(Integer stepIndex:integerList)
@@ -156,7 +157,7 @@ public class Flow
                         {
                             input.setConnected(true);
                             pairs.add(new Pair<>(stepIndex, inputIndex));
-
+                            System.out.println(step1.getName()+": "+input.getName());
                         }
                     }
                 }
@@ -192,6 +193,7 @@ public class Flow
 
     public void initConnections()
     {
+        connections = new ArrayList<>();
         for (Step step : steps)
         {
             List<Output> outputs = step.getOutputs();
@@ -207,6 +209,7 @@ public class Flow
 
     public void initFlowInputs()
     {
+        flowInputs = new HashMap<>();
         for(int i = 0; i< steps.size(); i++)
         {
             Step step = steps.get(i);
