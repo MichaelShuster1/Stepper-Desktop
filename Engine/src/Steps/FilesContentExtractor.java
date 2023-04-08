@@ -7,6 +7,7 @@ public class FilesContentExtractor extends Step
     public FilesContentExtractor(String name)
     {
         super(name,true);
+        defaultName = "Files Content Extractor";
 
         DataList dataList =new DataList("FILES_LIST");
         inputs.add(new Input(dataList,false,true));

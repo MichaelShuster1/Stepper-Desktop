@@ -8,6 +8,7 @@ public class CollectFiles extends Step
     public CollectFiles(String name)
     {
         super(name,true);
+        defaultName = "Collect Files In Folder";
 
         DataString dataString=new DataString("FOLDER_NAME");
         inputs.add(new Input(dataString,true,true));

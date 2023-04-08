@@ -10,6 +10,8 @@ public class CSVExporter extends Step
     public CSVExporter(String name)
     {
         super(name, true);
+        defaultName = "CSV Exporter";
+
         DataRelation dataRelation =new DataRelation("SOURCE");
         inputs.add(new Input(dataRelation,false,true));
         nameToInputIndex.put("SOURCE",0);

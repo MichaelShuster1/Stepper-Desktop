@@ -11,6 +11,7 @@ import java.util.Map;
 public abstract class Step
 {
     protected String name;
+    protected String defaultName;
     protected boolean read_only;
 
     protected List<Input> inputs;
@@ -31,6 +32,8 @@ public abstract class Step
     public String getName() {
         return name;
     }
+
+    public String getDefaultName() {return defaultName;}
 
     public boolean isRead_only() {
         return read_only;

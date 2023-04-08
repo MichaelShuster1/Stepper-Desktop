@@ -9,6 +9,7 @@ public class FilesRenamer extends Step
     public FilesRenamer(String name)
     {
         super(name, false);
+        defaultName = "Files Renamer";
 
         DataList dataList=new DataList("FILES_TO_RENAME");
         inputs.add(new Input(dataList,false,true));

@@ -20,6 +20,7 @@ public class Flow
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
     private Map<String,List<Integer>> flowInputs;
+    private Map<String,List<Integer>> flowFreeInputs;
 
     public Flow(String name, String description)
     {
@@ -27,6 +28,7 @@ public class Flow
         this.description = description;
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
+        formal_outputs = new ArrayList<>();
     }
 
     public void AddStep(Step step)
@@ -233,6 +235,159 @@ public class Flow
             }
         }
     }
+
+
+    public void CalculateFreeInputs()
+    {
+        flowFreeInputs =new HashMap<>();
+        for (String inputName:flowInputs.keySet())
+        {
+            List<Integer> integerList =flowInputs.get(inputName);
+            for(Integer stepIndex:integerList)
+            {
+                Step step = steps.get(stepIndex);
+                Integer inputIndex = step.getNameToInputIndex().get(inputName);
+                Input input = step.getInput(inputIndex);
+                if(!input.isConnected())
+                {
+                    if(flowFreeInputs.containsKey(inputName))
+                        flowFreeInputs.get(inputName).add(stepIndex);
+                    else
+                    {
+                        List<Integer> indexList = new ArrayList<>();
+                        indexList.add(stepIndex);
+                        flowFreeInputs.put(inputName,indexList);
+                    }
+                }
+            }
+        }
+    }
+
+    public String flowPrintData()
+    {
+        String data;
+        data = "Flow name: " + name + "\n\n";
+        data += "Flow description: " + description + "\n\n";
+        data += getFormalOutputs() + "\n";
+        data += getStrReadOnlyStatus() + "\n";
+        data += getStrStepsData() + "\n";
+        data += getStrFreeInputs() + "\n";
+        data += getStrOutPuts() + "\n";
+        System.out.println(data);
+        return data;
+    }
+
+
+    public String getFormalOutputs()
+    {
+        String res;
+        if(formal_outputs.size() > 0) {
+            res = "The formal outputs of the flow are:\n";
+            for (String currOutput: formal_outputs) {
+                res = res + currOutput + "\n";
+            }
+        }
+        else
+            res = "The flow doesn't have formal outputs\n";
+
+        return res;
+    }
+
+    public String getStrReadOnlyStatus()
+    {
+        if(read_only)
+            return "The flow is Read-Only: YES\n";
+        else
+            return "The flow is Read-Only: NO\n";
+    }
+
+    public String getStrStepsData()
+    {
+        String res = "THE FLOW'S STEPS:\n";
+        String currStep;
+        for(Step step: steps)
+        {
+            if(step.getName().equals(step.getDefaultName()))
+                currStep = "Step name: " + step.getName() + "\n";
+            else
+            {
+                currStep = "Step name: " + step.getDefaultName() + "\n";
+                currStep += "Step alias: " + step.getName() + "\n";
+            }
+            if(step.isRead_only())
+                currStep = currStep +  "The step is Read-Only: YES\n";
+            else
+                currStep = currStep + "This step is Read-Only: No\n";
+            currStep = currStep + "\n";
+            res += currStep;
+        }
+
+        return res;
+    }
+
+
+    public String getStrFreeInputs() {
+        String res;
+        if (flowFreeInputs.isEmpty())
+            res = "The flow have no free inputs\n";
+        else
+        {
+            res = "Flow's free input's are:\n\n";
+            String currInput;
+            for (String key : flowFreeInputs.keySet())
+            {
+                List<Integer> inputs = flowFreeInputs.get(key);
+                int i = inputs.get(0);
+                int inputIndex = steps.get(i).getNameToInputIndex().get(key);
+                Input input = steps.get(i).getInput(inputIndex);
+                currInput = "Name: " + input.getName() + "\n";
+                currInput += "Type: " + input.getType() + "\n";
+                currInput += "Steps that are related to that input: ";
+                for (Integer j : inputs)
+                {
+                    currInput +=  steps.get(j).getName() + ", ";
+                }
+                currInput = currInput.substring(0,currInput.length() - 1);
+                currInput += "\n";
+                if (input.isMandatory())
+                    currInput += "This input is mandatory: No\n\n";
+                else
+                    currInput += "This input is mandatory: Yes\n\n";
+                res += currInput;
+            }
+        }
+
+        return res;
+    }
+
+
+    public String getStrOutPuts()
+    {
+        String res = "THE FLOW'S OUTPUTS:\n";
+        boolean isFound = false;
+        List<Output> list;
+        for(Step step:steps)
+        {
+            list = step.getOutputs();
+            if(list.size() > 0)
+                isFound = true;
+            for(Output output: list)
+            {
+                res += "Output name: " + output.getName() + "\n";
+                res += "Type: " + output.getType() + "\n";
+                res += "Belong to step: " + step.getName() + "\n\n";
+            }
+
+        }
+
+        if(isFound)
+            return res;
+        else
+            return "THIS FLOW HAVE NO OUTPUTS";
+    }
+
+
+
 
 
 

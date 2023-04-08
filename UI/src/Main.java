@@ -57,6 +57,8 @@ public class Main
 
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
+        flow.CalculateFreeInputs();
+        flow.flowPrintData();
         
     }
 }

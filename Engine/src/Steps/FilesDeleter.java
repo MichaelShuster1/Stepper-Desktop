@@ -11,6 +11,7 @@ public class FilesDeleter extends Step
     public FilesDeleter(String name)
     {
         super(name, false);
+        defaultName = "Files Deleter";
 
         DataList listData = new DataList("FILES_LIST");
         inputs.add(new Input(listData,false,true));
