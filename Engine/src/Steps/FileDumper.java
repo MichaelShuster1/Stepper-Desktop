@@ -9,6 +9,7 @@ public class FileDumper extends Step
     public FileDumper(String name)
     {
         super(name, true);
+        defaultName = "File Dumper";
 
         inputs.add(new Input(new DataString("CONTENT"),true,true));
         nameToInputIndex.put("CONTENT",0);

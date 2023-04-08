@@ -9,6 +9,8 @@ public class SpendSomeTime extends Step
     public SpendSomeTime(String name)
     {
         super(name,true);
+        defaultName = "Spend some Time";
+
         DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");
         inputs.add(new Input(dataNumber,true,true));
         nameToInputIndex.put("TIME_TO_SPEND",0);

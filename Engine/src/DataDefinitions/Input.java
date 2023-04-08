@@ -55,10 +55,7 @@ public class Input
         isConnected = connected;
     }
 
-    public boolean isMandatory()
-    {
-        return mandatory;
-    }
+    public boolean isMandatory() {return mandatory;}
 
     public void setDataDefinition(DataDefinition dataDefinition)
     {
