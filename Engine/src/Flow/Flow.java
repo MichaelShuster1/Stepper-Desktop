@@ -27,8 +27,6 @@ public class Flow
         this.description = description;
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
-        initFlowInputs();
-        initConnections();
     }
 
     public void AddStep(Step step)
@@ -132,6 +130,7 @@ public class Flow
 
     public void AutomaticMapping()
     {
+        initFlowInputs();
         int a;
         for(int i=0;i<steps.size();i++)
         {
