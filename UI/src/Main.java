@@ -27,6 +27,7 @@ public class Main
         flow.AddStep(new FileDumper("CSV File Dumper"));
         flow.AddStep(new PropertiesExporter( "Properties Exporter"));
         flow.AddStep(new FileDumper("Properties File Dumper"));
+
         /*
         flow.getStep(1).getOutput(0).setName("SOURCE");
         flow.getStep(2).getOutput(0).setName("CSV_RESULT");
@@ -54,8 +55,6 @@ public class Main
 
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
-
-
-
+        
     }
 }

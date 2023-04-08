@@ -19,7 +19,7 @@ public class Flow
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
-
+    private Map<String,List<Integer>> flowInputs;
 
     public Flow(String name, String description)
     {
@@ -53,7 +53,8 @@ public class Flow
     }
 
 
-  /*  public void AutomaticMapping()
+
+    /*  public void AutomaticMapping()
     {
         int b;
         for(int i=0;i<steps.size();i++)
@@ -89,6 +90,7 @@ public class Flow
     }
 */
 
+    /*
     public void AutomaticMapping()
     {
         int b;
@@ -126,6 +128,47 @@ public class Flow
             }
         }
     }
+     */
+
+    public void AutomaticMapping()
+    {
+        int a;
+        for(int i=0;i<steps.size();i++)
+        {
+            Step step = steps.get(i);
+            System.out.println("in step: "+step.getName());
+            List<Output> outputs =step.getOutputs();
+            List<List<Pair<Integer,Integer>> > list=new ArrayList<>();
+            a=0;
+            for(Output output:outputs)
+            {
+                List<Pair<Integer,Integer>> pairs=new ArrayList<>();
+                List<Integer> integerList =flowInputs.get(output.getName());
+                for(Integer stepIndex:integerList)
+                {
+                    Step step1 =steps.get(stepIndex);
+                    if(stepIndex>i)
+                    {
+                        Integer inputIndex = step1.getNameToOutputIndex().get(output.getName());
+                        Input input=step1.getInput(inputIndex);
+                        if (input.getType().equals(output.getType())
+                                && !input.isConnected())
+                        {
+                            input.setConnected(true);
+                            pairs.add(new Pair<>(stepIndex, inputIndex));
+
+                        }
+                    }
+                }
+                connections.get(i).get(a).addAll(pairs);
+                a++;
+            }
+
+
+        }
+
+
+    }
 
     public Step getStep(int index)
     {
@@ -138,12 +181,6 @@ public class Flow
         for (Step step:steps)
         {
             step.Run();
-
-            /*
-            Input input=steps.get("name of step").getInput("name of input");
-            input.setData(step.getOuput("name of output").getData());
-            */
-
         }
     }
 

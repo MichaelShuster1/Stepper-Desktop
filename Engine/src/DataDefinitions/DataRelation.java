@@ -50,7 +50,8 @@ public class DataRelation extends DataDefinition<Pair<List<Map<String, DataDefin
     }
 
     @Override
-    public Pair<List<Map<String, DataDefinition>>, List<String>> getData() {
+    public Pair<List<Map<String, DataDefinition>>, List<String>> getData()
+    {
         return new Pair<List<Map<String, DataDefinition>>, List<String>>(rows,columnNames);
     }
 }
