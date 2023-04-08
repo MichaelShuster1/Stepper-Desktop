@@ -145,19 +145,22 @@ public class Flow
                 System.out.println("the output "+ output.getName()+ " connects to the following inputs");
                 List<Pair<Integer,Integer>> pairs=new ArrayList<>();
                 List<Integer> integerList =flowInputs.get(output.getName());
-                for(Integer stepIndex:integerList)
+                if(integerList!=null)
                 {
-                    Step step1 =steps.get(stepIndex);
-                    if(stepIndex>i)
+                    for (Integer stepIndex : integerList)
                     {
-                        Integer inputIndex = step1.getNameToOutputIndex().get(output.getName());
-                        Input input=step1.getInput(inputIndex);
-                        if (input.getType().equals(output.getType())
-                                && !input.isConnected())
+                        Step step1 = steps.get(stepIndex);
+                        if (stepIndex > i)
                         {
-                            input.setConnected(true);
-                            pairs.add(new Pair<>(stepIndex, inputIndex));
-                            System.out.println(step1.getName()+": "+input.getName());
+                            Integer inputIndex = step1.getNameToOutputIndex().get(output.getName());
+                            Input input = step1.getInput(inputIndex);
+                            if (input.getType().equals(output.getType())
+                                    && !input.isConnected())
+                            {
+                                input.setConnected(true);
+                                pairs.add(new Pair<>(stepIndex, inputIndex));
+                                System.out.println(step1.getName() + ": " + input.getName());
+                            }
                         }
                     }
                 }
