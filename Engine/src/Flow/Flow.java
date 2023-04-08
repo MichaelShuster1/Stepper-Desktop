@@ -19,6 +19,7 @@ public class Flow
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
+    private Map<String,List<Integer>> flowInputs;
 
 
     public Flow(String name, String description)
@@ -28,6 +29,7 @@ public class Flow
         steps = new ArrayList<>();
         connections = new ArrayList<>();
         nameToIndex = new HashMap<>();
+        flowInputs = new HashMap<>();
     }
 
     public void AddStep(Step step)
@@ -160,6 +162,32 @@ public class Flow
             connections.add(list);
         }
     }
+
+
+    public void initFlowInputs()
+    {
+        for(int i = 0; i< steps.size(); i++)
+        {
+            Step step = steps.get(i);
+            List<Input> inputsList = step.getInputs();
+            for(Input input : inputsList)
+            {
+                if(flowInputs.containsKey(input.getName()))
+                {
+                    flowInputs.get(input.getName()).add(i);
+                }
+                else
+                {
+                    List<Integer> indexList = new ArrayList<>();
+                    indexList.add(i);
+                    flowInputs.put(input.getName(),indexList);
+                }
+            }
+        }
+    }
+
+
+
 
 
 }
