@@ -54,7 +54,7 @@ public class Main
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
 
 
-        flow.initFlowInputs();
+
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
         
