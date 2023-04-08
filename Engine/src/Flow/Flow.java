@@ -286,31 +286,6 @@ public class Flow
     }
 
 
-    public void CalculateFreeInputs()
-    {
-        flowFreeInputs =new HashMap<>();
-        for (String inputName:flowInputs.keySet())
-        {
-            List<Integer> integerList =flowInputs.get(inputName);
-            for(Integer stepIndex:integerList)
-            {
-                Step step = steps.get(stepIndex);
-                Integer inputIndex = step.getNameToInputIndex().get(inputName);
-                Input input = step.getInput(inputIndex);
-                if(!input.isConnected())
-                {
-                    if(flowFreeInputs.containsKey(inputName))
-                        flowFreeInputs.get(inputName).add(stepIndex);
-                    else
-                    {
-                        List<Integer> indexList = new ArrayList<>();
-                        indexList.add(stepIndex);
-                        flowFreeInputs.put(inputName,indexList);
-                    }
-                }
-            }
-        }
-    }
 
     public String flowPrintData()
     {
