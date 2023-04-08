@@ -28,6 +28,7 @@ public class Flow
         steps = new ArrayList<>();
         connections = new ArrayList<>();
         nameToIndex = new HashMap<>();
+        flowInputs = new HashMap<>();
     }
 
     public void AddStep(Step step)
@@ -53,8 +54,7 @@ public class Flow
     }
 
 
-
-    /*  public void AutomaticMapping()
+  /*  public void AutomaticMapping()
     {
         int b;
         for(int i=0;i<steps.size();i++)
@@ -181,6 +181,12 @@ public class Flow
         for (Step step:steps)
         {
             step.Run();
+
+            /*
+            Input input=steps.get("name of step").getInput("name of input");
+            input.setData(step.getOuput("name of output").getData());
+            */
+
         }
     }
 
@@ -197,6 +203,32 @@ public class Flow
             connections.add(list);
         }
     }
+
+
+    public void initFlowInputs()
+    {
+        for(int i = 0; i< steps.size(); i++)
+        {
+            Step step = steps.get(i);
+            List<Input> inputsList = step.getInputs();
+            for(Input input : inputsList)
+            {
+                if(flowInputs.containsKey(input.getName()))
+                {
+                    flowInputs.get(input.getName()).add(i);
+                }
+                else
+                {
+                    List<Integer> indexList = new ArrayList<>();
+                    indexList.add(i);
+                    flowInputs.put(input.getName(),indexList);
+                }
+            }
+        }
+    }
+
+
+
 
 
 }

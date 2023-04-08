@@ -53,6 +53,8 @@ public class Main
         customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
 
+
+        flow.initFlowInputs();
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
         
