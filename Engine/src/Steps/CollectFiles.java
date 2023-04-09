@@ -3,6 +3,8 @@ package Steps;
 
 import DataDefinitions.*;
 
+import java.io.File;
+
 public class CollectFiles extends Step
 {
     public CollectFiles(String name,boolean continue_if_failing)
@@ -18,7 +20,7 @@ public class CollectFiles extends Step
         inputs.add(new Input(dataString,true,false));
         nameToInputIndex.put("FILTER",1);
 
-        outputs.add(new Output(new DataList("FILES_LIST")));
+        outputs.add(new Output(new DataList<File>("FILES_LIST")));
         nameToOutputIndex.put("FILES_LIST",0);
 
         outputs.add(new Output(new DataNumber("TOTAL_FOUND")));

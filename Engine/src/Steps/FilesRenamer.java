@@ -2,6 +2,8 @@ package Steps;
 
 import DataDefinitions.*;
 
+import java.io.File;
+
 public class FilesRenamer extends Step
 {
 
@@ -11,7 +13,7 @@ public class FilesRenamer extends Step
         super(name, false,continue_if_failing);
         defaultName = "Files Renamer";
 
-        DataList dataList=new DataList("FILES_TO_RENAME");
+        DataList<File> dataList=new DataList("FILES_TO_RENAME");
         inputs.add(new Input(dataList,false,true));
         nameToInputIndex.put("FILES_TO_RENAME",0);
 

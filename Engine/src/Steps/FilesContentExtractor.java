@@ -2,6 +2,8 @@ package Steps;
 
 import DataDefinitions.*;
 
+import java.io.File;
+
 public class FilesContentExtractor extends Step
 {
     public FilesContentExtractor(String name,boolean continue_if_failing)
@@ -9,7 +11,7 @@ public class FilesContentExtractor extends Step
         super(name,true,continue_if_failing);
         defaultName = "Files Content Extractor";
 
-        DataList dataList =new DataList("FILES_LIST");
+        DataList<File> dataList =new DataList("FILES_LIST");
         inputs.add(new Input(dataList,false,true));
         nameToInputIndex.put("FILES_LIST",0);
 

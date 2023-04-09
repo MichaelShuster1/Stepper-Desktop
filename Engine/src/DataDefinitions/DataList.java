@@ -3,9 +3,9 @@ package DataDefinitions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataList extends DataDefinition<List<DataDefinition>>
+public class DataList<T> extends DataDefinition<List>
 {
-    List<DataDefinition> data;
+    List<T> data;
 
     public DataList(String name)
     {
@@ -14,7 +14,7 @@ public class DataList extends DataDefinition<List<DataDefinition>>
     }
 
 
-    public void AddElement(DataDefinition element)
+    public void AddElement(T element)
     {
         data.add(element);
     }
@@ -25,7 +25,7 @@ public class DataList extends DataDefinition<List<DataDefinition>>
     {
         int index=1;
         String user_presentation="";
-        for(DataDefinition element: data)
+        for(T element: data)
         {
             user_presentation = user_presentation + index+".";
             user_presentation = user_presentation + element.toString() +", ";
@@ -35,13 +35,14 @@ public class DataList extends DataDefinition<List<DataDefinition>>
     }
 
     @Override
-    public void setData(List<DataDefinition> data)
+    public void setData(List data)
     {
         this.data=data;
     }
 
+
     @Override
-    public List<DataDefinition> getData()
+    public List<T> getData()
     {
         return  data;
     }

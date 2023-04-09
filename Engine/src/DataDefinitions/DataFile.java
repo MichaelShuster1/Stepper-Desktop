@@ -1,21 +1,23 @@
 package DataDefinitions;
 
 
-public class DataFile extends  DataDefinition<String>
+import java.io.File;
+
+public class DataFile extends  DataDefinition<File>
 {
-    private String data;
+    private File data;
 
     public DataFile(String name)
     {
         super(name, "DataFile");
     }
 
-    public String getData()
+    public File getData()
     {
         return data;
     }
 
-    public void setData(String data)
+    public void setData(File data)
     {
         this.data = data;
     }
