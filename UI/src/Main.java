@@ -55,5 +55,10 @@ public class Main
         //collectFiles.getInput(1).setData();
         collectFiles.Run();
 
+        SpendSomeTime spendSomeTimes =new SpendSomeTime("blabla",false);
+        spendSomeTimes.getInput(0).setData(-1);
+        spendSomeTimes.Run();
+
+
     }
 }
