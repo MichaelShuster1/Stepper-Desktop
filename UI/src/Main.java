@@ -2,6 +2,7 @@ import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.util.*;
 
 public class Main
@@ -50,6 +51,23 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
+
+        Step filesDeleter=new FilesDeleter("blabla",false);
+
+        List<File> files =new ArrayList<>();
+
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\a.txt"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\b.txt"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\c.rar"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\d.bat"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder"));
+        //files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder1"));
+        //files.add(new File("C:\\Users\\michael\\Desktop\\a.txt"));
+
+        filesDeleter.getInput(0).setData(files);
+        filesDeleter.Run();
+
+
         /*
         Step collectFiles = new CollectFiles("Collect files in folder",false);
         collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
@@ -57,9 +75,6 @@ public class Main
         collectFiles.Run();
         */
 
-        SpendSomeTime spendSomeTimes =new SpendSomeTime("blabla",false);
-        spendSomeTimes.getInput(0).setData(-1);
-        spendSomeTimes.Run();
 
 
     }

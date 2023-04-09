@@ -3,7 +3,7 @@ package DataDefinitions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataList<T> extends DataDefinition<List>
+public class DataList<T> extends DataDefinition<List<T>>
 {
     List<T> data;
 
@@ -35,7 +35,7 @@ public class DataList<T> extends DataDefinition<List>
     }
 
     @Override
-    public void setData(List data)
+    public void setData(List<T> data)
     {
         this.data=data;
     }
