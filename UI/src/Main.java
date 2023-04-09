@@ -21,12 +21,12 @@ public class Main
         */
 
 
-        flow.AddStep(new CollectFiles("Collect Files In Folder"));
-        flow.AddStep(new FilesRenamer("Files Renamer"));
-        flow.AddStep(new CSVExporter("CSV Exporter"));
-        flow.AddStep(new FileDumper("CSV File Dumper"));
-        flow.AddStep(new PropertiesExporter( "Properties Exporter"));
-        flow.AddStep(new FileDumper("Properties File Dumper"));
+        flow.AddStep(new CollectFiles("Collect Files In Folder",false));
+        flow.AddStep(new FilesRenamer("Files Renamer",false));
+        flow.AddStep(new CSVExporter("CSV Exporter",false));
+        flow.AddStep(new FileDumper("CSV File Dumper",true));
+        flow.AddStep(new PropertiesExporter( "Properties Exporter",false));
+        flow.AddStep(new FileDumper("Properties File Dumper",true));
 
 
         flow.getStep(1).ChangeOutputName("RENAME_RESULT","SOURCE");

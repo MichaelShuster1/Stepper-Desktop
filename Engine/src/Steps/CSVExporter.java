@@ -7,9 +7,9 @@ import DataDefinitions.Output;
 
 public class CSVExporter extends Step
 {
-    public CSVExporter(String name)
+    public CSVExporter(String name,boolean continue_if_failing)
     {
-        super(name, true);
+        super(name, true,continue_if_failing);
         defaultName = "CSV Exporter";
 
         DataRelation dataRelation =new DataRelation("SOURCE");

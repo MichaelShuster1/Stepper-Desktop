@@ -6,9 +6,9 @@ public class FilesRenamer extends Step
 {
 
 
-    public FilesRenamer(String name)
+    public FilesRenamer(String name,boolean continue_if_failing)
     {
-        super(name, false);
+        super(name, false,continue_if_failing);
         defaultName = "Files Renamer";
 
         DataList dataList=new DataList("FILES_TO_RENAME");

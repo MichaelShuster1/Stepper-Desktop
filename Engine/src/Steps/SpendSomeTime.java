@@ -6,9 +6,9 @@ import DataDefinitions.Input;
 
 public class SpendSomeTime extends Step
 {
-    public SpendSomeTime(String name)
+    public SpendSomeTime(String name,boolean continue_if_failing)
     {
-        super(name,true);
+        super(name,true,continue_if_failing);
         defaultName = "Spend some Time";
 
         DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");

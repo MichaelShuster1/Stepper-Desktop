@@ -6,9 +6,9 @@ import DataDefinitions.Input;
 import DataDefinitions.Output;
 
 public class PropertiesExporter extends Step{
-    public PropertiesExporter(String name)
+    public PropertiesExporter(String name,boolean continue_if_failing)
     {
-        super(name, true);
+        super(name, true,continue_if_failing);
         defaultName = "Properties Exporter";
 
         DataRelation input = new DataRelation("SOURCE");

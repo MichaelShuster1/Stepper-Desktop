@@ -4,9 +4,9 @@ import DataDefinitions.*;
 
 public class FilesContentExtractor extends Step
 {
-    public FilesContentExtractor(String name)
+    public FilesContentExtractor(String name,boolean continue_if_failing)
     {
-        super(name,true);
+        super(name,true,continue_if_failing);
         defaultName = "Files Content Extractor";
 
         DataList dataList =new DataList("FILES_LIST");

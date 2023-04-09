@@ -6,9 +6,9 @@ import DataDefinitions.Output;
 
 public class FileDumper extends Step
 {
-    public FileDumper(String name)
+    public FileDumper(String name,boolean continue_if_failing)
     {
-        super(name, true);
+        super(name, true,continue_if_failing);
         defaultName = "File Dumper";
 
         inputs.add(new Input(new DataString("CONTENT"),true,true));

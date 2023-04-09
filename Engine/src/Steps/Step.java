@@ -10,25 +10,35 @@ import java.util.Map;
 
 public abstract class Step
 {
+    public enum State
+    {
+        SUCCESS,
+        WARNING,
+        FAILURE
+    }
     protected String name;
     protected String defaultName;
     protected boolean read_only;
+    protected boolean continue_if_failing;
+    protected State state_after_run;
 
     protected List<Input> inputs;
     protected Map<String,Integer> nameToInputIndex;
     protected List<Output> outputs;
     protected Map<String,Integer> nameToOutputIndex;
+    protected List<String> log;
 
-    public Step(String name, boolean read_only)
+    public Step(String name, boolean read_only,boolean continue_if_failing)
     {
         this.name = name;
         this.read_only = read_only;
+        this.continue_if_failing =continue_if_failing;
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
+        log =new ArrayList<>();
         nameToInputIndex=new HashMap<>();
         nameToOutputIndex=new HashMap<>();
     }
-
     public String getName() {
         return name;
     }
@@ -58,7 +68,20 @@ public abstract class Step
         outputs.get(index).setName(newName);
     }
 
+    public State getState_after_run()
+    {
+        return state_after_run;
+    }
 
+    public void setState_after_run(State state_after_run)
+    {
+        this.state_after_run = state_after_run;
+    }
+
+    public void addLineToLog(String line)
+    {
+        log.add(line);
+    }
 
     public void setRead_only(boolean read_only) {
         this.read_only = read_only;
@@ -84,6 +107,15 @@ public abstract class Step
         return outputs;
     }
 
+    public boolean isContinue_if_failing()
+    {
+        return continue_if_failing;
+    }
+
+    public List<String> getLog()
+    {
+        return log;
+    }
 
     public Map<String, Integer> getNameToInputIndex()
     {

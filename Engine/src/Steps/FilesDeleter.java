@@ -8,9 +8,9 @@ import java.util.List;
 public class FilesDeleter extends Step
 {
 
-    public FilesDeleter(String name)
+    public FilesDeleter(String name,boolean continue_if_failing)
     {
-        super(name, false);
+        super(name, false,continue_if_failing);
         defaultName = "Files Deleter";
 
         DataList listData = new DataList("FILES_LIST");

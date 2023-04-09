@@ -5,9 +5,9 @@ import DataDefinitions.*;
 
 public class CollectFiles extends Step
 {
-    public CollectFiles(String name)
+    public CollectFiles(String name,boolean continue_if_failing)
     {
-        super(name,true);
+        super(name,true,continue_if_failing);
         defaultName = "Collect Files In Folder";
 
         DataString dataString=new DataString("FOLDER_NAME");
