@@ -52,20 +52,23 @@ public class Main
         flow.flowPrintData();
 
 
-        Step filesDeleter=new FilesDeleter("blabla",false);
+        Step filesContentExtractor =new FilesContentExtractor("blabla",false);
 
         List<File> files =new ArrayList<>();
 
         files.add(new File("C:\\Users\\michael\\Desktop\\test\\a.txt"));
         files.add(new File("C:\\Users\\michael\\Desktop\\test\\b.txt"));
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\c.rar"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\c.txt"));
         files.add(new File("C:\\Users\\michael\\Desktop\\test\\d.bat"));
         files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder"));
         //files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder1"));
         //files.add(new File("C:\\Users\\michael\\Desktop\\a.txt"));
 
-        filesDeleter.getInput(0).setData(files);
-        filesDeleter.Run();
+        files=new ArrayList<>();
+
+        filesContentExtractor.getInput(0).setData(files);
+        filesContentExtractor.getInput(1).setData(0);
+        filesContentExtractor.Run();
 
 
         /*

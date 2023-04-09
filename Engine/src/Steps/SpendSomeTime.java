@@ -29,10 +29,13 @@ public class SpendSomeTime extends Step
         if(sleeping_time<=0)
         {
             state_after_run=State.FAILURE;
+
             addLineToLog("Failed to Run the step " + getName()
                     + " because the given time is a non-positive number"
                     + " [time: " + formatter.format(new Date()) + "]");
-            //add summary line for the step
+
+            summaryLine= "Failed to Run the step " + getName()
+                    + " because the given time is a non-positive number";
         }
         else
         {
@@ -42,14 +45,15 @@ public class SpendSomeTime extends Step
                         + " [time: " + formatter.format(new Date()) + "]");
                 Thread.sleep(sleeping_time * 1000);
                 addLineToLog("Done sleeping [time: " + formatter.format(new Date()) + "]");
-                //add summary line for the step
+                summaryLine = "Done sleeping";
             }
             catch (InterruptedException e)
             {
                 state_after_run = State.FAILURE;
                 addLineToLog("Failed to Run the step " + getName() + " because of an internal problem"
                         + " [time: " + formatter.format(new Date()) + "]");
-                //add summary line for the step
+
+                summaryLine="Failed to Run the step " + getName() + " because of an internal problem";
                 throw new RuntimeException(e);
             }
         }

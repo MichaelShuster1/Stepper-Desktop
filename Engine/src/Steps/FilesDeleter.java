@@ -59,14 +59,14 @@ public class FilesDeleter extends Step
                 state_after_run = State.SUCCESS;
                 addLineToLog("All files have been deleted successfully"
                         + " [time: " + formatter.format(new Date()) + "]");
-                //add summary line for the step
+                summaryLine="All files have been deleted successfully";
             }
             else
             {
                 state_after_run = State.WARNING;
                 addLineToLog("Not all files were deleted successfully"
                         + " [time: " + formatter.format(new Date()) + "]");
-                //add summary line for the step
+                summaryLine="Not all files were deleted successfully";
             }
         }
         else
@@ -74,9 +74,8 @@ public class FilesDeleter extends Step
             state_after_run = State.SUCCESS;
             addLineToLog("No files to delete were given"
                     + " [time: " + formatter.format(new Date()) + "]");
-            //add summary line for the step
+            summaryLine="No files to delete were given";
         }
-
         outputs.get(0).setData(paths);
         mapping.put("car",files_deleted);
         mapping.put("cdr",files_not_deleted);
