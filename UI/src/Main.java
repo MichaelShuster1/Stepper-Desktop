@@ -50,5 +50,10 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
+        Step collectFiles = new CollectFiles("Collect files in folder",false);
+        collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
+        //collectFiles.getInput(1).setData();
+        collectFiles.Run();
+
     }
 }
