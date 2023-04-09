@@ -50,5 +50,10 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
+        SpendSomeTime spendSomeTimes =new SpendSomeTime("blabla",false);
+        spendSomeTimes.getInput(0).setData(-1);
+        spendSomeTimes.Run();
+
+
     }
 }
