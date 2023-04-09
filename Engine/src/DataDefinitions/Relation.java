@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Relation {
 
-    private List<Map<String, DataDefinition>> rows;
+    private List<Map<String,String>> rows;
     private List<String> columnNames;
 
 
@@ -22,11 +22,11 @@ public class Relation {
         this.columnNames.addAll(Arrays.asList(names));
     }
 
-    public void addRow(Map<String, DataDefinition> row) {
+    public void addRow(Map<String, String> row) {
         rows.add(row);
     }
 
-    public List<Map<String, DataDefinition>> getRows() {
+    public List<Map<String, String>> getRows() {
         return rows;
     }
 
@@ -45,14 +45,14 @@ public class Relation {
     }
 
 
-    public void setData(Pair<List<Map<String, DataDefinition>>, List<String>> data) {
+    public void setData(Pair<List<Map<String, String>>, List<String>> data) {
         this.rows = data.getKey();
         this.columnNames = data.getValue();
     }
 
 
-    public Pair<List<Map<String, DataDefinition>>, List<String>> getData()
+    public Pair<List<Map<String, String>>, List<String>> getData()
     {
-        return new Pair<List<Map<String, DataDefinition>>, List<String>>(rows,columnNames);
+        return new Pair<List<Map<String, String>>, List<String>>(rows,columnNames);
     }
 }

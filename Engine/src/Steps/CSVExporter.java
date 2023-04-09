@@ -1,9 +1,12 @@
 package Steps;
 
-import DataDefinitions.DataRelation;
-import DataDefinitions.DataString;
-import DataDefinitions.Input;
-import DataDefinitions.Output;
+import DataDefinitions.*;
+
+import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class CSVExporter extends Step
 {
@@ -24,8 +27,42 @@ public class CSVExporter extends Step
     @Override
     public void Run()
     {
+        String res = "";
+        Relation dataTable = (Relation) inputs.get(0).getData();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter.format(new Date());
+        List<Map<String,String>> rows = dataTable.getRows();
 
 
+        addLineToLog("About to process " + (rows.size()) + " lines of data"
+                + " [time: " + formatter.format(new Date()) + "]");
+
+        if(rows.size() == 0)
+        {
+            setState_after_run(State.WARNING);
+            summaryLine = "Warning: the data provided was empty, the CSV format created contains the columns names only";
+
+        }
+        else {
+            setState_after_run(State.SUCCESS);
+            summaryLine = "Step ended successfully, CSV format created.";
+        }
+        for(String name: dataTable.getColumnNames())
+        {
+            res += name + ", ";
+        }
+        res = res.substring(0,res.length()-2) +"\n";
+
+
+        for(int i = 0; i< rows.size();i++)
+        {
+            Map<String,String> currRow = rows.get(i);
+            for(int j = 0; j < currRow.size();j++)
+            {
+                res += currRow.get(dataTable.getColumnNames().get(j)) + ", ";
+            }
+            res = res.substring(0,res.length()-2) +"\n";
+        }
 
     }
 }

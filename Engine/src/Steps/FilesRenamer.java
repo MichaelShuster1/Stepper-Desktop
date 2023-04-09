@@ -3,8 +3,8 @@ package Steps;
 import DataDefinitions.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class FilesRenamer extends Step
 {
@@ -40,22 +40,20 @@ public class FilesRenamer extends Step
         List<File> fileList = (List<File>) inputs.get(0).getData();
         String prefix = (String) inputs.get(1).getData();
         String suffix = (String) inputs.get(2).getData();
-        String failedToRenameFiles;
+        String failedToRenameFiles = "";
         String[]dataTableNames = {"Index","Original name","Name after change"};
         Relation dataTable = new Relation(dataTableNames);
-        if(prefix == null)
-        {
-            prefix = "";
-        }
-        if(suffix == null)
-        {
-            suffix = "";
-        }
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter.format(new Date());
+
+
+        addLineToLog("About to start rename " + fileList.size() + " files. Adding prefix: " + prefix + " adding suffix: " + suffix
+                + " [time: " + formatter.format(new Date()) + "]");
 
         if(fileList.size() == 0)
         {
             setState_after_run(State.SUCCESS);
-            //add logs;
+            summaryLine = "The list of files to rename was empty, the step ended successfully";
         }
         else
         {
@@ -63,16 +61,42 @@ public class FilesRenamer extends Step
             {
                 String currName = file.getName();
                 String parentPath = file.getParent();
-                String newName;
+                String newName = "";
                 int extensionDotIndex = currName.lastIndexOf(".");
-                newName = prefix + currName.substring(0,extensionDotIndex - 1) +
-                          suffix + currName.substring(extensionDotIndex,currName.length()-1);
-                File newNameFile = new File(parentPath + newName);
+                if(prefix != null)
+                    newName = prefix;
+                newName += currName.substring(0,extensionDotIndex);
+                if(suffix != null)
+                       newName += suffix;
+                newName += currName.substring(extensionDotIndex,currName.length());
+                File newNameFile = new File(parentPath + "\\" + newName);
                 if(file.renameTo(newNameFile))
                 {
-
+                    Map<String, String > row = new HashMap<>();
+                    row.put("Index",Integer.toString(index));
+                    row.put("Original name",currName);
+                    row.put("Name after change",newNameFile.getName());
+                    dataTable.addRow(row);
+                    setState_after_run(State.SUCCESS);
+                    index++;
                 }
+                else {
+                    addLineToLog("Problem renaming file " + currName
+                            + " [time: " + formatter.format(new Date()) + "]");
+                    if(getState_after_run() != null && getState_after_run() == State.WARNING)
+                        failedToRenameFiles = currName;
+                    else {
+                        failedToRenameFiles = currName + ", " + failedToRenameFiles;
+                        setState_after_run(State.WARNING);
+                    }
+                }
+                failedToRenameFiles = "Renaming failed for the following files: " + failedToRenameFiles;
+                if(getState_after_run() != null && getState_after_run() == State.WARNING)
+                    summaryLine = "Warning: " + failedToRenameFiles + "\n" + "Other files(if any) were renamed successfully";
+
             }
+
+            outputs.get(0).setData(dataTable);
         }
 
 

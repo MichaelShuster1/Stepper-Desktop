@@ -5,8 +5,10 @@ import DataDefinitions.*;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class CollectFiles extends Step
@@ -39,14 +41,27 @@ public class CollectFiles extends Step
         String filter = (String) inputs.get(1).getData();
         List<File> fileList = new ArrayList<>();
         File directory = new File(directoryPath);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter.format(new Date());
+
+
+        String log = " Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
+        if(filter != null)
+            log += "filter";
+        log +=  " [time: " + formatter.format(new Date()) + "]";
+
 
         if(!directory.exists())
         {
             setState_after_run(State.FAILURE);
-            //add logs etc;
+            addLineToLog("Accessing path  " + directoryPath + " has failed"
+                    + " [time: " + formatter.format(new Date()) + "]");
+            summaryLine = "Step failed, the path provided was not found";
         } else if (!directory.isDirectory()) {
             setState_after_run(State.FAILURE);
-            //add logs etc;
+            addLineToLog("Found the path " + directoryPath + ", but its not a folder "
+                    + " [time: " + formatter.format(new Date()) + "]");
+            summaryLine = "Step failed, the path provided was not a folder(directory)";
         } else {
             FileFilter toFilter = new FileFilter() {
                 @Override
@@ -60,16 +75,20 @@ public class CollectFiles extends Step
 
             File[] files = directory.listFiles(toFilter);
             count = files.length;
+
+            addLineToLog("Found "+ count + "files in folder matching the filter"
+                    + " [time: " + formatter.format(new Date()) + "]");
+
             if(count == 0)
             {
                 setState_after_run(State.WARNING);
-                //add logs etc;
+                summaryLine = "Warning: no matching files found in the provided folder";
             }
             else
             {
                 setState_after_run(State.SUCCESS);
                 fileList.addAll(Arrays.asList(files));
-                //add logs etc;
+                summaryLine = "Step ended successfully," + count + " files were collected to the list";
             }
 
             outputs.get(0).setData(fileList);

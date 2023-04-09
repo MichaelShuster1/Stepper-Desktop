@@ -2,6 +2,7 @@ import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.util.*;
 
 public class Main
@@ -50,16 +51,20 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
-        /*
+
         Step collectFiles = new CollectFiles("Collect files in folder",false);
         collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
         //collectFiles.getInput(1).setData();
         collectFiles.Run();
-        */
 
-        SpendSomeTime spendSomeTimes =new SpendSomeTime("blabla",false);
-        spendSomeTimes.getInput(0).setData(-1);
-        spendSomeTimes.Run();
+
+       Step step = new FilesRenamer("Files renamer",false);
+       step.getInput(0).setData((List<File>)collectFiles.getOutput(0).getData());
+       step.getInput(1).setData("BooM");
+       step.getInput(2).setData("BaM");
+       step.Run();
+
+
 
 
     }

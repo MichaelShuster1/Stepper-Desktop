@@ -27,6 +27,7 @@ public abstract class Step
     protected List<Output> outputs;
     protected Map<String,Integer> nameToOutputIndex;
     protected List<String> log;
+    protected String summaryLine;
 
     public Step(String name, boolean read_only,boolean continue_if_failing)
     {
