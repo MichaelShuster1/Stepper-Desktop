@@ -29,6 +29,7 @@ public class FilesDeleter extends Step
     @Override
     public void Run()
     {
+        long startTime=System.currentTimeMillis();
         List<File> files =(List<File>)inputs.get(0).getData();
         List<String> paths= new ArrayList<>();
         Map<String,Integer> mapping=new HashMap<>();
@@ -80,6 +81,7 @@ public class FilesDeleter extends Step
         mapping.put("car",files_deleted);
         mapping.put("cdr",files_not_deleted);
         outputs.get(1).setData(mapping);
+        runTime=System.currentTimeMillis()-startTime;
     }
 }
 

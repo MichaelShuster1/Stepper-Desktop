@@ -24,6 +24,7 @@ public class SpendSomeTime extends Step
     @Override
     public void Run()
     {
+        long startTime=System.currentTimeMillis();
         Integer sleeping_time=(Integer)inputs.get(0).getData();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         if(sleeping_time<=0)
@@ -57,5 +58,6 @@ public class SpendSomeTime extends Step
                 throw new RuntimeException(e);
             }
         }
+        runTime=System.currentTimeMillis()-startTime;
     }
 }

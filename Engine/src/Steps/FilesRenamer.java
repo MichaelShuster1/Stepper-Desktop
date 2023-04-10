@@ -35,7 +35,9 @@ public class FilesRenamer extends Step
 
 
     @Override
-    public void Run() {
+    public void Run()
+    {
+        long startTime=System.currentTimeMillis();
         int index = 1;
         List<File> fileList = (List<File>) inputs.get(0).getData();
         String prefix = (String) inputs.get(1).getData();
@@ -99,6 +101,6 @@ public class FilesRenamer extends Step
 
         }
         outputs.get(0).setData(dataTable);
-
+        runTime=System.currentTimeMillis()-startTime;
     }
 }

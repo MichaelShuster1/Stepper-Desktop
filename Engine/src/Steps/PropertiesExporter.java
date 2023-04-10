@@ -25,6 +25,7 @@ public class PropertiesExporter extends Step{
     @Override
     public void Run()
     {
+        long startTime=System.currentTimeMillis();
         Relation relation =(Relation) inputs.get(0).getData();
         String result="";
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -62,5 +63,6 @@ public class PropertiesExporter extends Step{
                     +" [time: " + formatter.format(new Date()) + "]");
             summaryLine=("Extracted total of "+total_properties);
         }
+        runTime=System.currentTimeMillis()-startTime;
     }
 }
