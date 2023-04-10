@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Manager {
+public class Manager
+{
     private List<Flow> flows;
     private List<FlowHistory> flowsHistory;
 
-    public Manager(List<Flow> flows, List<FlowHistory> flowsHistory) {
+    private List<FlowStatistics> flowStatisticsList;
+
+    public Manager(List<Flow> flows, List<FlowHistory> flowsHistory)
+    {
         this.flows = flows;
         this.flowsHistory = flowsHistory;
     }
