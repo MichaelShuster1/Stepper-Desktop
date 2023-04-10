@@ -27,6 +27,7 @@ public class Flow
     private Map<String,List<Integer>> flowInputs;
     private Map<String,List<Integer>> flowFreeInputs;
     private Map<String,Boolean> freeInputsIsReq;
+    private Set<String> freeMandatoryInputs;
 
     public Flow(String name, String description)
     {
@@ -96,7 +97,7 @@ public class Flow
     }
 */
 
-/*
+    /*
     public void AutomaticMapping()
     {
         initFlowInputs();
@@ -192,8 +193,9 @@ public class Flow
 
     public void CalculateFreeInputs()
     {
-        flowFreeInputs = new LinkedHashMap<>();
+        flowFreeInputs = new HashMap<>();
         freeInputsIsReq =new HashMap<>();
+        freeMandatoryInputs=new HashSet<>();
         for (String inputName:flowInputs.keySet())
         {
             List<Integer> integerList =flowInputs.get(inputName);
@@ -207,6 +209,7 @@ public class Flow
                     if( !freeInputsIsReq.containsKey(inputName) && input.isMandatory() )
                     {
                             freeInputsIsReq.put(inputName,true);
+                            freeMandatoryInputs.add(inputName);
                     }
 
                     if(flowFreeInputs.containsKey(inputName))
@@ -229,26 +232,39 @@ public class Flow
     }
 
 
-    public String getInputMenu()
+    public List<String> getInputList()
     {
         int i=1;
-        String inputMenu="",mandatory;
+        List<String> inputMenu=new ArrayList<>();
         for (String inputName:flowFreeInputs.keySet())
         {
-            Integer inputIndex,stepIndex=flowFreeInputs.get(inputName).get(0);
-            Step step= steps.get(stepIndex);
-            inputIndex=step.getNameToInputIndex().get(inputName);
-            if(step.getInput(inputIndex).isMandatory())
-                mandatory="mandatory";
+            if(freeInputsIsReq.get(inputName))
+                inputMenu.add(inputName +" mandatory");
             else
-                mandatory="optional";
-
-            inputMenu+= i + "." + inputName+ "["+ mandatory+ "]\n";
-            i++;
+                inputMenu.add(inputName +" optional");
         }
         return inputMenu;
     }
 
+    public boolean checkIfFlowReady()
+    {
+        return(freeMandatoryInputs.isEmpty());
+    }
+
+
+    public void processInput(String inputName,Object data)
+    {
+        if(freeMandatoryInputs.contains(inputName))
+            freeMandatoryInputs.remove(inputName);
+        List<Integer> indexList =flowFreeInputs.get(inputName);
+
+        for(Integer stepIndex:indexList)
+        {
+            Step step =steps.get(stepIndex);
+            Integer inputIndex =step.getNameToInputIndex().get(inputName);
+            step.getInput(inputIndex).setData(data);
+        }
+    }
 
 
     public Step getStep(int index)

@@ -1,9 +1,7 @@
-import DataDefinitions.Relation;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.util.*;
 
 public class Main
@@ -52,40 +50,51 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
+        getFlowInputsFromUser(flow);
+    }
+    public static void getFlowInputsFromUser(Flow flow)
+    {
+        Scanner inputStream=new Scanner(System.in);
+        List<String> inputNames= flow.getInputList();
+        int i=1,choice;
+        String inputName,data;
+        boolean flowReady=false,runFlow= false;
 
-        /*
-        Step filesContentExtractor =new FilesContentExtractor("blabla",false);
+        while (!runFlow)
+        {
+            System.out.println("inputs to choose:");
+            i=1;
+            for (String inputName1 : inputNames)
+            {
+                System.out.println(i + "." +
+                        inputName1.toLowerCase().replace("_", " "));
+                i++;
+            }
 
-        List<File> files =new ArrayList<>();
+            if(flowReady)
+                System.out.println("\n"+i+".run the flow");
 
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\a.txt"));
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\b.txt"));
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\c.txt"));
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\d.bat"));
-        files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder"));
-        //files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder1"));
-        //files.add(new File("C:\\Users\\michael\\Desktop\\a.txt"));
+            System.out.println("please choose a number: ");
 
-         */
+            choice = inputStream.nextInt();
+            if(choice<i)
+            {
+                inputName = inputNames.get(choice - 1).split(" ")[0];
+                System.out.println("user string: ");
+                inputStream.nextLine();
+                data = inputStream.nextLine();
 
-        Step collectFiles = new CollectFiles("Collect files in folder",false);
-        collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
-        //collectFiles.getInput(1).setData();
-        collectFiles.Run();
-
-
-       Step step = new FilesRenamer("Files renamer",false);
-       step.getInput(0).setData(collectFiles.getOutput(0).getData());
-      // step.getInput(1).setData("");
-      // step.getInput(2).setData("");
-       step.Run();
-
-       Step CSVStep = new CSVExporter("CSVexporter", false);
-       CSVStep.getInput(0).setData(step.getOutput(0).getData());
-       CSVStep.Run();
-
-
-
-
+                flow.processInput(inputName, data);
+                if(flow.checkIfFlowReady())
+                    flowReady=true;
+            }
+            else if(choice==i)
+            {
+                runFlow=true;
+                flow.RunFlow();
+            }
+            else
+                System.out.println("wrong number entered");
+        }
     }
 }
