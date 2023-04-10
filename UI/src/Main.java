@@ -48,12 +48,15 @@ public class Main
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
 
 
-
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
         flow.CalculateFreeInputs();
         flow.flowPrintData();
+
+
+
         getFlowInputsFromUser(flow);
+
     }
     public static void getFlowInputsFromUser(Flow flow)
     {
@@ -95,7 +98,6 @@ public class Main
             {
                 runFlow=true;
                 System.out.println(flow.executeFlow());
-                flow.resetFlow();
             }
             else
                 System.out.println("wrong number entered");

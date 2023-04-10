@@ -59,5 +59,6 @@ public class SpendSomeTime extends Step
             }
         }
         runTime=System.currentTimeMillis()-startTime;
+        stepStatistics.addRunTime(runTime);
     }
 }

@@ -102,5 +102,6 @@ public class FilesRenamer extends Step
         }
         outputs.get(0).setData(dataTable);
         runTime=System.currentTimeMillis()-startTime;
+        stepStatistics.addRunTime(runTime);
     }
 }

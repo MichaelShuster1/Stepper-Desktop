@@ -64,5 +64,6 @@ public class PropertiesExporter extends Step{
             summaryLine=("Extracted total of "+total_properties);
         }
         runTime=System.currentTimeMillis()-startTime;
+        stepStatistics.addRunTime(runTime);
     }
 }

@@ -99,5 +99,6 @@ public class FilesContentExtractor extends Step
         outputs.get(0).setData(relation);
         state_after_run=State.SUCCESS;
         runTime = System.currentTimeMillis() - startTime;
+        stepStatistics.addRunTime(runTime);
     }
 }

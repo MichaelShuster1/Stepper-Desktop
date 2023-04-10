@@ -16,11 +16,41 @@ public abstract class Step
         WARNING,
         FAILURE
     }
+
+    public class StepStatistics
+    {
+        private Integer amount_times_activated;
+        private Long sum_of_run_time;
+
+        public StepStatistics()
+        {
+            amount_times_activated=0;
+            sum_of_run_time=0L;
+        }
+
+        public void addRunTime(Long runTIme)
+        {
+            sum_of_run_time+=runTIme;
+            amount_times_activated++;
+        }
+
+        public Integer getAmount_times_activated()
+        {
+            return amount_times_activated;
+        }
+
+        public Double getAvgRunTime()
+        {
+            return (double) (sum_of_run_time/amount_times_activated);
+        }
+    }
+
     protected String name;
     protected String defaultName;
     protected boolean read_only;
     protected boolean continue_if_failing;
     protected State state_after_run;
+    protected StepStatistics stepStatistics;
 
     protected List<Input> inputs;
     protected Map<String,Integer> nameToInputIndex;
@@ -130,7 +160,10 @@ public abstract class Step
         return nameToOutputIndex;
     }
 
-
+    public Long getRunTime()
+    {
+        return runTime;
+    }
 
     public void resetStep()
     {

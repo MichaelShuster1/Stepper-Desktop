@@ -15,6 +15,36 @@ public class Flow
         WARNING,
         FAILURE
     }
+
+    public class FlowStatistics
+    {
+        private Integer amount_times_activated;
+        private Long sum_of_run_time;
+
+        public FlowStatistics()
+        {
+            amount_times_activated=0;
+            sum_of_run_time=0L;
+        }
+
+        public void addRunTime(Long runTIme)
+        {
+            sum_of_run_time+=runTIme;
+            amount_times_activated++;
+        }
+
+        public Integer getAmount_times_activated()
+        {
+            return amount_times_activated;
+        }
+
+        public Double getAvgRunTime()
+        {
+            return (double) (sum_of_run_time/amount_times_activated);
+        }
+    }
+
+    private FlowStatistics flowStatistics;
     private String name;
     private String description;
     private boolean read_only;
@@ -37,6 +67,7 @@ public class Flow
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
         formal_outputs = new HashMap<>();
+        flowStatistics=new FlowStatistics();
     }
 
     public void AddStep(Step step)
@@ -65,44 +96,6 @@ public class Flow
         }
 
     }
-
-
-    /*  public void AutomaticMapping()
-    {
-        int b;
-        for(int i=0;i<steps.size();i++)
-        {
-            Step step = steps.get(i);
-            System.out.println("in step: "+step.getName());
-            List<Output> outputs =step.getOutputs();
-            List<List<Pair<Integer,Integer>> > list=new ArrayList<>();
-            for(Output output:outputs)
-            {
-                System.out.println("the output "+ output.getName()+ " connects to the following inputs");
-                List<Pair<Integer,Integer>> pairs=new ArrayList<>();
-                for(int j=i+1;j<steps.size();j++)
-                {
-                    step=steps.get(j);
-                    List<Input> inputs =step.getInputs();
-                    b=0;
-                    for (Input input:inputs)
-                    {
-                        if(input.getName().equals(output.getName())
-                                && input.getType().equals(output.getType()))
-                        {
-                            pairs.add(new Pair<>(j,b));
-                            System.out.println(step.getName()+": "+input.getName());
-                        }
-                        b++;
-                    }
-                }
-                list.add(pairs);
-            }
-            connections.add(list);
-        }
-    }
-*/
-
 
     /*
     public void AutomaticMapping()
@@ -239,6 +232,10 @@ public class Flow
     }
 
 
+    public Long getRunTime() {
+        return runTime;
+    }
+
     public List<String> getInputList()
     {
         int i=1;
@@ -286,9 +283,7 @@ public class Flow
         runTime=null;
         flowId=null;
         for(Step step:steps)
-        {
             step.resetStep();
-        }
     }
 
     public void initConnections()
@@ -494,8 +489,11 @@ public class Flow
         }
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
+        //resetFlow();
+        flowStatistics.addRunTime(runTime);
         return getFlowExecutionStrData();
     }
+
 
     public String generateFlowId()
     {

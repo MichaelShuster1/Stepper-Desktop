@@ -35,7 +35,8 @@ public class CollectFiles extends Step
 
 
     @Override
-    public void Run() {
+    public void Run()
+    {
         Long startTime = System.currentTimeMillis();
         int count = 0;
         String directoryPath = (String) inputs.get(0).getData();
@@ -63,10 +64,14 @@ public class CollectFiles extends Step
             addLineToLog("Found the path " + directoryPath + ", but its not a folder "
                     + " [time: " + formatter.format(new Date()) + "]");
             summaryLine = "Step failed, the path provided was not a folder(directory)";
-        } else {
-            FileFilter toFilter = new FileFilter() {
+        }
+        else
+        {
+            FileFilter toFilter = new FileFilter()
+            {
                 @Override
-                public boolean accept(File pathname) {
+                public boolean accept(File pathname)
+                {
                     if(filter != null)
                         return pathname.isFile() && pathname.getName().endsWith(filter);
                     else
@@ -91,13 +96,11 @@ public class CollectFiles extends Step
                 fileList.addAll(Arrays.asList(files));
                 summaryLine = "Step ended successfully," + count + " files were collected to the list";
             }
-
-            outputs.get(0).setData(fileList);
-            outputs.get(1).setData(count);
-            runTime = System.currentTimeMillis() - startTime;
-
         }
 
-
+        outputs.get(0).setData(fileList);
+        outputs.get(1).setData(count);
+        runTime = System.currentTimeMillis() - startTime;
+        stepStatistics.addRunTime(runTime);
     }
 }

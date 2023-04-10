@@ -12,8 +12,6 @@ public class Manager
     private List<Flow> flows;
     private List<FlowHistory> flowsHistory;
 
-    private List<FlowStatistics> flowStatisticsList;
-
     public Manager(List<Flow> flows, List<FlowHistory> flowsHistory)
     {
         this.flows = flows;
