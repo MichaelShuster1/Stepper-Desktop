@@ -36,6 +36,7 @@ public class CollectFiles extends Step
 
     @Override
     public void Run() {
+        Long startTime = System.currentTimeMillis();
         int count = 0;
         String directoryPath = (String) inputs.get(0).getData();
         String filter = (String) inputs.get(1).getData();
@@ -93,6 +94,7 @@ public class CollectFiles extends Step
 
             outputs.get(0).setData(fileList);
             outputs.get(1).setData(count);
+            runTime = System.currentTimeMillis() - startTime;
 
         }
 

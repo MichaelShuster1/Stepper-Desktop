@@ -30,6 +30,7 @@ public class FilesContentExtractor extends Step
     @Override
     public void Run()
     {
+        Long startTime =  System.currentTimeMillis();
         List<File> files =(List<File>)inputs.get(0).getData();
         Integer line_number=(Integer) inputs.get(1).getData();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -97,5 +98,6 @@ public class FilesContentExtractor extends Step
         }
         outputs.get(0).setData(relation);
         state_after_run=State.SUCCESS;
+        runTime = System.currentTimeMillis() - startTime;
     }
 }

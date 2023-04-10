@@ -27,6 +27,7 @@ public class FileDumper extends Step
 
     @Override
     public void Run() {
+        Long startTime =  System.currentTimeMillis();
         String content = (String) inputs.get(0).getData();
         String fileName = (String) inputs.get(1).getData();
         File file = new File(fileName);
@@ -74,6 +75,7 @@ public class FileDumper extends Step
             res = "Failed: " + e.getMessage();
         }
         outputs.get(0).setData(res);
+        runTime = System.currentTimeMillis() - startTime;
 
     }
 }
