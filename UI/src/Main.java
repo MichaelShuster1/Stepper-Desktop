@@ -1,9 +1,7 @@
-import DataDefinitions.Relation;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.util.*;
 
 public class Main
@@ -53,6 +51,19 @@ public class Main
         flow.flowPrintData();
 
 
+        /*
+        Step filesContentExtractor =new FilesContentExtractor("blabla",false);
+
+        List<File> files =new ArrayList<>();
+
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\a.txt"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\b.txt"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\c.txt"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\d.bat"));
+        files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder"));
+        //files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder1"));
+        //files.add(new File("C:\\Users\\michael\\Desktop\\a.txt"));
+
         Step collectFiles = new CollectFiles("Collect files in folder",false);
         collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
         //collectFiles.getInput(1).setData();
@@ -69,15 +80,16 @@ public class Main
        CSVStep.getInput(0).setData((Relation)step.getOutput(0).getData());
        CSVStep.Run();
 
+        files =new ArrayList<>();
 
-        Step Filedumper = new FileDumper("File Dumper", false);
-        Filedumper.getInput(0).setData((String) CSVStep.getOutput(0).getData());
-        Filedumper.getInput(1).setData("E:\\New folder\\newFile.txt");
-        Filedumper.Run();
+        filesContentExtractor.getInput(0).setData(files);
+        filesContentExtractor.getInput(1).setData(0);
+        filesContentExtractor.Run();
 
-
-
-
+        Step propertiesExporter =new PropertiesExporter("blabla2",false);
+        propertiesExporter.getInput(0).setData(filesContentExtractor.getOutput(0).getData());
+        propertiesExporter.Run();
+        */
 
     }
 }

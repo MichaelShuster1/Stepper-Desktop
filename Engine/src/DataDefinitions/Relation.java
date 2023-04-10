@@ -14,7 +14,6 @@ public class Relation {
 
 
 
-
     public Relation(String[] names)
     {
         this.rows = new ArrayList<>();

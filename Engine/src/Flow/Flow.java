@@ -5,10 +5,7 @@ import DataDefinitions.Output;
 import Steps.Step;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Flow
 {
@@ -21,6 +18,7 @@ public class Flow
     private List<List<List<Pair<Integer,Integer>>>> connections;
     private Map<String,List<Integer>> flowInputs;
     private Map<String,List<Integer>> flowFreeInputs;
+    private Map<String,Boolean> freeInputsIsReq;
 
     public Flow(String name, String description)
     {
@@ -179,7 +177,8 @@ public class Flow
 
     public void CalculateFreeInputs()
     {
-        flowFreeInputs =new HashMap<>();
+        flowFreeInputs = new LinkedHashMap<>();
+        freeInputsIsReq =new HashMap<>();
         for (String inputName:flowInputs.keySet())
         {
             List<Integer> integerList =flowInputs.get(inputName);
@@ -190,8 +189,14 @@ public class Flow
                 Input input = step.getInput(inputIndex);
                 if(!input.isConnected())
                 {
+                    if( !freeInputsIsReq.containsKey(inputName) && input.isMandatory() )
+                    {
+                            freeInputsIsReq.put(inputName,true);
+                    }
+
                     if(flowFreeInputs.containsKey(inputName))
                         flowFreeInputs.get(inputName).add(stepIndex);
+
                     else
                     {
                         List<Integer> indexList = new ArrayList<>();
@@ -200,6 +205,11 @@ public class Flow
                     }
                 }
             }
+            if(flowFreeInputs.containsKey(inputName)&&!freeInputsIsReq.containsKey(inputName))
+            {
+                freeInputsIsReq.put(inputName,false);
+            }
+
         }
     }
 
