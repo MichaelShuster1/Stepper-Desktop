@@ -91,7 +91,7 @@ public class Main
             else if(choice==i)
             {
                 runFlow=true;
-                flow.RunFlow();
+                flow.executeFlow();
             }
             else
                 System.out.println("wrong number entered");

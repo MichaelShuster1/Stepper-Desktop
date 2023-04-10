@@ -455,18 +455,21 @@ public class Flow
 
     public String executeFlow()
     {
+        boolean continueExecution = true;
         int outPutIndex;
         state_after_run = Step.State.SUCCESS;
-        for(int i=0;i<steps.size();i++)
+        for(int i=0;i<steps.size() && continueExecution;i++)
         {
             Step currStep = steps.get(i);
             currStep.Run();
             if(currStep.getState_after_run() == Step.State.FAILURE) {
                 if (!currStep.isContinue_if_failing()) {
                     state_after_run = Step.State.FAILURE;
-                    break;
+                    continueExecution = false;
                 }
-                else {
+            }
+            if(continueExecution)
+            {
                     if(currStep.getState_after_run() == Step.State.WARNING)
                         state_after_run = Step.State.WARNING;
                     List<List<Pair<Integer,Integer>>> stepConnections =  connections.get(i);
@@ -482,7 +485,6 @@ public class Flow
                         }
                         outPutIndex++;
                     }
-                }
             }
         }
         flowId = generateFlowId();
