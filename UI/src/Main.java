@@ -14,6 +14,10 @@ public class Main
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
 
+
+        flow.AddFormalOutput("PROP_RESULT");
+        flow.AddFormalOutput("CSV_RESULT");
+
         /*
         flow.AddStep(new CollectFiles("Collect Files In Folder"));
         flow.AddStep(new SpendSomeTime("Spend Some Time"));
@@ -91,7 +95,7 @@ public class Main
             else if(choice==i)
             {
                 runFlow=true;
-                flow.executeFlow();
+                System.out.println(flow.executeFlow());
             }
             else
                 System.out.println("wrong number entered");

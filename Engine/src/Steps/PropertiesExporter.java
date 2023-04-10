@@ -50,9 +50,7 @@ public class PropertiesExporter extends Step{
                 for(String columnName:columnNames)
                 {
                     String value=row.get(columnName);
-                    result+="row-"+index+"."+columnName+"="+value;
-                    if(a!=columnNames.size())
-                        result+=", ";
+                    result+="row-"+index+"."+columnName+"="+value+"\r\n";;
                     total_properties++;
                     a++;
                 }

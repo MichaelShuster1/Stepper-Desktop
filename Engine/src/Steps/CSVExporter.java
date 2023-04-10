@@ -51,7 +51,7 @@ public class CSVExporter extends Step
         {
             res += name + ", ";
         }
-        res = res.substring(0,res.length()-2) +"\n";
+        res = res.substring(0,res.length()-2) +"\r\n";
 
 
         for(int i = 0; i< rows.size();i++)
@@ -61,7 +61,7 @@ public class CSVExporter extends Step
             {
                 res += currRow.get(dataTable.getColumnNames().get(j)) + ", ";
             }
-            res = res.substring(0,res.length()-2) +"\n";
+            res = res.substring(0,res.length()-2) +"\r\n";
         }
 
 

@@ -44,6 +44,11 @@ public class Flow
         nameToIndex.put(step.getName(),steps.size()-1);
     }
 
+    public void AddFormalOutput(String outputName)
+    {
+        formal_outputs.put(outputName,-1);
+    }
+
     public void CustomMapping(Map<Pair<String,String>,Pair<String,String>> customMapping)
     {
         initConnections();
