@@ -9,10 +9,18 @@ import java.util.*;
 
 public class Flow
 {
+    public enum State
+    {
+        SUCCESS,
+        WARNING,
+        FAILURE
+    }
     private String name;
     private String description;
     private boolean read_only;
-    private List<String> formal_outputs;
+    private String flowId;
+    protected Step.State state_after_run;
+    private Map<String,Integer> formal_outputs;
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
@@ -26,7 +34,7 @@ public class Flow
         this.description = description;
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
-        formal_outputs = new ArrayList<>();
+        formal_outputs = new HashMap<>();
     }
 
     public void AddStep(Step step)
@@ -132,10 +140,13 @@ public class Flow
     public void AutomaticMapping()
     {
         initFlowInputs();
+        read_only = true;
         int a;
         for(int i=0;i<steps.size();i++)
         {
             Step step = steps.get(i);
+            if(!step.isRead_only())
+                read_only = false;
             System.out.println("in step: "+step.getName());
             List<Output> outputs =step.getOutputs();
             List<List<Pair<Integer,Integer>> > list=new ArrayList<>();
@@ -145,6 +156,10 @@ public class Flow
                 System.out.println("the output "+ output.getName()+ " connects to the following inputs");
                 List<Pair<Integer,Integer>> pairs=new ArrayList<>();
                 List<Integer> integerList =flowInputs.get(output.getName());
+                if(formal_outputs.containsKey(output.getName()))
+                {
+                    formal_outputs.put(output.getName(),i);
+                }
                 if(integerList!=null)
                 {
                     for (Integer stepIndex : integerList)
@@ -317,7 +332,7 @@ public class Flow
         String res;
         if(formal_outputs.size() > 0) {
             res = "The formal outputs of the flow are:\n";
-            for (String currOutput: formal_outputs) {
+            for (String currOutput: formal_outputs.keySet()) {
                 res = res + currOutput + "\n";
             }
         }
@@ -383,10 +398,10 @@ public class Flow
                 }
                 currInput = currInput.substring(0,currInput.length() - 1);
                 currInput += "\n";
-                if (input.isMandatory())
-                    currInput += "This input is mandatory: No\n\n";
-                else
+                if (freeInputsIsReq.get(input.getName()))
                     currInput += "This input is mandatory: Yes\n\n";
+                else
+                    currInput += "This input is mandatory: No\n\n";
                 res += currInput;
             }
         }
@@ -422,9 +437,92 @@ public class Flow
 
 
 
+    public String executeFlow()
+    {
+        int outPutIndex;
+        state_after_run = Step.State.SUCCESS;
+        for(int i=0;i<steps.size();i++)
+        {
+            Step currStep = steps.get(i);
+            currStep.Run();
+            if(currStep.getState_after_run() == Step.State.FAILURE) {
+                if (!currStep.isContinue_if_failing()) {
+                    state_after_run = Step.State.FAILURE;
+                    break;
+                }
+                else {
+                    if(currStep.getState_after_run() == Step.State.WARNING)
+                        state_after_run = Step.State.WARNING;
+                    List<List<Pair<Integer,Integer>>> stepConnections =  connections.get(i);
+                    for(List<Pair<Integer,Integer>> currOutput : stepConnections)
+                    {
+                        outPutIndex = 0;
+                        for(Pair<Integer,Integer> currConnection: currOutput)
+                        {
+                            int targetStepIndex = currConnection.getKey();
+                            int targetStepInputIndex = currConnection.getValue();
+                            steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
+
+                        }
+                        outPutIndex++;
+                    }
+                }
+            }
+        }
+        flowId = generateFlowId();
+        return getFlowExecutionStrData();
+    }
+
+    public String generateFlowId()
+    {
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+        return uuidAsString;
+    }
 
 
+    public String getFlowExecutionStrData()
+    {
+        String res = "Flows unique ID: " + flowId + "\n";
+        res += "Flow name: " + name + "\n";
+        res += "Flow's final state : " + state_after_run + "\n";
+
+        if(formal_outputs.size() > 0) {
+            res += "FLOW'S FORMAL OUTPUTS:\n";
+            for (String currOutput : formal_outputs.keySet()) {
+                int outPutIndex = steps.get(formal_outputs.get(currOutput)).getNameToOutputIndex().get(currOutput);
+                res += steps.get(formal_outputs.get(currOutput)).getOutput(outPutIndex).getUserString() + "\n";
+                res += steps.get(formal_outputs.get(currOutput)).getOutput(outPutIndex).getData().toString() + "\n";
+
+            }
+        }
+        else {
+            res += "THE FLOW HAVE NO OUTPUTS\n";
+        }
+
+        return res;
 
 
+    }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isRead_only() {
+        return read_only;
+    }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public Step.State getState_after_run() {
+        return state_after_run;
+    }
 }

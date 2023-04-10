@@ -54,4 +54,7 @@ public class Relation {
     {
         return new Pair<List<Map<String, String>>, List<String>>(rows,columnNames);
     }
+
+
+
 }

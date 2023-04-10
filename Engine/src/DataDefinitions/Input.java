@@ -5,15 +5,17 @@ public class Input
     private DataDefinition dataDefinition;
     private final boolean user_friendly;
     private  final boolean mandatory;
+    private String userString;
 
     private boolean isConnected;
 
-    public Input(DataDefinition dataDefinition, boolean user_friendly, boolean mandatory)
+    public Input(DataDefinition dataDefinition, boolean user_friendly, boolean mandatory, String userString)
     {
         this.dataDefinition = dataDefinition;
         this.user_friendly = user_friendly;
         this.mandatory = mandatory;
         this.isConnected = false;
+        this.userString = userString;
     }
 
     public DataDefinition getDataDefinition()
@@ -60,5 +62,9 @@ public class Input
     public void setDataDefinition(DataDefinition dataDefinition)
     {
         this.dataDefinition = dataDefinition;
+    }
+
+    public String getUserString() {
+        return userString;
     }
 }

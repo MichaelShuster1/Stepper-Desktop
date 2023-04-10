@@ -14,15 +14,15 @@ public class FilesContentExtractor extends Step
         defaultName = "Files Content Extractor";
 
         DataList<File> dataList =new DataList("FILES_LIST");
-        inputs.add(new Input(dataList,false,true));
+        inputs.add(new Input(dataList,false,true,"Files to extract:"));
         nameToInputIndex.put("FILES_LIST",0);
 
         DataNumber dataNumber =new DataNumber("LINE");
-        inputs.add(new Input(dataNumber,true,true));
+        inputs.add(new Input(dataNumber,true,true,"Line number to extract:"));
         nameToInputIndex.put("LINE",1);
 
         DataRelation dataRelation =new DataRelation("DATA");
-        outputs.add(new Output(dataRelation));
+        outputs.add(new Output(dataRelation,"Data extraction"));
         nameToOutputIndex.put("DATA",0);
 
     }

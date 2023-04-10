@@ -15,7 +15,7 @@ public class SpendSomeTime extends Step
         defaultName = "Spend some Time";
 
         DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");
-        inputs.add(new Input(dataNumber,true,true));
+        inputs.add(new Input(dataNumber,true,true,"Total sleeping time(sec):"));
         nameToInputIndex.put("TIME_TO_SPEND",0);
 
     }

@@ -16,12 +16,12 @@ public class FilesDeleter extends Step
         defaultName = "Files Deleter";
 
         DataList<File> listData = new DataList("FILES_LIST");
-        inputs.add(new Input(listData,false,true));
+        inputs.add(new Input(listData,false,true,"Files to delete:"));
         nameToInputIndex.put("FILES_LIST",0);
 
-        outputs.add(new Output(new DataList<String>("DELETED_LIST")));
+        outputs.add(new Output(new DataList<String>("DELETED_LIST"),"Files failed to be deleted:"));
         nameToOutputIndex.put("DELETED_LIST",0);
-        outputs.add(new Output(new DataMapping<Integer>("DELETION_STATS")));
+        outputs.add(new Output(new DataMapping<Integer>("DELETION_STATS"),"Deletion summary result:"));
         nameToOutputIndex.put("DELETION_STATS",1);
     }
 

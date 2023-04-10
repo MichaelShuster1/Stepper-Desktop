@@ -19,17 +19,17 @@ public class CollectFiles extends Step
         defaultName = "Collect Files In Folder";
 
         DataString dataString=new DataString("FOLDER_NAME");
-        inputs.add(new Input(dataString,true,true));
+        inputs.add(new Input(dataString,true,true,"Folder name to scan:"));
         nameToInputIndex.put("FOLDER_NAME",0);
 
         dataString=new DataString("FILTER");
-        inputs.add(new Input(dataString,true,false));
+        inputs.add(new Input(dataString,true,false,"Filter only these files:"));
         nameToInputIndex.put("FILTER",1);
 
-        outputs.add(new Output(new DataList<File>("FILES_LIST")));
+        outputs.add(new Output(new DataList<File>("FILES_LIST"),"Files list:"));
         nameToOutputIndex.put("FILES_LIST",0);
 
-        outputs.add(new Output(new DataNumber("TOTAL_FOUND")));
+        outputs.add(new Output(new DataNumber("TOTAL_FOUND"),"Total files found:"));
         nameToOutputIndex.put("TOTAL_FOUND",1);
     }
 

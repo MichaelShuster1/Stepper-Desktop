@@ -22,5 +22,9 @@ public class DataFile extends  DataDefinition<File>
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return data.getAbsolutePath();
+    }
 }
 

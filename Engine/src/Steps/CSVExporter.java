@@ -16,11 +16,11 @@ public class CSVExporter extends Step
         defaultName = "CSV Exporter";
 
         DataRelation dataRelation =new DataRelation("SOURCE");
-        inputs.add(new Input(dataRelation,false,true));
+        inputs.add(new Input(dataRelation,false,true,"Source data:"));
         nameToInputIndex.put("SOURCE",0);
 
         DataString dataString =new DataString("RESULT");
-        outputs.add(new Output(dataString));
+        outputs.add(new Output(dataString,"CSV export result:"));
         nameToOutputIndex.put("RESULT",0);
     }
 

@@ -3,10 +3,12 @@ package DataDefinitions;
 public class Output
 {
     private DataDefinition dataDefinition;
+    private String userString;
 
-    public Output(DataDefinition dataDefinition)
+    public Output(DataDefinition dataDefinition, String userString)
     {
         this.dataDefinition = dataDefinition;
+        this.userString = userString;
     }
 
     public DataDefinition getDataDefinition()
@@ -42,5 +44,9 @@ public class Output
     public String getType()
     {
         return  dataDefinition.getType();
+    }
+
+    public String getUserString() {
+        return userString;
     }
 }
