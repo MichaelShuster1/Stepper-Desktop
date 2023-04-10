@@ -68,10 +68,10 @@ public class FilesContentExtractor extends Step
                     }
                     catch (FileNotFoundException e)
                     {
-                        throw new RuntimeException(e);
-                    }
-                    catch (IOException e)
-                    {
+                        addLineToLog("Problem extracting line number " + line_number
+                                + " from file "+ file.getName()
+                                + " [time: " + formatter.format(new Date()) + "]");
+                        row.put("the info that been extracted","File not found");
                         throw new RuntimeException(e);
                     }
                 }

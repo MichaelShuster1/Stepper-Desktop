@@ -53,6 +53,7 @@ public class Main
         flow.flowPrintData();
 
 
+        /*
         Step filesContentExtractor =new FilesContentExtractor("blabla",false);
 
         List<File> files =new ArrayList<>();
@@ -74,6 +75,7 @@ public class Main
         Step propertiesExporter =new PropertiesExporter("blabla2",false);
         propertiesExporter.getInput(0).setData(filesContentExtractor.getOutput(0).getData());
         propertiesExporter.Run();
+        */
 
     }
 }
