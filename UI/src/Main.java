@@ -1,3 +1,4 @@
+import DataDefinitions.Relation;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
@@ -64,21 +65,15 @@ public class Main
         //files.add(new File("C:\\Users\\michael\\Desktop\\test\\folder1"));
         //files.add(new File("C:\\Users\\michael\\Desktop\\a.txt"));
 
-        files=new ArrayList<>();
+        files =new ArrayList<>();
 
         filesContentExtractor.getInput(0).setData(files);
         filesContentExtractor.getInput(1).setData(0);
         filesContentExtractor.Run();
 
-
-        /*
-        Step collectFiles = new CollectFiles("Collect files in folder",false);
-        collectFiles.getInput(0).setData("C:\\Users\\Igal\\Desktop\\New folder");
-        //collectFiles.getInput(1).setData();
-        collectFiles.Run();
-        */
-
-
+        Step propertiesExporter =new PropertiesExporter("blabla2",false);
+        propertiesExporter.getInput(0).setData(filesContentExtractor.getOutput(0).getData());
+        propertiesExporter.Run();
 
     }
 }
