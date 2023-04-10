@@ -70,6 +70,36 @@ public abstract class Step
         outputs.get(index).setName(newName);
     }
 
+
+    public String getStepHistoryData()
+    {
+        String res = "Name: " + name + "\n";
+        res += "Run time: " + runTime + "\n";
+        res += "Finish state: " +state_after_run + "\n";
+        res += "Step summary:" + summaryLine + "\n";
+        res += "STEP LOGS:\n";
+        res += getStrLogs();
+
+        return res;
+    }
+
+
+    public String getStrLogs()
+    {
+        String res = "";
+        if(log.size() == 0)
+            return "The step had no logs";
+        else
+        {
+            for(String currLog: log)
+            {
+                res += currLog + "\n";
+            }
+        }
+        return res;
+    }
+
+
     public State getState_after_run()
     {
         return state_after_run;
