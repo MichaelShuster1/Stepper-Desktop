@@ -272,20 +272,6 @@ public class Flow
         return steps.get(index);
     }
 
-    public void RunFlow()
-    {
-        int i=0;
-        for (Step step:steps)
-        {
-            step.Run();
-
-            /*
-            Input input=steps.get("name of step").getInput("name of input");
-            input.setData(step.getOuput("name of output").getData());
-            */
-
-        }
-    }
 
     public void initConnections()
     {
@@ -461,12 +447,15 @@ public class Flow
         {
             Step currStep = steps.get(i);
             currStep.Run();
-            if(currStep.getState_after_run() == Step.State.FAILURE) {
-                if (!currStep.isContinue_if_failing()) {
+            if(currStep.getState_after_run() == Step.State.FAILURE)
+            {
+                if (!currStep.isContinue_if_failing())
+                {
                     state_after_run = Step.State.FAILURE;
                     break;
                 }
-                else {
+                else
+                {
                     if(currStep.getState_after_run() == Step.State.WARNING)
                         state_after_run = Step.State.WARNING;
                     List<List<Pair<Integer,Integer>>> stepConnections =  connections.get(i);
