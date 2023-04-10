@@ -97,7 +97,6 @@ public class CollectFiles extends Step
                 summaryLine = "Step ended successfully," + count + " files were collected to the list";
             }
         }
-
         outputs.get(0).setData(fileList);
         outputs.get(1).setData(count);
         runTime = System.currentTimeMillis() - startTime;

@@ -54,8 +54,8 @@ public class Main
         flow.flowPrintData();
 
 
-
-        getFlowInputsFromUser(flow);
+        while (true)
+            getFlowInputsFromUser(flow);
 
     }
     public static void getFlowInputsFromUser(Flow flow)

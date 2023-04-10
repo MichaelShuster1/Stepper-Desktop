@@ -71,6 +71,7 @@ public abstract class Step
         log =new ArrayList<>();
         nameToInputIndex=new HashMap<>();
         nameToOutputIndex=new HashMap<>();
+        stepStatistics=new StepStatistics();
     }
     public String getName() {
         return name;
