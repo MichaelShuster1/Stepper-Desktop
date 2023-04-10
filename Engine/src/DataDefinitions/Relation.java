@@ -45,9 +45,9 @@ public class Relation {
     }
 
 
-    public void setData(Pair<List<Map<String, String>>, List<String>> data) {
-        this.rows = data.getKey();
-        this.columnNames = data.getValue();
+    public void setData(Relation data) {
+        this.rows = data.getRows();
+        this.columnNames = data.getColumnNames();
     }
 
 

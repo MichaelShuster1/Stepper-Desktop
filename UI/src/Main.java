@@ -1,3 +1,4 @@
+import DataDefinitions.Relation;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
@@ -60,9 +61,20 @@ public class Main
 
        Step step = new FilesRenamer("Files renamer",false);
        step.getInput(0).setData((List<File>)collectFiles.getOutput(0).getData());
-       step.getInput(1).setData("BooM");
-       step.getInput(2).setData("BaM");
+      // step.getInput(1).setData("");
+      // step.getInput(2).setData("");
        step.Run();
+
+       Step CSVStep = new CSVExporter("CSVexporter", false);
+       CSVStep.getInput(0).setData((Relation)step.getOutput(0).getData());
+       CSVStep.Run();
+
+
+        Step Filedumper = new FileDumper("File Dumper", false);
+        Filedumper.getInput(0).setData((String) CSVStep.getOutput(0).getData());
+        Filedumper.getInput(1).setData("E:\\New folder\\newFile.txt");
+        Filedumper.Run();
+
 
 
 

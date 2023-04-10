@@ -96,12 +96,9 @@ public class FilesRenamer extends Step
 
             }
 
-            outputs.get(0).setData(dataTable);
+
         }
-
-
-
-
+        outputs.get(0).setData(dataTable);
 
     }
 }

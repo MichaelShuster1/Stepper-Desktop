@@ -64,5 +64,8 @@ public class CSVExporter extends Step
             res = res.substring(0,res.length()-2) +"\n";
         }
 
+
+        outputs.get(0).setData(res);
+
     }
 }
