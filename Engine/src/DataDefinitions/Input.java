@@ -67,4 +67,9 @@ public class Input
     public String getUserString() {
         return userString;
     }
+
+    public void resetInput()
+    {
+        setData(null);
+    }
 }

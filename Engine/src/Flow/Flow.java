@@ -19,8 +19,8 @@ public class Flow
     private String description;
     private boolean read_only;
     private String flowId;
-    protected Step.State state_after_run;
-    protected Long runTime;
+    private Step.State state_after_run;
+    private Long runTime;
     private Map<String,Integer> formal_outputs;
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
@@ -279,18 +279,15 @@ public class Flow
         return steps.get(index);
     }
 
-    public void RunFlow()
+
+    public void resetFlow()
     {
-        int i=0;
-        for (Step step:steps)
+        state_after_run=null;
+        runTime=null;
+        flowId=null;
+        for(Step step:steps)
         {
-            step.Run();
-
-            /*
-            Input input=steps.get("name of step").getInput("name of input");
-            input.setData(step.getOuput("name of output").getData());
-            */
-
+            step.resetStep();
         }
     }
 

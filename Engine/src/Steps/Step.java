@@ -28,6 +28,7 @@ public abstract class Step
     protected Map<String,Integer> nameToOutputIndex;
     protected List<String> log;
     protected String summaryLine;
+
     protected Long runTime;
 
     public Step(String name, boolean read_only,boolean continue_if_failing)
@@ -127,6 +128,21 @@ public abstract class Step
     public Map<String, Integer> getNameToOutputIndex()
     {
         return nameToOutputIndex;
+    }
+
+
+
+    public void resetStep()
+    {
+       log.clear();
+       summaryLine=null;
+       runTime=null;
+
+       for(Input input:inputs)
+           input.resetInput();
+
+       for(Output output:outputs)
+           output.resetOutput();
     }
 
     public abstract void Run();

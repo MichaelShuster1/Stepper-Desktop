@@ -49,4 +49,9 @@ public class Output
     public String getUserString() {
         return userString;
     }
+
+    public void resetOutput()
+    {
+        setData(null);
+    }
 }
