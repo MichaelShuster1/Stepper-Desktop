@@ -20,6 +20,7 @@ public class Flow
     private boolean read_only;
     private String flowId;
     protected Step.State state_after_run;
+    protected Long runTime;
     private Map<String,Integer> formal_outputs;
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
@@ -461,6 +462,7 @@ public class Flow
 
     public String executeFlow()
     {
+        Long startTime =  System.currentTimeMillis();
         boolean continueExecution = true;
         int outPutIndex;
         state_after_run = Step.State.SUCCESS;
@@ -494,6 +496,7 @@ public class Flow
             }
         }
         flowId = generateFlowId();
+        runTime = System.currentTimeMillis() - startTime;
         return getFlowExecutionStrData();
     }
 

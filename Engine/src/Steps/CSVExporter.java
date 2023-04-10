@@ -27,6 +27,7 @@ public class CSVExporter extends Step
     @Override
     public void Run()
     {
+        Long startTime =  System.currentTimeMillis();
         String res = "";
         Relation dataTable = (Relation) inputs.get(0).getData();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -66,6 +67,7 @@ public class CSVExporter extends Step
 
 
         outputs.get(0).setData(res);
+        runTime = System.currentTimeMillis() - startTime;
 
     }
 }
