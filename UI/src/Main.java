@@ -12,20 +12,16 @@ public class Main
     {
         Scanner inputStream=new Scanner(System.in);
 
-        EngineApi engine =new Manager();
+        EngineApi engine;
+
+        Manager manager=new Manager();
+
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
 
-
         flow.AddFormalOutput("PROP_RESULT");
         flow.AddFormalOutput("CSV_RESULT");
-
-        /*
-        flow.AddStep(new CollectFiles("Collect Files In Folder"));
-        flow.AddStep(new SpendSomeTime("Spend Some Time"));
-        flow.AddStep(new FilesDeleter("Files Deleter"));
-        */
 
 
         flow.AddStep(new CollectFiles("Collect Files In Folder",false));
@@ -56,10 +52,58 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
-        
-        getFlowInputsFromUser(flow);
+        Flow flow1=new Flow("Delete Matched Files","Given a folder, deletes files matching a certain pattern");
+
+        flow1.AddFormalOutput("TOTAL_FOUND");
+        flow1.AddFormalOutput("DELETION_STATS");
+
+        flow1.AddStep(new CollectFiles("Collect Files In Folder",false));
+        flow1.AddStep(new SpendSomeTime("Spend Some Time",false));
+        flow1.AddStep(new FilesDeleter("Files Deleter",false));
+
+
+        manager.addFlow(flow);
+        manager.addFlow(flow1);
+        engine=manager;
+
+        //getFlowInputsFromUser(flow);
 
     }
+
+
+
+
+    public static int chooseFlow(EngineApi engine,Scanner inputStream)
+    {
+        List<String> flowNames =engine.getFlowsNames();
+        int choice=0,index=1;
+        boolean vaildInput=false;
+
+        while (!vaildInput)
+        {
+            System.out.println("the flows to choose from: ");
+
+            for (String flowName : flowNames)
+            {
+                System.out.println(index + "." + flowName);
+            }
+            System.out.println("please choose the number of flow: ");
+            choice = inputStream.nextInt();
+
+            if (choice >= 0 && choice <= flowNames.size())
+                vaildInput=true;
+        }
+
+        return choice;
+    }
+
+
+
+    public static void Command3()
+    {
+
+    }
+
 
     public static void getFlowInputsFromUser(Flow flow)
     {
