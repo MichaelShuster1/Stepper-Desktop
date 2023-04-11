@@ -42,7 +42,7 @@ public class UIapi
 
     public void runSystem()
     {
-        boolean exit = false;
+        Boolean exit = false;
         boolean correctInput;
         System.out.println("Welcome to the Stepper application!");
         while(!exit)
@@ -56,7 +56,7 @@ public class UIapi
                 {
                     if (userChoice >= 1 && userChoice <= 6)
                     {
-                        processInput(userChoice, exit);
+                        exit = processInput(userChoice);
                         correctInput = true;
                     }
                     else
@@ -80,8 +80,9 @@ public class UIapi
         System.out.printf("Please enter the index of the desired action [number] :");
     }
 
-    public void processInput(int index, boolean exit)
+    public Boolean processInput(int index)
     {
+        Boolean exit = false;
         switch (index)
         {
             case 1:
@@ -103,6 +104,7 @@ public class UIapi
                 exit = true;
                 break;
         }
+        return exit;
 
     }
 
@@ -112,7 +114,7 @@ public class UIapi
         System.out.println("Please choose one of the following flows to get its full definition:");
         int userChoice = chooseFlow();
 
-        if(userChoice != -1)
+        if(userChoice != CODE.BACK.getNumVal())
         {
             System.out.println(engine.getFlowDefinition(userChoice));
         }
@@ -121,13 +123,13 @@ public class UIapi
     public void showFlowsHistory()
     {
         Integer userChoice = null;
-        System.out.println("Please choose one of the following flows to get its past execution data:");
         List<String> initialList = engine.getInitialHistoryList();
         if(initialList.size() > 0) {
+            System.out.println("Please choose one of the following flows to get its past execution data:");
             printIndexedList(initialList, "\n");
             userChoice = getUserIndexInput(initialList.size());
 
-            if (userChoice != -1) {
+            if (userChoice != CODE.BACK.getNumVal()) {
                 System.out.println(engine.getFullHistoryData(userChoice));
             }
         }
@@ -146,8 +148,8 @@ public class UIapi
             userChoice = getUserIndexInput(flowNames.size());
         }
         else {
-            System.out.println("There are currently no defined flows in the system.\n You can load flows to the system by using command 1 in the main menu.");
-            userChoice = - 2;
+            System.out.println("There are currently no defined flows in the system.\n You can load flows to the system by using command 1 in the main menu.\n");
+            userChoice = CODE.EMPTY.getNumVal();
         }
 
         return userChoice;
@@ -271,7 +273,7 @@ public class UIapi
                 System.out.println(engine.runFlow());
             }
             else
-                System.out.println("wrong number entered");
+                System.out.println("Wrong number entered");
 
         }
     }
