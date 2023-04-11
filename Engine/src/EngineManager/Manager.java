@@ -37,8 +37,9 @@ public class Manager implements EngineApi
         return null;
     }
     @Override
-    public String getFlowDefinition(int flowIndex) {
-        return null;
+    public String getFlowDefinition(int flowIndex)
+    {
+       return flows.get(flowIndex).flowPrintData();
     }
 
     @Override

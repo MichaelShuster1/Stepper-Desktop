@@ -299,7 +299,7 @@ public class Flow
     }
 
 
-    public String flowPrintData()
+    public String flowPrintData() //command 2
     {
         String data;
         data = "Flow name: " + name + "\n\n";
