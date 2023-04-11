@@ -76,7 +76,6 @@ public class FilesDeleter extends Step
         mapping.put("cdr",files_not_deleted);
         outputs.get(1).setData(mapping);
         runTime=System.currentTimeMillis()-startTime;
-        stepStatistics.addRunTime(runTime);
     }
 }
 

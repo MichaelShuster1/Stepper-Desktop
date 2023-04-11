@@ -97,6 +97,5 @@ public class CollectFiles extends Step
         outputs.get(0).setData(fileList);
         outputs.get(1).setData(count);
         runTime = System.currentTimeMillis() - startTime;
-        stepStatistics.addRunTime(runTime);
     }
 }

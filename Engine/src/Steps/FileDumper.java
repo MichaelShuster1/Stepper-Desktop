@@ -71,6 +71,6 @@ public class FileDumper extends Step
         }
         outputs.get(0).setData(res);
         runTime = System.currentTimeMillis() - startTime;
-        stepStatistics.addRunTime(runTime);
+
     }
 }
