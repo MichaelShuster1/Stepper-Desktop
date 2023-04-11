@@ -61,7 +61,14 @@ public class Manager implements EngineApi
     @Override
     public String runFlow()
     {
-        return currentFlow.executeFlow();
+        String res;
+        res= currentFlow.executeFlow();
+        FlowHistory flowHistory=new FlowHistory(currentFlow.getName(),
+                currentFlow.getFlowId(),currentFlow.getActivationTime(),currentFlow.getFlowHistoryData());
+        flowsHistory.add(flowHistory);
+        currentFlow.resetFlow();
+        //statistics
+        return res;
     }
 
 

@@ -1,6 +1,7 @@
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 import Flow.Flow;
+import Flow.FlowHistory;
 import Steps.*;
 import javafx.util.Pair;
 
@@ -10,11 +11,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        UIapi ui=new UIapi();
 
         Manager manager=new Manager();
-
-
 
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
@@ -60,23 +58,16 @@ public class Main
         flow1.AddStep(new SpendSomeTime("Spend Some Time",false));
         flow1.AddStep(new FilesDeleter("Files Deleter",false));
 
+        flow1.CustomMapping(new HashMap<>());
+        flow1.AutomaticMapping();
+        flow1.CalculateFreeInputs();;
+
 
         manager.addFlow(flow);
         manager.addFlow(flow1);
-        ui.setEngine(manager);
-        ui.getInputsAndExecuteFlow();
-
-        FlowHistory history = new FlowHistory(flow.getName(),flow.getFlowId(),"17:45:34",flow.getFlowHistoryData());
-        manager.addFlowHistory(history);
-
 
         UIapi main = new UIapi(manager);
-        main.printMenu();
-        main.showFlowsDefinitions();
-        main.showFlowsHistory();
-
-
-        //getFlowInputsFromUser(flow);
+        main.runSystem();
 
     }
 

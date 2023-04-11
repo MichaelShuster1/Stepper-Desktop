@@ -24,8 +24,6 @@ public class UIapi
         }
     }
 
-
-
     Scanner inputStream;
 
     EngineApi engine;
@@ -53,9 +51,11 @@ public class UIapi
             printMenu();
             while(!correctInput)
             {
-                Integer userChoice = getIntInput() + 1;
-                if (userChoice != null) {
-                    if (userChoice >= 0 && userChoice <= 6) {
+                Integer userChoice = getIntInput();
+                if (userChoice != null)
+                {
+                    if (userChoice >= 1 && userChoice <= 6)
+                    {
                         processInput(userChoice, exit);
                         correctInput = true;
                     }
@@ -82,7 +82,8 @@ public class UIapi
 
     public void processInput(int index, boolean exit)
     {
-        switch (index) {
+        switch (index)
+        {
             case 1:
                 //Load XML
                 break;
@@ -90,22 +91,20 @@ public class UIapi
                 showFlowsDefinitions();
                 break;
             case 3:
-                //Execute flow;
+                getInputsAndExecuteFlow();
                 break;
             case 4:
                 showFlowsHistory();
                 break;
             case 5:
                 //Show statistics;
+                break;
             case 6:
                 exit = true;
+                break;
         }
 
     }
-
-
-
-
 
 
     public void showFlowsDefinitions()
@@ -189,19 +188,12 @@ public class UIapi
     public void printIndexedList(List<String> list, String changeAfterIndex)
     {
         int index = 1;
-        for(String data : list)
-        {
-            System.out.println(index +". " + changeAfterIndex + data);
+        for (String data : list) {
+            System.out.println(index + ". " + changeAfterIndex + data);
             index++;
         }
         System.out.println("0. Exit");
-
-
-
-
-
-
-
+    }
 
 
     public Integer getIntInput()

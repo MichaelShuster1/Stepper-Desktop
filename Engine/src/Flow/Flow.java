@@ -69,47 +69,6 @@ public class Flow
 
     }
 
-    /*
-    public void AutomaticMapping()
-    {
-        initFlowInputs();
-        int b;
-        int a;
-        for(int i=0;i<steps.size();i++)
-        {
-            Step step = steps.get(i);
-            System.out.println("in step: "+step.getName());
-            List<Output> outputs =step.getOutputs();
-            a = 0;
-            for(Output output:outputs)
-            {
-                System.out.println("the output "+ output.getName()+ " connects to the following inputs");
-                List<Pair<Integer,Integer>> pairs=new ArrayList<>();
-                for(int j=i+1;j<steps.size();j++)
-                {
-                    step=steps.get(j);
-                    List<Input> inputs =step.getInputs();
-                    b=0;
-                    for (Input input:inputs)
-                    {
-                        if(input.getName().equals(output.getName())
-                                && input.getType().equals(output.getType())
-                                && !input.isConnected())
-                        {
-                            pairs.add(new Pair<>(j,b));
-                            System.out.println(step.getName()+": "+input.getName());
-                        }
-                        b++;
-                    }
-
-                }
-                connections.get(i).get(a).addAll(pairs);
-                a++;
-            }
-        }
-    }
-*/
-
     public void AutomaticMapping()
     {
         initFlowInputs();
@@ -206,6 +165,11 @@ public class Flow
 
     public Long getRunTime() {
         return runTime;
+    }
+
+    public String getActivationTime()
+    {
+        return activationTime;
     }
 
     public List<String> getInputList()
