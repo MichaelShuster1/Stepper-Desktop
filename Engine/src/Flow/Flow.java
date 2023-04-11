@@ -254,6 +254,7 @@ public class Flow
         state_after_run=null;
         runTime=null;
         flowId=null;
+        activationTime = null;
         for(Step step:steps)
             step.resetStep();
     }

@@ -71,5 +71,6 @@ public class Input
     public void resetInput()
     {
         setData(null);
+        isConnected = false;
     }
 }
