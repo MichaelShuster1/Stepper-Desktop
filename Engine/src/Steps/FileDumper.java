@@ -31,12 +31,9 @@ public class FileDumper extends Step
         String content = (String) inputs.get(0).getData();
         String fileName = (String) inputs.get(1).getData();
         File file = new File(fileName);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        formatter.format(new Date());
         String res;
 
-        addLineToLog("About to create file named " + file.getName()
-                + " [time: " + formatter.format(new Date()) + "]");
+        addLineToLog("About to create file named " + file.getName());
 
 
         try
@@ -60,8 +57,7 @@ public class FileDumper extends Step
             {
                 setState_after_run(State.WARNING);
                 summaryLine = "Warning: The content provided was empty, file was created successfully with no content (empty file)";
-                addLineToLog("Created a file named " + file.getName() + ", tried to write content but the content was empty"
-                        + " [time: " + formatter.format(new Date()) + "]");
+                addLineToLog("Created a file named " + file.getName() + ", tried to write content but the content was empty");
 
             }
             res = "SUCCESS";
@@ -70,8 +66,7 @@ public class FileDumper extends Step
         {
             setState_after_run(State.FAILURE);
             summaryLine = "Step failed. " + e.getMessage();
-            addLineToLog("Failed to create a file named " + file.getName() + " in the provided location"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Failed to create a file named " + file.getName() + " in the provided location");
             res = "Failed: " + e.getMessage();
         }
         outputs.get(0).setData(res);

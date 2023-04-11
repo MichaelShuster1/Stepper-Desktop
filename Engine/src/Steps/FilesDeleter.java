@@ -33,14 +33,12 @@ public class FilesDeleter extends Step
         List<File> files =(List<File>)inputs.get(0).getData();
         List<String> paths= new ArrayList<>();
         Map<String,Integer> mapping=new HashMap<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         int files_deleted=0,files_not_deleted=0;
         boolean deleted=false;
 
         if(files.size()!=0)
         {
-            addLineToLog("About to start delete"+ files.size() + "files"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("About to start delete"+ files.size() + "files");
             for (File file : files)
             {
                 deleted = file.delete();
@@ -48,8 +46,7 @@ public class FilesDeleter extends Step
                 {
                     paths.add(file.getAbsolutePath());
                     files_not_deleted++;
-                    addLineToLog("Failed to delete file " + file.getAbsolutePath()
-                            + " [time: " + formatter.format(new Date()) + "]");
+                    addLineToLog("Failed to delete file " + file.getAbsolutePath());
                 }
                 else
                     files_deleted++;
@@ -58,23 +55,20 @@ public class FilesDeleter extends Step
             if (paths.size() == 0)
             {
                 state_after_run = State.SUCCESS;
-                addLineToLog("All files have been deleted successfully"
-                        + " [time: " + formatter.format(new Date()) + "]");
+                addLineToLog("All files have been deleted successfully");
                 summaryLine="All files have been deleted successfully";
             }
             else
             {
                 state_after_run = State.WARNING;
-                addLineToLog("Not all files were deleted successfully"
-                        + " [time: " + formatter.format(new Date()) + "]");
+                addLineToLog("Not all files were deleted successfully");
                 summaryLine="Not all files were deleted successfully";
             }
         }
         else
         {
             state_after_run = State.SUCCESS;
-            addLineToLog("No files to delete were given"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("No files to delete were given");
             summaryLine="No files to delete were given";
         }
         outputs.get(0).setData(paths);

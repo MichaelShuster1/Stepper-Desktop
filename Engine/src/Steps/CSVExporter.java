@@ -30,13 +30,10 @@ public class CSVExporter extends Step
         Long startTime =  System.currentTimeMillis();
         String res = "";
         Relation dataTable = (Relation) inputs.get(0).getData();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        formatter.format(new Date());
         List<Map<String,String>> rows = dataTable.getRows();
 
 
-        addLineToLog("About to process " + (rows.size()) + " lines of data"
-                + " [time: " + formatter.format(new Date()) + "]");
+        addLineToLog("About to process " + (rows.size()) + " lines of data");
 
         if(rows.size() == 0)
         {

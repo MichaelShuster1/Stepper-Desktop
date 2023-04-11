@@ -5,6 +5,7 @@ import DataDefinitions.Output;
 import Steps.Step;
 import javafx.util.Pair;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Flow
@@ -22,6 +23,7 @@ public class Flow
     private String flowId;
     private Step.State state_after_run;
     private Long runTime;
+    private String activationTime;
     private Map<String,Integer> formal_outputs;
     private List<Step> steps;
     private Map<String,Integer> nameToIndex;
@@ -301,7 +303,7 @@ public class Flow
         String data;
         data = "Flow name: " + name + "\n\n";
         data += "Flow description: " + description + "\n\n";
-        data += getFormalOutputs() + "\n";
+        data += getStrFormalOutputs() + "\n";
         data += getStrReadOnlyStatus() + "\n";
         data += getStrStepsData() + "\n";
         data += getStrFreeInputs() + "\n";
@@ -311,7 +313,7 @@ public class Flow
     }
 
 
-    public String getFormalOutputs()
+    public String getStrFormalOutputs()
     {
         String res;
         if(formal_outputs.size() > 0) {
@@ -423,6 +425,9 @@ public class Flow
     public String executeFlow()
     {
         Long startTime =  System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter.format(new Date());
+        activationTime = formatter.format(new Date());
         boolean continueExecution = true;
         int outPutIndex;
         state_after_run = Step.State.SUCCESS;
@@ -472,9 +477,7 @@ public class Flow
 
     public String getFlowExecutionStrData()
     {
-        String res = "Flows unique ID: " + flowId + "\n";
-        res += "Flow name: " + name + "\n";
-        res += "Flow's final state : " + state_after_run + "\n";
+        String res = getFlowNameIDAndState();
 
         if(formal_outputs.size() > 0) {
             res += "FLOW'S FORMAL OUTPUTS:\n";
@@ -493,6 +496,103 @@ public class Flow
 
 
     }
+
+    public String getFlowNameIDAndState()
+    {
+        String res = "Flows unique ID: " + flowId + "\n";
+        res += "Flow name: " + name + "\n";
+        res += "Flow's final state : " + state_after_run + "\n";
+        return res;
+    }
+
+
+    public String getFlowHistoryData()
+    {
+        String res = getFlowNameIDAndState();
+        String temp;
+        res += "Flow total run time: " + runTime + "\n";
+        res += "FREE INPUTS THAT RECEIVED DATA:\n";
+        temp = getFreeInputsHistoryData(true);
+        temp += getFreeInputsHistoryData(false);
+        if(temp.length() == 0)
+            res += "NO FREE INPUTS HAVE RECEIVED DATA\n";
+        else
+            res += temp;
+        res += "DATA PRODUCED (OUTPUTS):\n";
+        temp = getOutputsHistoryData();
+        if(temp.length() == 0)
+            res += "NO DATA WAS PRODUCED\n";
+        else
+            res += temp;
+        res += "FLOW STEPS DATA:\n";
+        res += getStepsHistoryData();
+
+        return res;
+    }
+
+
+    public String getFreeInputsHistoryData(boolean mandatoryOrNot)
+    {
+        String res = "";
+        String currInput;
+        for (String key : flowFreeInputs.keySet())
+        {
+            List<Integer> inputs = flowFreeInputs.get(key);
+            int i = inputs.get(0);
+            int inputIndex = steps.get(i).getNameToInputIndex().get(key);
+            Input input = steps.get(i).getInput(inputIndex);
+            if(input.getData() != null) {
+                currInput = "Name: " + input.getName() + "\n";
+                currInput += "Type: " + input.getType() + "\n";
+                currInput += "Input data:\n" + input.getData().toString() + "\n";
+                if (freeInputsIsReq.get(input.getName()))
+                    currInput += "This input is mandatory: Yes\n\n";
+                else
+                    currInput += "This input is mandatory: No\n\n";
+
+                if (mandatoryOrNot && freeInputsIsReq.get(input.getName()))
+                    res += currInput;
+                else if (!mandatoryOrNot && !freeInputsIsReq.get(input.getName()))
+                    res += currInput;
+            }
+        }
+
+        return res;
+    }
+
+    public String getOutputsHistoryData()
+    {
+        String res = "";
+        for(Step step: steps)
+        {
+            List<Output> outputs = step.getOutputs();
+            for(Output output : outputs)
+            {
+                if(output.getData() != null)
+                {
+                    res += "Name: " + output.getName() + "\n";
+                    res+= "Type: " + output.getType() + "\n";
+                    res += "Data:\n" + output.getData().toString() + "\n";
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getStepsHistoryData()
+    {
+        String res = "";
+        for(Step step: steps)
+        {
+            res += step.getStepHistoryData();
+        }
+        return res;
+    }
+
+
+
+
+
 
 
     public String getName() {

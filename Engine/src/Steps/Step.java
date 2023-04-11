@@ -3,10 +3,8 @@ package Steps;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class Step
 {
@@ -72,6 +70,36 @@ public abstract class Step
         outputs.get(index).setName(newName);
     }
 
+
+    public String getStepHistoryData()
+    {
+        String res = "Name: " + name + "\n";
+        res += "Run time: " + runTime + "\n";
+        res += "Finish state: " +state_after_run + "\n";
+        res += "Step summary:" + summaryLine + "\n";
+        res += "STEP LOGS:\n";
+        res += getStrLogs();
+
+        return res;
+    }
+
+
+    public String getStrLogs()
+    {
+        String res = "";
+        if(log.size() == 0)
+            return "The step had no logs";
+        else
+        {
+            for(String currLog: log)
+            {
+                res += currLog + "\n";
+            }
+        }
+        return res;
+    }
+
+
     public State getState_after_run()
     {
         return state_after_run;
@@ -84,7 +112,10 @@ public abstract class Step
 
     public void addLineToLog(String line)
     {
-        log.add(line);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.sss");
+        formatter.format(new Date());
+        log.add(line + "\n [time: " + formatter.format(new Date()) + "]");
     }
 
     public void setRead_only(boolean read_only) {

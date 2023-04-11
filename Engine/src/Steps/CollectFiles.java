@@ -50,19 +50,17 @@ public class CollectFiles extends Step
         String log = " Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
         if(filter != null)
             log += "filter";
-        log +=  " [time: " + formatter.format(new Date()) + "]";
+        addLineToLog(log);
 
 
         if(!directory.exists())
         {
             setState_after_run(State.FAILURE);
-            addLineToLog("Accessing path  " + directoryPath + " has failed"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Accessing path  " + directoryPath + " has failed");
             summaryLine = "Step failed, the path provided was not found";
         } else if (!directory.isDirectory()) {
             setState_after_run(State.FAILURE);
-            addLineToLog("Found the path " + directoryPath + ", but its not a folder "
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Found the path " + directoryPath + ", but its not a folder");
             summaryLine = "Step failed, the path provided was not a folder(directory)";
         }
         else
@@ -82,8 +80,7 @@ public class CollectFiles extends Step
             File[] files = directory.listFiles(toFilter);
             count = files.length;
 
-            addLineToLog("Found "+ count + "files in folder matching the filter"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Found "+ count + "files in folder matching the filter");
 
             if(count == 0)
             {
