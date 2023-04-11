@@ -77,7 +77,7 @@ public abstract class Step
         res += "Run time: " + runTime + "\n";
         res += "Finish state: " +state_after_run + "\n";
         res += "Step summary:" + summaryLine + "\n";
-        res += "STEP LOGS:\n";
+        res += "STEP LOGS:\n\n";
         res += getStrLogs();
 
         return res;
@@ -88,12 +88,12 @@ public abstract class Step
     {
         String res = "";
         if(log.size() == 0)
-            return "The step had no logs";
+            return "The step had no logs\n";
         else
         {
             for(String currLog: log)
             {
-                res += currLog + "\n";
+                res += currLog + "\n\n";
             }
         }
         return res;

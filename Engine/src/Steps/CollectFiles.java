@@ -47,7 +47,7 @@ public class CollectFiles extends Step
         formatter.format(new Date());
 
 
-        String log = " Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
+        String log = "Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
         if(filter != null)
             log += "filter";
         addLineToLog(log);
@@ -80,7 +80,7 @@ public class CollectFiles extends Step
             File[] files = directory.listFiles(toFilter);
             count = files.length;
 
-            addLineToLog("Found "+ count + "files in folder matching the filter");
+            addLineToLog("Found "+ count + " files in folder matching the filter");
 
             if(count == 0)
             {

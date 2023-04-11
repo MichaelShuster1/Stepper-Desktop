@@ -71,7 +71,7 @@ public class Manager implements EngineApi
         List<String> res = new ArrayList<>();
         for(FlowHistory history: flowsHistory)
         {
-            String currHistory = "Flow name:" + history.getFlowName() + "\n Flow ID: " + history.getID() + "\n Flow activation time: " + history.getActivationTime() +"\n";
+            String currHistory = "Flow name: " + history.getFlowName() + "\nFlow ID: " + history.getID() + "\nFlow activation time: " + history.getActivationTime() +"\n";
             res.add(currHistory);
         }
         return res;

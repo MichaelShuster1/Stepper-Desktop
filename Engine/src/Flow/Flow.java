@@ -331,7 +331,6 @@ public class Flow
         data += getStrStepsData() + "\n";
         data += getStrFreeInputs() + "\n";
         data += getStrOutPuts() + "\n";
-        System.out.println(data);
         return data;
     }
 
@@ -532,21 +531,21 @@ public class Flow
     {
         String res = getFlowNameIDAndState();
         String temp;
-        res += "Flow total run time: " + runTime + "\n";
-        res += "FREE INPUTS THAT RECEIVED DATA:\n";
+        res += "Flow total run time: " + runTime + "\n\n";
+        res += "FREE INPUTS THAT RECEIVED DATA:\n\n";
         temp = getFreeInputsHistoryData(true);
         temp += getFreeInputsHistoryData(false);
         if(temp.length() == 0)
-            res += "NO FREE INPUTS HAVE RECEIVED DATA\n";
+            res += "NO FREE INPUTS HAVE RECEIVED DATA\n\n";
         else
             res += temp;
-        res += "DATA PRODUCED (OUTPUTS):\n";
+        res += "DATA PRODUCED (OUTPUTS):\n\n";
         temp = getOutputsHistoryData();
         if(temp.length() == 0)
-            res += "NO DATA WAS PRODUCED\n";
+            res += "NO DATA WAS PRODUCED\n\n";
         else
             res += temp;
-        res += "FLOW STEPS DATA:\n";
+        res += "FLOW STEPS DATA:\n\n";
         res += getStepsHistoryData();
 
         return res;
@@ -594,7 +593,7 @@ public class Flow
                 {
                     res += "Name: " + output.getName() + "\n";
                     res+= "Type: " + output.getType() + "\n";
-                    res += "Data:\n" + output.getData().toString() + "\n";
+                    res += "Data:\n" + output.getData().toString() + "\n\n";
                 }
             }
         }

@@ -46,8 +46,18 @@ public class FilesRenamer extends Step
         String[]dataTableNames = {"Index","Original name","Name after change"};
         Relation dataTable = new Relation(dataTableNames);
 
+        String log = "About to start rename " + fileList.size() + " files. Adding prefix: ";
+        if(prefix != null)
+            log += prefix + " adding suffix: ";
+        else
+            log += "no prefix adding suffix: ";
+        if(suffix != null)
+            log+= suffix;
+        else
+            log += "no suffix";
 
-        addLineToLog("About to start rename " + fileList.size() + " files. Adding prefix: " + prefix + " adding suffix: " + suffix);
+
+        addLineToLog(log);
 
         if(fileList.size() == 0)
         {
@@ -95,6 +105,10 @@ public class FilesRenamer extends Step
             }
 
 
+        }
+        if(summaryLine == null)
+        {
+            summaryLine = "The step renamed the files successfully";
         }
         outputs.get(0).setData(dataTable);
         runTime=System.currentTimeMillis()-startTime;

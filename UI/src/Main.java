@@ -15,6 +15,8 @@ public class Main
         Manager manager=new Manager();
 
 
+
+
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
 
@@ -58,14 +60,24 @@ public class Main
         flow1.AddStep(new SpendSomeTime("Spend Some Time",false));
         flow1.AddStep(new FilesDeleter("Files Deleter",false));
 
-        flow1.CustomMapping(new HashMap<>());
-        flow1.AutomaticMapping();
-        flow1.CalculateFreeInputs();;
 
         manager.addFlow(flow);
         manager.addFlow(flow1);
         ui.setEngine(manager);
         ui.getInputsAndExecuteFlow();
+
+        FlowHistory history = new FlowHistory(flow.getName(),flow.getFlowId(),"17:45:34",flow.getFlowHistoryData());
+        manager.addFlowHistory(history);
+
+
+        UIapi main = new UIapi(manager);
+        main.printMenu();
+        main.showFlowsDefinitions();
+        main.showFlowsHistory();
+
+
+        //getFlowInputsFromUser(flow);
+
     }
 
 
