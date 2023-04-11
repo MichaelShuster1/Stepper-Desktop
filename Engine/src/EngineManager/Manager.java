@@ -72,7 +72,7 @@ public class Manager implements EngineApi
         res= currentFlow.executeFlow();
         FlowHistory flowHistory=new FlowHistory(currentFlow.getName(),
                 currentFlow.getFlowId(),currentFlow.getActivationTime(),currentFlow.getFlowHistoryData());
-        flowsHistory.add(flowHistory);
+        flowsHistory.add(0,flowHistory);
         //statistics
         currentFlow.resetFlow();
         return res;
