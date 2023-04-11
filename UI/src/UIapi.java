@@ -7,11 +7,12 @@ public class UIapi {
 
     Scanner inputStream;
 
-    EngineApi engine = new Manager();
+    EngineApi engine;
 
 
     public UIapi() {
         this.inputStream = new Scanner(System.in);
+        this.engine = new Manager();
     }
 
 
