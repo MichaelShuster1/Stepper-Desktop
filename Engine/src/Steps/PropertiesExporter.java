@@ -15,10 +15,10 @@ public class PropertiesExporter extends Step{
         defaultName = "Properties Exporter";
 
         DataRelation input = new DataRelation("SOURCE");
-        inputs.add(new Input(input,false,true,"Source data:"));
+        inputs.add(new Input(input,false,true,"Source data"));
         nameToInputIndex.put("SOURCE",0);
 
-        outputs.add(new Output(new DataString("RESULT"),"Properties export result:"));
+        outputs.add(new Output(new DataString("RESULT"),"Properties export result"));
         nameToOutputIndex.put("RESULT",0);
     }
 

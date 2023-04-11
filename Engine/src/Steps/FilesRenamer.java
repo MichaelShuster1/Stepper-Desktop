@@ -16,11 +16,11 @@ public class FilesRenamer extends Step
         defaultName = "Files Renamer";
 
         DataList<File> dataList=new DataList("FILES_TO_RENAME");
-        inputs.add(new Input(dataList,false,true,"Files to rename:"));
+        inputs.add(new Input(dataList,false,true,"Files to rename"));
         nameToInputIndex.put("FILES_TO_RENAME",0);
 
         DataString dataString=new DataString("PREFIX");
-        inputs.add(new Input(dataString,true,false,"Add this prefix:"));
+        inputs.add(new Input(dataString,true,false,"Add this prefix"));
         nameToInputIndex.put("PREFIX",1);
 
         dataString=new DataString("SUFFIX");

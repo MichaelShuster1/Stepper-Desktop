@@ -43,6 +43,7 @@ public class Manager implements EngineApi
        return flows.get(flowIndex).flowPrintData();
     }
 
+
     @Override
     public List<String> getFlowInputs(int flowIndex)
     {
@@ -52,9 +53,15 @@ public class Manager implements EngineApi
 
 
     @Override
-    public boolean processInput(String inputName, String data)
+    public void processInput(String inputName, String data)
     {
-        return currentFlow.processInput(inputName,data);
+        currentFlow.processInput(inputName,data);
+    }
+
+    @Override
+    public boolean IsFlowReady()
+    {
+        return currentFlow.isFlowReady();
     }
 
 
@@ -66,8 +73,8 @@ public class Manager implements EngineApi
         FlowHistory flowHistory=new FlowHistory(currentFlow.getName(),
                 currentFlow.getFlowId(),currentFlow.getActivationTime(),currentFlow.getFlowHistoryData());
         flowsHistory.add(flowHistory);
-        currentFlow.resetFlow();
         //statistics
+        currentFlow.resetFlow();
         return res;
     }
 
@@ -92,9 +99,11 @@ public class Manager implements EngineApi
 
 
     @Override
-    public List<String> getStatistics()
+    public String getStatistics()
     {
-        return null;
+        String res="The Statistics of the flows: \n";
+        res+=getFlowsStatistics()+"\nThe Statistics of the steps: \n"+getStepsStatistics();
+        return res;
     }
 
 
@@ -109,40 +118,34 @@ public class Manager implements EngineApi
         flowsHistory.add(history);
     }
 
-    public List<String> getFlowsStatistics()
+    public String getFlowsStatistics()
     {
-        List<String> res=new ArrayList<>();
-        String currFlowStatistics;
+        String currFlowStatistics,res="";
         Statistics statistics;
 
         for(String flowName:flowsStatistics.keySet())
         {
             statistics=flowsStatistics.get(flowName);
             currFlowStatistics = flowName+ "\nNumber of times activated: "
-                    +statistics.getTimesActivated()+ "\nAverage run time: " +statistics.getAvgRunTime();
-            res.add(currFlowStatistics);
+                    +statistics.getTimesActivated()+ "\nAverage run time: " +statistics.getAvgRunTime()+"\n";
+            res+=currFlowStatistics;
         }
 
         return res;
     }
 
 
-    public List<String> getStepsStatistics()
+    public String getStepsStatistics()
     {
-        List<String> res=new ArrayList<>();
-        String currFlowStatistics;
+        String currFlowStatistics,res="";
         Statistics statistics;
         for(String stepName:stepsStatistics.keySet())
         {
             statistics=stepsStatistics.get(stepName);
             currFlowStatistics = stepName+ "\nNumber of times activated: "
                     +statistics.getTimesActivated()+ "\nAverage run time: " +statistics.getAvgRunTime();
-            res.add(currFlowStatistics);
+            res+=currFlowStatistics;
         }
         return res;
     }
-
-
-
-
 }
