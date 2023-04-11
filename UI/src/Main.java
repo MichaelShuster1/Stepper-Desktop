@@ -4,7 +4,9 @@ import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
 
+import java.rmi.server.UID;
 import java.util.*;
+import Flow.FlowHistory;
 
 public class Main
 {
@@ -15,6 +17,8 @@ public class Main
         EngineApi engine;
 
         Manager manager=new Manager();
+
+
 
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
@@ -62,9 +66,20 @@ public class Main
         flow1.AddStep(new FilesDeleter("Files Deleter",false));
 
 
+
+        getFlowInputsFromUser(flow);
         manager.addFlow(flow);
         manager.addFlow(flow1);
-        engine=manager;
+
+        FlowHistory history = new FlowHistory(flow.getName(),flow.getFlowId(),"17:45:34",flow.getFlowHistoryData());
+        manager.addFlowHistory(history);
+
+
+        UIapi main = new UIapi(manager);
+        main.printMenu();
+        main.showFlowsDefinitions();
+        main.showFlowsHistory();
+
 
         //getFlowInputsFromUser(flow);
 
