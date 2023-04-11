@@ -15,13 +15,13 @@ public class FileDumper extends Step
         super(name, true,continue_if_failing);
         defaultName = "File Dumper";
 
-        inputs.add(new Input(new DataString("CONTENT"),true,true,"Content:"));
+        inputs.add(new Input(new DataString("CONTENT"),true,true,"Content"));
         nameToInputIndex.put("CONTENT",0);
 
-        inputs.add(new Input(new DataString("FILE_NAME"),true,true,"Target file path:"));
+        inputs.add(new Input(new DataString("FILE_NAME"),true,true,"Target file path"));
         nameToInputIndex.put("FILE_NAME",1);
 
-        outputs.add(new Output(new DataString("RESULT"),"File creation result:"));
+        outputs.add(new Output(new DataString("RESULT"),"File creation result"));
         nameToOutputIndex.put("RESULT",0);
     }
 

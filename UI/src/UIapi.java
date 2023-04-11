@@ -91,19 +91,24 @@ public class UIapi
                 showFlowsDefinitions();
                 break;
             case 3:
-                getInputsAndExecuteFlow();
+                ExecuteFlow();
                 break;
             case 4:
                 showFlowsHistory();
                 break;
             case 5:
-                //Show statistics;
+                showStatistics();
                 break;
             case 6:
                 exit = true;
                 break;
         }
 
+    }
+
+    private void showStatistics()
+    {
+        System.out.println(engine.getStatistics());
     }
 
 
@@ -212,7 +217,7 @@ public class UIapi
     }
 
 
-    public void getInputsAndExecuteFlow()
+    public void ExecuteFlow()
     {
         List<String> inputsInfo;
         Integer flowIndex,choice,size;
@@ -233,12 +238,17 @@ public class UIapi
             System.out.println("0. Exit");
             System.out.println(inputMenu);
 
+            flowReady=engine.IsFlowReady();
+
             if(flowReady)
                 System.out.println((size+1)+".Execute the flow");
 
             System.out.println("Enter the number 0 to go back to the menu");
             System.out.println("Enter a number between 1 to " + size + " to enter the data  of the desired input you want");
-            System.out.println("Enter the number "+ (size+1) + " to to execute the current flow");
+            if(flowReady)
+                System.out.println("Enter the number "+ (size+1) + " to to execute the current flow");
+            if(!flowReady)
+                System.out.println("When all mandatory inputs will be inserted, you will be able to execute the flow");
             System.out.println("Please enter your choice: ");
 
             do
@@ -258,18 +268,19 @@ public class UIapi
                 for(int i=3;i<inputInfo.length;i++)
                     user_string+=" "+inputInfo[i];
 
-                System.out.println(user_string);
+                System.out.println(user_string+":");
 
                 inputStream.nextLine();
                 data = inputStream.nextLine();
-
-                flowReady=engine.processInput(inputName, data);
+                engine.processInput(inputName, data);
             }
             else if(choice.equals(size+1))
             {
                 runFlow=true;
                 System.out.println(engine.runFlow());
             }
+            else if(choice.equals(0))
+                return;
             else
                 System.out.println("wrong number entered");
 

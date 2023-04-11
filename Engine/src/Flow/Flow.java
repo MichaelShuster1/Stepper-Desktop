@@ -196,8 +196,12 @@ public class Flow
         return inputMenu;
     }
 
+    public boolean isFlowReady()
+    {
+        return(freeMandatoryInputs.isEmpty());
+    }
 
-    public boolean processInput(String inputName,String rawData)
+    public void processInput(String inputName,String rawData)
     {
         if(freeMandatoryInputs.contains(inputName))
             freeMandatoryInputs.remove(inputName);
@@ -225,7 +229,6 @@ public class Flow
             }
 
         }
-        return(freeMandatoryInputs.isEmpty());
     }
 
 

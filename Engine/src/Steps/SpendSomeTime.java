@@ -7,6 +7,7 @@ import DataDefinitions.Input;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class SpendSomeTime extends Step
 {
     public SpendSomeTime(String name,boolean continue_if_failing)
@@ -15,9 +16,8 @@ public class SpendSomeTime extends Step
         defaultName = "Spend some Time";
 
         DataNumber dataNumber=new DataNumber("TIME_TO_SPEND");
-        inputs.add(new Input(dataNumber,true,true,"Total sleeping time(sec):"));
+        inputs.add(new Input(dataNumber,true,true,"Total sleeping time(sec)"));
         nameToInputIndex.put("TIME_TO_SPEND",0);
-
     }
 
 
