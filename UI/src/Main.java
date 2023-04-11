@@ -1,3 +1,5 @@
+import EngineManager.EngineApi;
+import EngineManager.Manager;
 import Flow.Flow;
 import Steps.*;
 import javafx.util.Pair;
@@ -10,6 +12,7 @@ public class Main
     {
         Scanner inputStream=new Scanner(System.in);
 
+        EngineApi engine =new Manager();
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
@@ -57,6 +60,7 @@ public class Main
         getFlowInputsFromUser(flow);
 
     }
+
     public static void getFlowInputsFromUser(Flow flow)
     {
         Scanner inputStream=new Scanner(System.in);

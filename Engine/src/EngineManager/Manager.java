@@ -6,31 +6,57 @@ import Flow.FlowHistory;
 import java.util.*;
 
 
-public class Manager
+public class Manager implements EngineApi
 {
     private List<Flow> flows;
     private List<FlowHistory> flowsHistory;
     private Map<String,Statistics> flowsStatistics;
     private Map<String,Statistics> stepsStatistics;
 
-    public Manager(List<Flow> flows, List<FlowHistory> flowsHistory)
+    public Manager()
     {
-        this.flows = flows;
-        this.flowsHistory = flowsHistory;
+        flows = new ArrayList<>();
+        flowsHistory = new ArrayList<>();
         flowsStatistics=new LinkedHashMap<>();
         stepsStatistics=new LinkedHashMap<>();
     }
 
-    public void addFlow(Flow flow)
+    @Override
+    public List<String> getFlowsNames()
     {
-        flows.add(flow);
+        List<String> namesList = new ArrayList<>();
+        for(Flow flow: flows)
+        {
+            namesList.add(flow.getName());
+        }
+        return namesList;
     }
 
-    public void addFlowHistory(FlowHistory history)
-    {
-        flowsHistory.add(history);
+    @Override
+    public String loadXmlFile(String path) {
+        return null;
+    }
+    @Override
+    public String getFlowDefinition(int flowIndex) {
+        return null;
     }
 
+    @Override
+    public List<String> getFlowInputs(int flowIndex) {
+        return null;
+    }
+
+    @Override
+    public boolean processInput(String InputName, String data) {
+        return false;
+    }
+
+    @Override
+    public String runFlow() {
+        return null;
+    }
+
+    @Override
     public List<String> getInitialHistoryList()
     {
         List<String> res = new ArrayList<>();
@@ -40,6 +66,30 @@ public class Manager
             res.add(currHistory);
         }
         return res;
+    }
+
+    @Override
+    public String getFullHistoryData(int flowIndex)
+    {
+        return flowsHistory.get(flowIndex).getFullData();
+    }
+
+    @Override
+    public List<String> getStatistics()
+    {
+        return null;
+    }
+
+
+
+    public void addFlow(Flow flow)
+    {
+        flows.add(flow);
+    }
+
+    public void addFlowHistory(FlowHistory history)
+    {
+        flowsHistory.add(history);
     }
 
     public List<String> getFlowsStatistics()
@@ -59,6 +109,7 @@ public class Manager
         return res;
     }
 
+
     public List<String> getStepsStatistics()
     {
         List<String> res=new ArrayList<>();
@@ -72,26 +123,6 @@ public class Manager
             res.add(currFlowStatistics);
         }
         return res;
-    }
-
-
-
-
-
-
-    public String getFullHistoryData(int index)
-    {
-      return flowsHistory.get(index).getFullData();
-    }
-
-    public List<String> getAllFlowsNames()
-    {
-        List<String> namesList = new ArrayList<>();
-        for(Flow flow: flows)
-        {
-            namesList.add(flow.getName());
-        }
-        return namesList;
     }
 
 
