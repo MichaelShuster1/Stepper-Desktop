@@ -8,7 +8,7 @@ public interface EngineApi
     List<String> getFlowsNames();
     String getFlowDefinition(int flowIndex);
     List<String> getFlowInputs(int flowIndex);
-    boolean processInput(String InputName,String data);
+    boolean processInput(String inputName,String data);
     String runFlow(); //getFlowInputs
     List<String> getInitialHistoryList();
     String getFullHistoryData(int flowIndex);

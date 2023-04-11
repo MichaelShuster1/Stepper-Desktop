@@ -10,9 +10,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Scanner inputStream=new Scanner(System.in);
-
-        EngineApi engine;
+        UIapi ui=new UIapi();
 
         Manager manager=new Manager();
 
@@ -49,8 +47,7 @@ public class Main
 
         flow.CustomMapping(customMappingInput);
         flow.AutomaticMapping();
-        flow.CalculateFreeInputs();
-        flow.flowPrintData();
+        flow.CalculateFreeInputs();;
 
         Flow flow1=new Flow("Delete Matched Files","Given a folder, deletes files matching a certain pattern");
 
@@ -61,93 +58,18 @@ public class Main
         flow1.AddStep(new SpendSomeTime("Spend Some Time",false));
         flow1.AddStep(new FilesDeleter("Files Deleter",false));
 
+        flow1.CustomMapping(new HashMap<>());
+        flow1.AutomaticMapping();
+        flow1.CalculateFreeInputs();;
 
         manager.addFlow(flow);
         manager.addFlow(flow1);
-        engine=manager;
-
-        //getFlowInputsFromUser(flow);
-
+        ui.setEngine(manager);
+        ui.getInputsAndExecuteFlow();
     }
 
 
 
 
-    public static int chooseFlow(EngineApi engine,Scanner inputStream)
-    {
-        List<String> flowNames =engine.getFlowsNames();
-        int choice=0,index=1;
-        boolean vaildInput=false;
 
-        while (!vaildInput)
-        {
-            System.out.println("the flows to choose from: ");
-
-            for (String flowName : flowNames)
-            {
-                System.out.println(index + "." + flowName);
-            }
-            System.out.println("please choose the number of flow: ");
-            choice = inputStream.nextInt();
-
-            if (choice >= 0 && choice <= flowNames.size())
-                vaildInput=true;
-        }
-
-        return choice;
-    }
-
-
-
-    public static void Command3()
-    {
-
-    }
-
-
-    public static void getFlowInputsFromUser(Flow flow)
-    {
-        Scanner inputStream=new Scanner(System.in);
-        List<String> inputNames= flow.getInputList();
-        int i=1,choice;
-        String inputName,data;
-        boolean flowReady=false,runFlow= false;
-
-        while (!runFlow)
-        {
-            System.out.println("inputs to choose:");
-            i=1;
-            for (String inputName1 : inputNames)
-            {
-                System.out.println(i + "." +
-                        inputName1.toLowerCase().replace("_", " "));
-                i++;
-            }
-
-            if(flowReady)
-                System.out.println("\n"+i+".run the flow");
-
-            System.out.println("please choose a number: ");
-
-            choice = inputStream.nextInt();
-            if(choice<i)
-            {
-                inputName = inputNames.get(choice - 1).split(" ")[0];
-                System.out.println("user string: ");
-                inputStream.nextLine();
-                data = inputStream.nextLine();
-
-                flow.processInput(inputName, data);
-                if(flow.checkIfFlowReady())
-                    flowReady=true;
-            }
-            else if(choice==i)
-            {
-                runFlow=true;
-                System.out.println(flow.executeFlow());
-            }
-            else
-                System.out.println("wrong number entered");
-        }
-    }
 }

@@ -12,6 +12,7 @@ public class Manager implements EngineApi
     private List<FlowHistory> flowsHistory;
     private Map<String,Statistics> flowsStatistics;
     private Map<String,Statistics> stepsStatistics;
+    private Flow currentFlow;
 
     public Manager()
     {
@@ -43,19 +44,26 @@ public class Manager implements EngineApi
     }
 
     @Override
-    public List<String> getFlowInputs(int flowIndex) {
-        return null;
+    public List<String> getFlowInputs(int flowIndex)
+    {
+        currentFlow=flows.get(flowIndex);
+        return currentFlow.getInputList();
     }
 
-    @Override
-    public boolean processInput(String InputName, String data) {
-        return false;
-    }
 
     @Override
-    public String runFlow() {
-        return null;
+    public boolean processInput(String inputName, String data)
+    {
+        return currentFlow.processInput(inputName,data);
     }
+
+
+    @Override
+    public String runFlow()
+    {
+        return currentFlow.executeFlow();
+    }
+
 
     @Override
     public List<String> getInitialHistoryList()
@@ -75,6 +83,7 @@ public class Manager implements EngineApi
         return flowsHistory.get(flowIndex).getFullData();
     }
 
+
     @Override
     public List<String> getStatistics()
     {
@@ -82,11 +91,11 @@ public class Manager implements EngineApi
     }
 
 
-
     public void addFlow(Flow flow)
     {
         flows.add(flow);
     }
+
 
     public void addFlowHistory(FlowHistory history)
     {

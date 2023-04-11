@@ -212,34 +212,56 @@ public class Flow
     {
         int i=1;
         List<String> inputMenu=new ArrayList<>();
+        String currInput;
         for (String inputName:flowFreeInputs.keySet())
         {
+            Step step=steps.get(flowInputs.get(inputName).get(0));
+            Integer inputIndex=step.getNameToInputIndex().get(inputName);
+            String user_string=step.getInput(inputIndex).getUserString();
+
+            currInput=inputName;
+
             if(freeInputsIsReq.get(inputName))
-                inputMenu.add(inputName +" mandatory");
+                currInput+=" mandatory";
             else
-                inputMenu.add(inputName +" optional");
+                currInput+=" optional";
+
+            currInput+=" "+user_string;
+            inputMenu.add(currInput);
         }
         return inputMenu;
     }
 
-    public boolean checkIfFlowReady()
-    {
-        return(freeMandatoryInputs.isEmpty());
-    }
 
-
-    public void processInput(String inputName,Object data)
+    public boolean processInput(String inputName,String rawData)
     {
         if(freeMandatoryInputs.contains(inputName))
             freeMandatoryInputs.remove(inputName);
+
+
         List<Integer> indexList =flowFreeInputs.get(inputName);
 
         for(Integer stepIndex:indexList)
         {
             Step step =steps.get(stepIndex);
             Integer inputIndex =step.getNameToInputIndex().get(inputName);
-            step.getInput(inputIndex).setData(data);
+            Input input=step.getInput(inputIndex);
+
+            switch (input.getType())
+            {
+                case "DataNumber":
+                    input.setData(Integer.parseInt(rawData));
+                    break;
+                case "DataDouble":
+                    input.setData(Double.parseDouble(rawData));
+                    break;
+                case "DataString":
+                    input.setData(rawData);
+                    break;
+            }
+
         }
+        return(freeMandatoryInputs.isEmpty());
     }
 
 
@@ -463,7 +485,6 @@ public class Flow
         }
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
-        //resetFlow();
         return getFlowExecutionStrData();
     }
 

@@ -6,7 +6,7 @@ public class DataString extends DataDefinition<String>
 
     public DataString(String name)
     {
-        super(name, "String");
+        super(name, "DataString");
     }
 
 
