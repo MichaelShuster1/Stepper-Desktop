@@ -8,6 +8,7 @@ import javafx.util.Pair;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
 public class Flow
 {
     public enum State
@@ -79,13 +80,11 @@ public class Flow
             Step step = steps.get(i);
             if(!step.isRead_only())
                 read_only = false;
-            System.out.println("in step: "+step.getName());
             List<Output> outputs =step.getOutputs();
             List<List<Pair<Integer,Integer>> > list=new ArrayList<>();
             a=0;
             for(Output output:outputs)
             {
-                System.out.println("the output "+ output.getName()+ " connects to the following inputs");
                 List<Pair<Integer,Integer>> pairs=new ArrayList<>();
                 List<Integer> integerList =flowInputs.get(output.getName());
                 if(formal_outputs.containsKey(output.getName()))
@@ -106,7 +105,6 @@ public class Flow
                             {
                                 input.setConnected(true);
                                 pairs.add(new Pair<>(stepIndex, inputIndex));
-                                System.out.println(step1.getName() + ": " + input.getName());
                             }
                         }
                     }
@@ -114,11 +112,7 @@ public class Flow
                 connections.get(i).get(a).addAll(pairs);
                 a++;
             }
-
-
         }
-
-
     }
 
 
@@ -576,11 +570,6 @@ public class Flow
         }
         return res;
     }
-
-
-
-
-
 
 
     public String getName() {
