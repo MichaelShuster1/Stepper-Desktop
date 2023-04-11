@@ -28,13 +28,11 @@ public class PropertiesExporter extends Step{
         long startTime=System.currentTimeMillis();
         Relation relation =(Relation) inputs.get(0).getData();
         String result="";
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         if(relation==null ||relation.getRows().size()==0)
         {
             state_after_run=State.WARNING;
             outputs.get(0).setData(result);
-            addLineToLog("No table was given to convert from to properties format string" +
-                    " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("No table was given to convert from to properties format string");
             summaryLine="No table was given to convert from to properties format string";
         }
         else
@@ -43,8 +41,7 @@ public class PropertiesExporter extends Step{
             List<String> columnNames =relation.getColumnNames();
             Integer index=1,total_properties=0;
 
-            addLineToLog("About to process " +rows.size() +" lines of data"+
-                    " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("About to process " +rows.size() +" lines of data");
             for(Map<String,String> row:rows)
             {
                 int a=1;
@@ -59,8 +56,7 @@ public class PropertiesExporter extends Step{
             }
             state_after_run=State.SUCCESS;
             outputs.get(0).setData(result);
-            addLineToLog("Extracted total of "+total_properties
-                    +" [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Extracted total of "+total_properties);
             summaryLine=("Extracted total of "+total_properties);
         }
         runTime=System.currentTimeMillis()-startTime;

@@ -33,15 +33,13 @@ public class FilesContentExtractor extends Step
         Long startTime =  System.currentTimeMillis();
         List<File> files =(List<File>)inputs.get(0).getData();
         Integer line_number=(Integer) inputs.get(1).getData();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Relation relation =new Relation(new String[]{"Index", "File name", "the info that been extracted"});
         if(files.size()!=0)
         {
             Integer index=1;
             for(File file:files)
             {
-                addLineToLog("About to start work on file "+ file.getName()
-                        + " [time: " + formatter.format(new Date()) + "]");
+                addLineToLog("About to start work on file "+ file.getName());
                 Map<String ,String> row =new HashMap<>();
                 row.put("Index",index.toString());
                 row.put("File name",file.getName());
@@ -62,16 +60,14 @@ public class FilesContentExtractor extends Step
                         else
                         {
                             addLineToLog("Problem extracting line number " + line_number
-                                    + " from file "+ file.getName()
-                                    + " [time: " + formatter.format(new Date()) + "]");
+                                    + " from file "+ file.getName());
                             row.put("the info that been extracted","Not such line");
                         }
                     }
                     catch (FileNotFoundException e)
                     {
                         addLineToLog("Problem extracting line number " + line_number
-                                + " from file "+ file.getName()
-                                + " [time: " + formatter.format(new Date()) + "]");
+                                + " from file "+ file.getName());
                         row.put("the info that been extracted","File not found");
                         throw new RuntimeException(e);
                     }
@@ -79,21 +75,18 @@ public class FilesContentExtractor extends Step
                 else
                 {
                     addLineToLog("Problem extracting line number " + line_number
-                            + " from file "+ file.getName()
-                            + " [time: " + formatter.format(new Date()) + "]");
+                            + " from file "+ file.getName());
                     row.put("the info that been extracted","File not found");
                 }
                 relation.addRow(row);
                 index++;
             }
-            addLineToLog("Finished extracting the content from the given files"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("Finished extracting the content from the given files");
            summaryLine="Finished extracting the content from the given files";
         }
         else
         {
-            addLineToLog("No files given to extract content from"
-                    + " [time: " + formatter.format(new Date()) + "]");
+            addLineToLog("No files given to extract content from");
             summaryLine="No files given to extract content from";
         }
         outputs.get(0).setData(relation);

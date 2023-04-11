@@ -3,10 +3,8 @@ package Steps;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class Step
 {
@@ -112,7 +110,10 @@ public abstract class Step
 
     public void addLineToLog(String line)
     {
-        log.add(line);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.sss");
+        formatter.format(new Date());
+        log.add(line + "\n [time: " + formatter.format(new Date()) + "]");
     }
 
     public void setRead_only(boolean read_only) {

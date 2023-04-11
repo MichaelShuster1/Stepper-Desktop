@@ -45,12 +45,9 @@ public class FilesRenamer extends Step
         String failedToRenameFiles = "";
         String[]dataTableNames = {"Index","Original name","Name after change"};
         Relation dataTable = new Relation(dataTableNames);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        formatter.format(new Date());
 
 
-        addLineToLog("About to start rename " + fileList.size() + " files. Adding prefix: " + prefix + " adding suffix: " + suffix
-                + " [time: " + formatter.format(new Date()) + "]");
+        addLineToLog("About to start rename " + fileList.size() + " files. Adding prefix: " + prefix + " adding suffix: " + suffix);
 
         if(fileList.size() == 0)
         {
@@ -83,8 +80,7 @@ public class FilesRenamer extends Step
                     index++;
                 }
                 else {
-                    addLineToLog("Problem renaming file " + currName
-                            + " [time: " + formatter.format(new Date()) + "]");
+                    addLineToLog("Problem renaming file " + currName);
                     if(getState_after_run() != null && getState_after_run() == State.WARNING)
                         failedToRenameFiles = currName;
                     else {
