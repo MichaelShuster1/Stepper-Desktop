@@ -16,35 +16,6 @@ public class Flow
         FAILURE
     }
 
-    public class FlowStatistics
-    {
-        private Integer amount_times_activated;
-        private Long sum_of_run_time;
-
-        public FlowStatistics()
-        {
-            amount_times_activated=0;
-            sum_of_run_time=0L;
-        }
-
-        public void addRunTime(Long runTIme)
-        {
-            sum_of_run_time+=runTIme;
-            amount_times_activated++;
-        }
-
-        public Integer getAmount_times_activated()
-        {
-            return amount_times_activated;
-        }
-
-        public Double getAvgRunTime()
-        {
-            return (double) (sum_of_run_time/amount_times_activated);
-        }
-    }
-
-    private FlowStatistics flowStatistics;
     private String name;
     private String description;
     private boolean read_only;
@@ -67,7 +38,6 @@ public class Flow
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
         formal_outputs = new HashMap<>();
-        flowStatistics=new FlowStatistics();
     }
 
     public void AddStep(Step step)
@@ -326,7 +296,6 @@ public class Flow
     }
 
 
-
     public String flowPrintData()
     {
         String data;
@@ -451,7 +420,6 @@ public class Flow
     }
 
 
-
     public String executeFlow()
     {
         Long startTime =  System.currentTimeMillis();
@@ -490,7 +458,6 @@ public class Flow
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
         //resetFlow();
-        flowStatistics.addRunTime(runTime);
         return getFlowExecutionStrData();
     }
 

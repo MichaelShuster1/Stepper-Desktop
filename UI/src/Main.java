@@ -53,9 +53,8 @@ public class Main
         flow.CalculateFreeInputs();
         flow.flowPrintData();
 
-
-        while (true)
-            getFlowInputsFromUser(flow);
+        
+        getFlowInputsFromUser(flow);
 
     }
     public static void getFlowInputsFromUser(Flow flow)

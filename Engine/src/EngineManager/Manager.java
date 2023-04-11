@@ -3,19 +3,22 @@ package EngineManager;
 import Flow.Flow;
 import Flow.FlowHistory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class Manager
 {
     private List<Flow> flows;
     private List<FlowHistory> flowsHistory;
+    private Map<String,Statistics> flowsStatistics;
+    private Map<String,Statistics> stepsStatistics;
 
     public Manager(List<Flow> flows, List<FlowHistory> flowsHistory)
     {
         this.flows = flows;
         this.flowsHistory = flowsHistory;
+        flowsStatistics=new LinkedHashMap<>();
+        stepsStatistics=new LinkedHashMap<>();
     }
 
     public void addFlow(Flow flow)
@@ -38,6 +41,43 @@ public class Manager
         }
         return res;
     }
+
+    public List<String> getFlowsStatistics()
+    {
+        List<String> res=new ArrayList<>();
+        String currFlowStatistics;
+        Statistics statistics;
+
+        for(String flowName:flowsStatistics.keySet())
+        {
+            statistics=flowsStatistics.get(flowName);
+            currFlowStatistics = flowName+ "\nNumber of times activated: "
+                    +statistics.getTimesActivated()+ "\nAverage run time: " +statistics.getAvgRunTime();
+            res.add(currFlowStatistics);
+        }
+
+        return res;
+    }
+
+    public List<String> getStepsStatistics()
+    {
+        List<String> res=new ArrayList<>();
+        String currFlowStatistics;
+        Statistics statistics;
+        for(String stepName:stepsStatistics.keySet())
+        {
+            statistics=stepsStatistics.get(stepName);
+            currFlowStatistics = stepName+ "\nNumber of times activated: "
+                    +statistics.getTimesActivated()+ "\nAverage run time: " +statistics.getAvgRunTime();
+            res.add(currFlowStatistics);
+        }
+        return res;
+    }
+
+
+
+
+
 
     public String getFullHistoryData(int index)
     {
