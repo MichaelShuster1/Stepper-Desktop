@@ -51,6 +51,7 @@ public class SpendSomeTime extends Step
                 Thread.sleep(sleeping_time * 1000);
                 addLineToLog("Done sleeping");
                 summaryLine = "Done sleeping";
+                state_after_run = State.SUCCESS;
             }
             catch (InterruptedException e)
             {

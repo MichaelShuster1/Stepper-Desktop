@@ -76,7 +76,6 @@ public class FilesContentExtractor extends Step
                         addLineToLog("Problem extracting line number " + line_number
                                 + " from file "+ file.getName());
                         row.put("the info that been extracted","File not found");
-                        throw new RuntimeException(e);
                     }
                 }
                 else
