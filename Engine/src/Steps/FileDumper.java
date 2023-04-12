@@ -33,6 +33,13 @@ public class FileDumper extends Step
         File file = new File(fileName);
         String res;
 
+
+        if(!checkGotInputs(2))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
         addLineToLog("About to create file named " + file.getName());
 
 

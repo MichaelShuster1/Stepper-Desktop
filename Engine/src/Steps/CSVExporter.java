@@ -32,6 +32,12 @@ public class CSVExporter extends Step
         Relation dataTable = (Relation) inputs.get(0).getData();
         List<Map<String,String>> rows = dataTable.getRows();
 
+        if(!checkGotInputs(1))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
 
         addLineToLog("About to process " + (rows.size()) + " lines of data");
 
