@@ -1,16 +1,10 @@
-import DataDefinitions.DataDefinition;
-import DataDefinitions.DataString;
-import EngineManager.EngineApi;
 import EngineManager.Manager;
 import EngineManager.Statistics;
 import Flow.Flow;
-import Flow.FlowHistory;
+import HardCodedData.HCSteps;
 import Steps.*;
 import javafx.util.Pair;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 public class Main
@@ -18,7 +12,7 @@ public class Main
     public static void main(String[] args)
     {
 
-        Map<String,Statistics> statisticsMap=new LinkedHashMap<>();
+        Map<String,Statistics> flowsStatisticsMap =new LinkedHashMap<>();
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
@@ -54,7 +48,7 @@ public class Main
         flow.AutomaticMapping();
         flow.CalculateFreeInputs();;
 
-        statisticsMap.put(flow.getName(),new Statistics());
+        flowsStatisticsMap.put(flow.getName(),new Statistics());
 
         Flow flow1=new Flow("Delete Matched Files","Given a folder, deletes files matching a certain pattern");
 
@@ -70,9 +64,9 @@ public class Main
         flow1.CalculateFreeInputs();;
 
 
-        statisticsMap.put(flow1.getName(),new Statistics());
+        flowsStatisticsMap.put(flow1.getName(),new Statistics());
 
-        Manager manager=new Manager();
+        Manager manager=new Manager(flowsStatisticsMap, HCSteps.getStatisticsMap());
 
         manager.addFlow(flow);
         manager.addFlow(flow1);

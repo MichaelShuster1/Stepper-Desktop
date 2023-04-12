@@ -1,40 +1,39 @@
 package HardCodedData;
 
 import EngineManager.Statistics;
-import Steps.Step;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class HCSteps {
-    List<String> stepNames;
+public enum HCSteps
+{
+    SPEND_SOME_TIME("Spend some Time"),
+    COLLECT_FILES("Collect Files In Folder"),
+    FILES_RENAMER("Files Renamer"),
+    FILES_CONTENT("Files Content Extractor"),
+    CSV_EXPORTER("CSV Exporter"),
+    PROPERTIES_EXPORTER("Properties Exporter"),
+    FILE_DUMPER("File Dumper");
 
-
-
-    public HCSteps()
+    private String stepName;
+    HCSteps(String stepName)
     {
-        stepNames.add("Spend some Time");
-        stepNames.add("Collect Files In Folder");
-        stepNames.add("Files Deleter");
-        stepNames.add("Files Renamer");
-        stepNames.add("Files Content Extractor");
-        stepNames.add("CSV Exporter");
-        stepNames.add("Properties Exporter");
-        stepNames.add("File Dumper");
+        this.stepName=stepName;
     }
 
-    public Map<String, Statistics> getStatisticsMap()
+    public String getStepName()
     {
-        Map<String,Statistics> res = new HashMap<>();
-        for(String name: stepNames)
-        {
-            res.put(name, new Statistics());
-        }
+        return stepName;
+    }
 
+
+    public static Map<String, Statistics> getStatisticsMap()
+    {
+        Map<String,Statistics> res = new LinkedHashMap<>();
+        for(HCSteps step: HCSteps.values())
+        {
+            res.put(step.getStepName(), new Statistics());
+        }
         return res;
     }
-
-
-
 }
