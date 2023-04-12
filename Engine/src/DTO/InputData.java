@@ -1,12 +1,12 @@
 package DTO;
 
-public class FreeInputData
+public class InputData
 {
     private String systemName;
     private String userString;
     private Boolean necessity;
 
-    public FreeInputData(String systemName, String userString, Boolean necessity)
+    public InputData(String systemName, String userString, Boolean necessity)
     {
         this.systemName = systemName;
         this.userString = userString;

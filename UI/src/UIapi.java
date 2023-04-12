@@ -1,5 +1,5 @@
-import DTO.FreeInputData;
-import DTO.FreeInputsDTO;
+import DTO.InputData;
+import DTO.InputsDTO;
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 
@@ -223,7 +223,7 @@ public class UIapi
 
     public void ExecuteFlow()
     {
-        FreeInputsDTO inputsInfo;
+        InputsDTO inputsInfo;
         Integer flowIndex,choice,size;
         String inputMenu,data;
         boolean flowReady=false,runFlow= false;
@@ -266,7 +266,7 @@ public class UIapi
             {
 
                 String inputName,user_string="";
-                FreeInputData input=inputsInfo.getFreeInput(choice-1);
+                InputData input=inputsInfo.getFreeInput(choice-1);
 
 
                 inputName=input.getSystemName();
@@ -293,17 +293,17 @@ public class UIapi
 
 
 
-    private String createInputMenu(FreeInputsDTO inputsInfo)
+    private String createInputMenu(InputsDTO inputsInfo)
     {
         String inputMenu="",inputToShow="";
         Integer size=inputsInfo.getNumberOfInputs();
         for (int i=0;i<size;i++)
         {
-            FreeInputData freeInput=inputsInfo.getFreeInput(i);
-            inputToShow=freeInput.getSystemName().toLowerCase().replace("_"," ");
+            InputData input=inputsInfo.getFreeInput(i);
+            inputToShow=input.getSystemName().toLowerCase().replace("_"," ");
 
             inputToShow+=" [";
-            if(freeInput.getNecessity())
+            if(input.getNecessity())
                 inputToShow+="mandatory";
             else
                 inputToShow+="optional";
