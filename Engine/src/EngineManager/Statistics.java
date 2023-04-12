@@ -24,6 +24,8 @@ public class Statistics
 
     public Double getAvgRunTime()
     {
+        if(amount_times_activated==0)
+            return 0.0;
         return (double) (sum_of_run_time/amount_times_activated);
     }
 }

@@ -29,7 +29,7 @@ public class Flow
     private String activationTime;
     private Map<String,Integer> formal_outputs;
     private List<Step> steps;
-    private Integer numberOfSteps;
+    private int numberOfSteps;
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
     private Map<String,List<Integer>> flowInputs;
@@ -44,11 +44,13 @@ public class Flow
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
         formal_outputs = new HashMap<>();
+        numberOfSteps=0;
     }
 
     public void AddStep(Step step)
     {
         steps.add(step);
+        numberOfSteps++;
         nameToIndex.put(step.getName(),steps.size()-1);
     }
 
@@ -238,8 +240,11 @@ public class Flow
         runTime=null;
         flowId=null;
         activationTime = null;
+
         for(Step step:steps)
             step.resetStep();
+
+        freeMandatoryInputs.addAll(freeInputsIsReq.keySet());
     }
 
     public void initConnections()
