@@ -1,5 +1,7 @@
 package Flow;
 
+import DTO.FreeInputData;
+import DTO.FreeInputsDTO;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
 import Steps.Step;
@@ -166,28 +168,20 @@ public class Flow
         return activationTime;
     }
 
-    public FreeInputDTO getInputList()
+    public FreeInputsDTO getInputList()
     {
         int i=1;
-        List<String> inputMenu=new ArrayList<>();
-        String currInput;
+        List<FreeInputData> inputMenu=new ArrayList<>();
         for (String inputName:flowFreeInputs.keySet())
         {
             Step step=steps.get(flowInputs.get(inputName).get(0));
             Integer inputIndex=step.getNameToInputIndex().get(inputName);
             String user_string=step.getInput(inputIndex).getUserString();
+            Boolean necessity=freeInputsIsReq.get(inputName);
 
-            currInput=inputName;
-
-            if(freeInputsIsReq.get(inputName))
-                currInput+=" mandatory";
-            else
-                currInput+=" optional";
-
-            currInput+=" "+user_string;
-            inputMenu.add(currInput);
+            inputMenu.add(new FreeInputData(inputName,user_string,necessity));
         }
-        return inputMenu;
+        return new FreeInputsDTO(inputMenu,getName());
     }
 
     public boolean isFlowReady()

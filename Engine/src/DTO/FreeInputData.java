@@ -1,3 +1,5 @@
+package DTO;
+
 public class FreeInputData
 {
     private String systemName;

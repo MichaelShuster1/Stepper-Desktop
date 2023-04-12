@@ -1,5 +1,6 @@
 package EngineManager;
 
+import DTO.FreeInputsDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
 
@@ -45,7 +46,7 @@ public class Manager implements EngineApi
 
 
     @Override
-    public List<String> getFlowInputs(int flowIndex)
+    public FreeInputsDTO getFlowInputs(int flowIndex)
     {
         currentFlow=flows.get(flowIndex);
         return currentFlow.getInputList();

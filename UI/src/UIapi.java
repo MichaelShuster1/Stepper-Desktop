@@ -1,3 +1,5 @@
+import DTO.FreeInputData;
+import DTO.FreeInputsDTO;
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 
@@ -221,7 +223,7 @@ public class UIapi
 
     public void ExecuteFlow()
     {
-        List<String> inputsInfo;
+        FreeInputsDTO inputsInfo;
         Integer flowIndex,choice,size;
         String inputMenu,data;
         boolean flowReady=false,runFlow= false;
@@ -233,7 +235,8 @@ public class UIapi
 
         inputsInfo=engine.getFlowInputs(flowIndex);
         inputMenu=createInputMenu(inputsInfo);
-        size=inputsInfo.size();
+        size=inputsInfo.getNumberOfInputs();
+
 
         while (!runFlow)
         {
@@ -261,14 +264,13 @@ public class UIapi
 
             if(choice<=size&& choice>=1)
             {
+
                 String inputName,user_string="";
-                String [] inputInfo = inputsInfo.get(choice-1).split(" ");
+                FreeInputData input=inputsInfo.getFreeInput(choice-1);
 
-                inputName = inputInfo[0];
 
-                user_string=inputInfo[2];
-                for(int i=3;i<inputInfo.length;i++)
-                    user_string+=" "+inputInfo[i];
+                inputName=input.getSystemName();
+                user_string=input.getUserString();
 
                 System.out.println(user_string+":");
 
@@ -290,17 +292,24 @@ public class UIapi
     }
 
 
-    private String createInputMenu(List<String> inputsInfo)
+
+    private String createInputMenu(FreeInputsDTO inputsInfo)
     {
-        String inputMenu="",inputToShow;
-        int index=1;
-        for (String inputInfo:inputsInfo)
+        String inputMenu="",inputToShow="";
+        Integer size=inputsInfo.getNumberOfInputs();
+        for (int i=0;i<size;i++)
         {
-            String [] strings =inputInfo.split(" ");
-            inputToShow=strings[0]+ " ["+strings[1]+"]";
-            inputToShow=inputToShow.toLowerCase().replace("_"," ");
-            inputMenu+=index+"."+inputToShow+"\n";
-            index++;
+            FreeInputData freeInput=inputsInfo.getFreeInput(i);
+            inputToShow=freeInput.getSystemName().toLowerCase().replace("_"," ");
+
+            inputToShow+=" [";
+            if(freeInput.getNecessity())
+                inputToShow+="mandatory";
+            else
+                inputToShow+="optional";
+            inputToShow+="]";
+
+            inputMenu+=(i+1)+"."+inputToShow+"\n";
         }
         return  inputMenu;
     }
