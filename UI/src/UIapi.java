@@ -95,6 +95,7 @@ public class UIapi
                     exitFromMenu=loadSystemDataFromFile();
                     break;
                 case 3:
+                    exitFromMenu=true;
                     exitFromApp = true;
                     break;
             }
