@@ -9,17 +9,10 @@ import java.util.*;
 
 public abstract class Step implements Serializable
 {
-    public enum State
-    {
-        SUCCESS,
-        WARNING,
-        FAILURE
-    }
-
     protected String name;
     protected String defaultName;
-    protected boolean read_only;
-    protected boolean continue_if_failing;
+    protected final boolean read_only;
+    protected final boolean continue_if_failing;
     protected State state_after_run;
 
     protected List<Input> inputs;
@@ -42,6 +35,7 @@ public abstract class Step implements Serializable
         nameToInputIndex=new HashMap<>();
         nameToOutputIndex=new HashMap<>();
     }
+
     public String getName() {
         return name;
     }
@@ -100,7 +94,6 @@ public abstract class Step implements Serializable
         return res;
     }
 
-
     public State getState_after_run()
     {
         return state_after_run;
@@ -111,16 +104,12 @@ public abstract class Step implements Serializable
         this.state_after_run = state_after_run;
     }
 
-    public void addLineToLog(String line)
+    protected void addLineToLog(String line)
     {
 
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.sss");
         formatter.format(new Date());
         log.add(line + "\n [time: " + formatter.format(new Date()) + "]");
-    }
-
-    public void setRead_only(boolean read_only) {
-        this.read_only = read_only;
     }
 
     public Input getInput(int index)
@@ -183,7 +172,7 @@ public abstract class Step implements Serializable
 
     public abstract void Run();
 
-    public boolean checkGotInputs(int numOfInputs)
+    protected boolean checkGotInputs(int numOfInputs)
     {
         boolean isValid = true;
         for(int i = 0; i<numOfInputs; i++)

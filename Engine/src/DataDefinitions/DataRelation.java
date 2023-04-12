@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DataRelation extends DataDefinition<Relation> {
+public class DataRelation extends DataDefinition<Relation>
+{
     private Relation data;
 
 

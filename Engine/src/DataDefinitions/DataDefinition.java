@@ -5,7 +5,7 @@ import java.io.Serializable;
 public abstract class DataDefinition<T> implements Serializable
 {
     protected String name;
-    protected String type;
+    protected final String type;
 
     public DataDefinition(String name, String type)
     {
@@ -26,11 +26,6 @@ public abstract class DataDefinition<T> implements Serializable
     public String getType()
     {
         return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
     }
 
     public abstract void setData(T data);

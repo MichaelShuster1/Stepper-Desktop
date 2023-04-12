@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Output implements Serializable
 {
     private DataDefinition dataDefinition;
-    private String userString;
+    private final String userString;
 
     public Output(DataDefinition dataDefinition, String userString)
     {

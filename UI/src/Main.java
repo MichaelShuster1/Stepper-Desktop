@@ -91,9 +91,6 @@ public class Main
 
         UIapi main = new UIapi(manager);
         main.runSystem();
-
-
     }
-
 
 }
