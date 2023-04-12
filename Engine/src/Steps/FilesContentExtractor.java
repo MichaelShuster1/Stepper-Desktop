@@ -34,6 +34,13 @@ public class FilesContentExtractor extends Step
         List<File> files =(List<File>)inputs.get(0).getData();
         Integer line_number=(Integer) inputs.get(1).getData();
         Relation relation =new Relation(new String[]{"Index", "File name", "the info that been extracted"});
+
+        if(!checkGotInputs(2))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
         if(files.size()!=0)
         {
             Integer index=1;

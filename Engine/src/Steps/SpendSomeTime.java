@@ -26,6 +26,13 @@ public class SpendSomeTime extends Step
     {
         long startTime=System.currentTimeMillis();
         Integer sleeping_time=(Integer)inputs.get(0).getData();
+
+        if(!checkGotInputs(1))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
         if(sleeping_time<=0)
         {
             state_after_run=State.FAILURE;
