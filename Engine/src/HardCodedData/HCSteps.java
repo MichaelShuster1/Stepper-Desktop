@@ -13,7 +13,8 @@ public enum HCSteps
     FILES_CONTENT("Files Content Extractor"),
     CSV_EXPORTER("CSV Exporter"),
     PROPERTIES_EXPORTER("Properties Exporter"),
-    FILE_DUMPER("File Dumper");
+    FILE_DUMPER("File Dumper"),
+    FILE_DELETER("Files Deleter");
 
     private String stepName;
     HCSteps(String stepName)
