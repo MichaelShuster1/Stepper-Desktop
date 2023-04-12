@@ -181,4 +181,23 @@ public abstract class Step
     }
 
     public abstract void Run();
+
+    public boolean checkGotInputs(int numOfInputs)
+    {
+        boolean isValid = true;
+        for(int i = 0; i<numOfInputs; i++)
+        {
+            if(inputs.get(i).getData() == null)
+                isValid = false;
+        }
+
+        if(!isValid)
+        {
+            addLineToLog("Trying to access inputs, but no inputs received");
+            setState_after_run(State.FAILURE);
+            summaryLine = "Step failed, mandatory inputs not received";
+        }
+
+        return isValid;
+    }
 }

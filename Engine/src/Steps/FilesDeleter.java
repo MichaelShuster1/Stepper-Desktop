@@ -36,6 +36,12 @@ public class FilesDeleter extends Step
         int files_deleted=0,files_not_deleted=0;
         boolean deleted=false;
 
+        if(!checkGotInputs(1))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
         if(files.size()!=0)
         {
             addLineToLog("About to start delete"+ files.size() + "files");

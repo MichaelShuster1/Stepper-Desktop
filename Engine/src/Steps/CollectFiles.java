@@ -46,6 +46,12 @@ public class CollectFiles extends Step
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
 
+        if(!checkGotInputs(1))
+        {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
+
 
         String log = "Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
         if(filter != null)

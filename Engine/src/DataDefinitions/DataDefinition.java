@@ -1,6 +1,8 @@
 package DataDefinitions;
 
-public abstract class DataDefinition<T>
+import java.io.Serializable;
+
+public abstract class DataDefinition<T> implements Serializable
 {
     protected String name;
     protected String type;
