@@ -48,7 +48,6 @@ public class Manager implements EngineApi, Serializable
         return namesList;
     }
 
-
     @Override
     public String loadXmlFile(String path) {
         return null;
@@ -69,11 +68,13 @@ public class Manager implements EngineApi, Serializable
         return currentFlow.getInputList();
     }
 
+
     @Override
     public void processInput(String inputName, String data)
     {
         currentFlow.processInput(inputName,data);
     }
+
 
     @Override
     public boolean IsFlowReady()
@@ -105,6 +106,7 @@ public class Manager implements EngineApi, Serializable
         return res;
     }
 
+
     @Override
     public String getFullHistoryData(int flowIndex)
     {
@@ -119,6 +121,7 @@ public class Manager implements EngineApi, Serializable
         res+=getFlowsStatistics()+"\nThe Statistics of the steps: \n"+getStepsStatistics();
         return res;
     }
+
 
     @Override
     public StatusDTO saveDataOfSystemToFile(String FILE_NAME)
@@ -183,7 +186,8 @@ public class Manager implements EngineApi, Serializable
         flowsHistory.add(0,flowHistory);
     }
 
-    public String getFlowsStatistics()
+
+    private String getFlowsStatistics()
     {
         String currFlowStatistics,res="";
         Statistics statistics;
@@ -199,7 +203,8 @@ public class Manager implements EngineApi, Serializable
         return res;
     }
 
-    public String getStepsStatistics()
+
+    private String getStepsStatistics()
     {
         String currFlowStatistics,res="";
         Statistics statistics;

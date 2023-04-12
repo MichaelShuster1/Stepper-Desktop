@@ -65,7 +65,7 @@ public class Main
         flow1.AutomaticMapping();
         flow1.CalculateFreeInputs();
 
-
+        
         flowsStatisticsMap.put(flow1.getName(), new Statistics());
 
         Manager manager = new Manager(flowsStatisticsMap, HCSteps.getStatisticsMap());
@@ -75,9 +75,6 @@ public class Main
 
         UIapi main = new UIapi(manager);
         main.runSystem();
-
-
     }
-
 
 }

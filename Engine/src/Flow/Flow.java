@@ -4,6 +4,7 @@ import DTO.InputData;
 import DTO.InputsDTO;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
+import Steps.State;
 import Steps.Step;
 import javafx.util.Pair;
 
@@ -14,18 +15,11 @@ import java.util.*;
 
 public class Flow implements Serializable
 {
-    public enum State
-    {
-        SUCCESS,
-        WARNING,
-        FAILURE
-    }
-
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private boolean read_only;
     private String flowId;
-    private Step.State state_after_run;
+    private State state_after_run;
     private Long runTime;
     private String activationTime;
     private Map<String,Integer> formal_outputs;
@@ -80,6 +74,7 @@ public class Flow implements Serializable
         }
 
     }
+
 
     public void AutomaticMapping()
     {
@@ -242,9 +237,19 @@ public class Flow implements Serializable
         flowId=null;
         activationTime = null;
 
+        resetSteps();
+        resetFreeMandatoryInputs();
+    }
+
+
+    private void resetSteps()
+    {
         for(Step step:steps)
             step.resetStep();
+    }
 
+    private void resetFreeMandatoryInputs()
+    {
         for(String inputName:freeInputsIsReq.keySet())
         {
             if(freeInputsIsReq.get(inputName))
@@ -252,7 +257,7 @@ public class Flow implements Serializable
         }
     }
 
-    public void initConnections()
+    private void initConnections()
     {
         connections = new ArrayList<>();
         for (Step step : steps)
@@ -268,7 +273,7 @@ public class Flow implements Serializable
     }
 
 
-    public void initFlowInputs()
+    private void initFlowInputs()
     {
         flowInputs = new HashMap<>();
         for(int i = 0; i< steps.size(); i++)
@@ -354,7 +359,8 @@ public class Flow implements Serializable
     }
 
 
-    public String getStrFreeInputs() {
+    public String getStrFreeInputs()
+    {
         String res;
         if (flowFreeInputs.isEmpty())
             res = "The flow have no free inputs\n";
@@ -423,21 +429,21 @@ public class Flow implements Serializable
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
         int outPutIndex;
-        state_after_run = Step.State.SUCCESS;
+        state_after_run =State.SUCCESS;
         for(int i=0;i<steps.size() && continueExecution;i++)
         {
             Step currStep = steps.get(i);
             currStep.Run();
-            if(currStep.getState_after_run() == Step.State.FAILURE) {
+            if(currStep.getState_after_run() == State.FAILURE) {
                 if (!currStep.isContinue_if_failing()) {
-                    state_after_run = Step.State.FAILURE;
+                    state_after_run = State.FAILURE;
                     continueExecution = false;
                 }
             }
             if(continueExecution)
             {
-                    if(currStep.getState_after_run() == Step.State.WARNING)
-                        state_after_run = Step.State.WARNING;
+                    if(currStep.getState_after_run() == State.WARNING)
+                        state_after_run = State.WARNING;
                     List<List<Pair<Integer,Integer>>> stepConnections =  connections.get(i);
                     for(List<Pair<Integer,Integer>> currOutput : stepConnections)
                     {
@@ -598,7 +604,7 @@ public class Flow implements Serializable
         return flowId;
     }
 
-    public Step.State getState_after_run() {
+    public State getState_after_run() {
         return state_after_run;
     }
 }

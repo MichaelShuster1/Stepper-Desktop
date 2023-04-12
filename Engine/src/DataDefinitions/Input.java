@@ -6,9 +6,8 @@ public class Input implements Serializable
 {
     private DataDefinition dataDefinition;
     private final boolean user_friendly;
-    private  final boolean mandatory;
-    private String userString;
-
+    private final boolean mandatory;
+    private final String userString;
     private boolean isConnected;
 
     public Input(DataDefinition dataDefinition, boolean user_friendly, boolean mandatory, String userString)
@@ -19,12 +18,6 @@ public class Input implements Serializable
         this.isConnected = false;
         this.userString = userString;
     }
-
-    public DataDefinition getDataDefinition()
-    {
-        return dataDefinition;
-    }
-
 
     public Object getData()
     {
@@ -60,11 +53,6 @@ public class Input implements Serializable
     }
 
     public boolean isMandatory() {return mandatory;}
-
-    public void setDataDefinition(DataDefinition dataDefinition)
-    {
-        this.dataDefinition = dataDefinition;
-    }
 
     public String getUserString() {
         return userString;

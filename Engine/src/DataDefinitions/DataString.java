@@ -9,8 +9,6 @@ public class DataString extends DataDefinition<String>
         super(name, "DataString");
     }
 
-
-
     @Override
     public String getData()
     {
