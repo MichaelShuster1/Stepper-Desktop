@@ -21,6 +21,7 @@ public class InputsDTO
     {
         return freeInputs.get(index);
     }
+
     public String getFlowName()
     {
         return flowName;

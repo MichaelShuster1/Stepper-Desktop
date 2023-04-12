@@ -29,6 +29,7 @@ public class Flow
     private String activationTime;
     private Map<String,Integer> formal_outputs;
     private List<Step> steps;
+    private Integer numberOfSteps;
     private Map<String,Integer> nameToIndex;
     private List<List<List<Pair<Integer,Integer>>>> connections;
     private Map<String,List<Integer>> flowInputs;
@@ -49,6 +50,11 @@ public class Flow
     {
         steps.add(step);
         nameToIndex.put(step.getName(),steps.size()-1);
+    }
+
+    public Integer getNumberOfSteps()
+    {
+        return numberOfSteps;
     }
 
     public void AddFormalOutput(String outputName)

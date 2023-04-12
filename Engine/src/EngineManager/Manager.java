@@ -3,6 +3,7 @@ package EngineManager;
 import DTO.InputsDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
+import Steps.Step;
 
 import java.util.*;
 
@@ -15,6 +16,16 @@ public class Manager implements EngineApi
     private Map<String,Statistics> stepsStatistics;
     private Flow currentFlow;
 
+
+    public Manager(Map<String, Statistics> flowsStatistics, Map<String, Statistics> stepsStatistics)
+    {
+        flows = new ArrayList<>();
+        flowsHistory = new ArrayList<>();
+        this.flowsStatistics = flowsStatistics;
+        this.stepsStatistics = stepsStatistics;
+    }
+
+
     public Manager()
     {
         flows = new ArrayList<>();
@@ -22,6 +33,7 @@ public class Manager implements EngineApi
         flowsStatistics=new LinkedHashMap<>();
         stepsStatistics=new LinkedHashMap<>();
     }
+
 
     @Override
     public List<String> getFlowsNames()
@@ -34,10 +46,13 @@ public class Manager implements EngineApi
         return namesList;
     }
 
+
     @Override
     public String loadXmlFile(String path) {
         return null;
     }
+
+
     @Override
     public String getFlowDefinition(int flowIndex)
     {
@@ -51,7 +66,6 @@ public class Manager implements EngineApi
         currentFlow=flows.get(flowIndex);
         return currentFlow.getInputList();
     }
-
 
     @Override
     public void processInput(String inputName, String data)
@@ -69,12 +83,9 @@ public class Manager implements EngineApi
     @Override
     public String runFlow()
     {
-        String res;
-        res= currentFlow.executeFlow();
-        FlowHistory flowHistory=new FlowHistory(currentFlow.getName(),
-                currentFlow.getFlowId(),currentFlow.getActivationTime(),currentFlow.getFlowHistoryData());
-        flowsHistory.add(0,flowHistory);
-        //statistics
+        String res=currentFlow.executeFlow();
+        addFlowHistory();
+        addStatistics();
         currentFlow.resetFlow();
         return res;
     }
@@ -114,9 +125,11 @@ public class Manager implements EngineApi
     }
 
 
-    public void addFlowHistory(FlowHistory history)
+    private void addFlowHistory()
     {
-        flowsHistory.add(history);
+        FlowHistory flowHistory=new FlowHistory(currentFlow.getName(),
+                currentFlow.getFlowId(),currentFlow.getActivationTime(),currentFlow.getFlowHistoryData());
+        flowsHistory.add(0,flowHistory);
     }
 
     public String getFlowsStatistics()
@@ -135,7 +148,6 @@ public class Manager implements EngineApi
         return res;
     }
 
-
     public String getStepsStatistics()
     {
         String currFlowStatistics,res="";
@@ -148,5 +160,19 @@ public class Manager implements EngineApi
             res+=currFlowStatistics;
         }
         return res;
+    }
+
+    private void addStatistics()
+    {
+        Integer size=currentFlow.getNumberOfSteps();
+        Statistics statistics=flowsStatistics.get(currentFlow.getName());
+        statistics.addRunTime(currentFlow.getRunTime());
+
+        for(int i=0;i<size;i++)
+        {
+            Step step =currentFlow.getStep(i);
+            statistics=stepsStatistics.get(step.getDefaultName());
+            statistics.addRunTime(step.getRunTime());
+        }
     }
 }

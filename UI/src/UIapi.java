@@ -268,7 +268,6 @@ public class UIapi
                 String inputName,user_string="";
                 InputData input=inputsInfo.getFreeInput(choice-1);
 
-
                 inputName=input.getSystemName();
                 user_string=input.getUserString();
 

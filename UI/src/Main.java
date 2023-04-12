@@ -1,5 +1,6 @@
 import EngineManager.EngineApi;
 import EngineManager.Manager;
+import EngineManager.Statistics;
 import Flow.Flow;
 import Flow.FlowHistory;
 import Steps.*;
@@ -12,8 +13,7 @@ public class Main
     public static void main(String[] args)
     {
 
-        Manager manager=new Manager();
-
+        Map<String,Statistics> statisticsMap=new LinkedHashMap<>();
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
@@ -49,6 +49,8 @@ public class Main
         flow.AutomaticMapping();
         flow.CalculateFreeInputs();;
 
+        statisticsMap.put(flow.getName(),new Statistics());
+
         Flow flow1=new Flow("Delete Matched Files","Given a folder, deletes files matching a certain pattern");
 
         flow1.AddFormalOutput("TOTAL_FOUND");
@@ -62,6 +64,10 @@ public class Main
         flow1.AutomaticMapping();
         flow1.CalculateFreeInputs();;
 
+
+        statisticsMap.put(flow1.getName(),new Statistics());
+
+        Manager manager=new Manager();
 
         manager.addFlow(flow);
         manager.addFlow(flow1);
