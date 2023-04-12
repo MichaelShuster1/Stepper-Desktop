@@ -166,7 +166,7 @@ public class Flow
         return activationTime;
     }
 
-    public List<String> getInputList()
+    public FreeInputDTO getInputList()
     {
         int i=1;
         List<String> inputMenu=new ArrayList<>();
