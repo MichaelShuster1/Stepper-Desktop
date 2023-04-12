@@ -244,7 +244,11 @@ public class Flow
         for(Step step:steps)
             step.resetStep();
 
-        freeMandatoryInputs.addAll(freeInputsIsReq.keySet());
+        for(String inputName:freeInputsIsReq.keySet())
+        {
+            if(freeInputsIsReq.get(inputName))
+                freeMandatoryInputs.add(inputName);
+        }
     }
 
     public void initConnections()
