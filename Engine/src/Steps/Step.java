@@ -3,10 +3,11 @@ package Steps;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public abstract class Step
+public abstract class Step implements Serializable
 {
     public enum State
     {

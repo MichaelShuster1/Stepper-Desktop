@@ -2,12 +2,13 @@ package DataDefinitions;
 
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class Relation {
+public class Relation implements Serializable {
 
     private List<Map<String,String>> rows;
     private List<String> columnNames;

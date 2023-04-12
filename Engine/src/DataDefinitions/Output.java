@@ -1,6 +1,8 @@
 package DataDefinitions;
 
-public class Output
+import java.io.Serializable;
+
+public class Output implements Serializable
 {
     private DataDefinition dataDefinition;
     private String userString;

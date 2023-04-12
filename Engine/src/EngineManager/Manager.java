@@ -5,10 +5,11 @@ import Flow.Flow;
 import Flow.FlowHistory;
 import Steps.Step;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Manager implements EngineApi
+public class Manager implements EngineApi, Serializable
 {
     private List<Flow> flows;
     private List<FlowHistory> flowsHistory;

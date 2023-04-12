@@ -104,6 +104,7 @@ public class UIapi
                 break;
             case 6:
                 exit = true;
+
                 break;
         }
         return exit;

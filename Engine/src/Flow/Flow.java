@@ -7,11 +7,12 @@ import DataDefinitions.Output;
 import Steps.Step;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class Flow
+public class Flow implements Serializable
 {
     public enum State
     {

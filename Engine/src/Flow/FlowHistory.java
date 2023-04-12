@@ -1,6 +1,8 @@
 package Flow;
 
-public class FlowHistory {
+import java.io.Serializable;
+
+public class FlowHistory implements Serializable {
     String flowName;
     String ID;
     String activationTime;

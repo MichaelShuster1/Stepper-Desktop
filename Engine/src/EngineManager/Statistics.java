@@ -1,6 +1,8 @@
 package EngineManager;
 
-public class Statistics
+import java.io.Serializable;
+
+public class Statistics implements Serializable
 {
     private Integer amount_times_activated;
     private Long sum_of_run_time;

@@ -1,6 +1,8 @@
 package DataDefinitions;
 
-public class Input
+import java.io.Serializable;
+
+public class Input implements Serializable
 {
     private DataDefinition dataDefinition;
     private final boolean user_friendly;
