@@ -1,11 +1,12 @@
 package EngineManager;
 
 import DTO.InputsDTO;
+import DTO.StatusDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
 import Steps.Step;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 
@@ -117,6 +118,55 @@ public class Manager implements EngineApi, Serializable
         String res="The Statistics of the flows: \n";
         res+=getFlowsStatistics()+"\nThe Statistics of the steps: \n"+getStepsStatistics();
         return res;
+    }
+
+    @Override
+    public StatusDTO saveDataOfSystemToFile(String FILE_NAME)
+    {
+        try(ObjectOutputStream out =
+                    new ObjectOutputStream(
+                            new FileOutputStream(FILE_NAME)))
+        {
+            //out.writeObject(this);
+            out.writeObject(flows);
+            out.writeObject(flowsHistory);
+            out.writeObject(flowsStatistics);
+            out.writeObject(stepsStatistics);
+            out.flush();
+            return new StatusDTO(true,"System's parameters saved successfully");
+        }
+        catch (Exception e)
+        {
+            return new StatusDTO(false,"the System's parameters were not saved successfully " +
+                    "because: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public StatusDTO loadDataOfSystemFromFile(String FILE_NAME)
+    {
+        File file = new File(FILE_NAME);
+        Manager manager = null;
+        if(file.exists())
+        {
+            try(ObjectInputStream in =
+                        new ObjectInputStream(
+                                new FileInputStream(FILE_NAME)))
+            {
+                flows = (List<Flow>) in.readObject();
+                flowsHistory=(List<FlowHistory>)  in.readObject();
+                flowsStatistics=(Map<String, Statistics>) in.readObject();
+                stepsStatistics=(Map<String, Statistics>) in.readObject();
+
+                return new StatusDTO(true,"Loaded the system successfully");
+            }
+            catch (Exception e)
+            {
+                return new StatusDTO(false,"Failed to load data from the given file " +
+                        "because: "+e.getMessage());
+            }
+        }
+        return new StatusDTO(false,"The file in the given path dont exist");
     }
 
 

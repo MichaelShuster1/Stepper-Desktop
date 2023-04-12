@@ -45,9 +45,41 @@ public class Main
         customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
         customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
 
+        flow.CustomMapping(customMappingInput);
+        flow.AutomaticMapping();
+        flow.CalculateFreeInputs();
+
+
+        flowsStatisticsMap.put(flow.getName(), new Statistics());
+
+        Flow flow1 = new Flow("Delete Matched Files", "Given a folder, deletes files matching a certain pattern");
+
+        flow1.AddFormalOutput("TOTAL_FOUND");
+        flow1.AddFormalOutput("DELETION_STATS");
+
+        flow1.AddStep(new CollectFiles("Collect Files In Folder", false));
+        flow1.AddStep(new SpendSomeTime("Spend Some Time", false));
+        flow1.AddStep(new FilesDeleter("Files Deleter", false));
+
+        flow1.CustomMapping(new HashMap<>());
+        flow1.AutomaticMapping();
+        flow1.CalculateFreeInputs();
+
+
+        flowsStatisticsMap.put(flow1.getName(), new Statistics());
+
+        Manager manager = new Manager(flowsStatisticsMap, HCSteps.getStatisticsMap());
+
+        manager.addFlow(flow);
+        manager.addFlow(flow1);
+
+        UIapi main = new UIapi(manager);
+        main.runSystem();
+
+
+        /*
         String  FILE_NAME = "Engine\\src\\SystemData.dat";
         File file = new File(FILE_NAME);
-        Manager manager = null;
         if(file.exists())
         {
             try(ObjectInputStream in =
@@ -70,7 +102,7 @@ public class Main
             flow.CustomMapping(customMappingInput);
             flow.AutomaticMapping();
             flow.CalculateFreeInputs();
-            ;
+
 
             flowsStatisticsMap.put(flow.getName(), new Statistics());
 
@@ -86,7 +118,6 @@ public class Main
             flow1.CustomMapping(new HashMap<>());
             flow1.AutomaticMapping();
             flow1.CalculateFreeInputs();
-            ;
 
 
             flowsStatisticsMap.put(flow1.getName(), new Statistics());
@@ -112,6 +143,7 @@ public class Main
             System.out.println(e.getMessage());
 
         }
+        */
 
 
     }

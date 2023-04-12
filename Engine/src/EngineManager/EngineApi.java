@@ -1,6 +1,7 @@
 package EngineManager;
 
 import DTO.InputsDTO;
+import DTO.StatusDTO;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface EngineApi
     String runFlow(); //getFlowInputs
     List<String> getInitialHistoryList();
     String getFullHistoryData(int flowIndex);
-    public String getStatistics();
+    String getStatistics();
+    StatusDTO saveDataOfSystemToFile(String path);
+    StatusDTO loadDataOfSystemFromFile(String path);
 }

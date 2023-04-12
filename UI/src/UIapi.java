@@ -1,5 +1,6 @@
 import DTO.InputData;
 import DTO.InputsDTO;
+import DTO.StatusDTO;
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 
@@ -46,17 +47,17 @@ public class UIapi
     {
         Boolean exit = false;
         boolean correctInput;
-        System.out.println("Welcome to the Stepper application!");
+        exit=InitialMenu();
         while(!exit)
         {
             correctInput = false;
-            printMenu();
+            printMainMenu();
             while(!correctInput)
             {
                 Integer userChoice = getIntInput();
                 if (userChoice != null)
                 {
-                    if (userChoice >= 1 && userChoice <= 6)
+                    if (userChoice >= 1 && userChoice <= 7)
                     {
                         exit = processInput(userChoice);
                         correctInput = true;
@@ -70,7 +71,47 @@ public class UIapi
         System.out.println("Goodbye!");
     }
 
-    public void printMenu()
+
+    public Boolean InitialMenu()
+    {
+        Integer userChoice;
+        Boolean exitFromApp = false,exitFromMenu=false;
+        System.out.println("Welcome to the Stepper application!");
+
+        while (!exitFromMenu)
+        {
+            printInitialMenu();
+
+            do {
+                userChoice = getIntInput();
+            } while (userChoice == null);
+
+            switch (userChoice)
+            {
+                case 1:
+                    exitFromMenu=true;
+                    break;
+                case 2:
+                    exitFromMenu=loadSystemDataFromFile();
+                    break;
+                case 3:
+                    exitFromApp = true;
+                    break;
+            }
+        }
+        return exitFromApp;
+    }
+
+    public void printInitialMenu()
+    {
+        System.out.println("Please select one of the following commands:");
+        System.out.println("1. Start with a fresh system");
+        System.out.println("2. Load system from a file");
+        System.out.println("3. Exit");
+        System.out.println("Please enter the index of the desired action [number] :");
+    }
+
+    public void printMainMenu()
     {
         System.out.println("Please select one of the following commands:");
         System.out.println("1. Load new XML file");
@@ -78,7 +119,8 @@ public class UIapi
         System.out.println("3. Execute a flow");
         System.out.println("4. Show past flows executions");
         System.out.println("5. Show statistics");
-        System.out.println("6. Exit");
+        System.out.println("6. Save the current system's parameters to a file");
+        System.out.println("7. Exit");
         System.out.printf("Please enter the index of the desired action [number] :");
     }
 
@@ -103,15 +145,40 @@ public class UIapi
                 showStatistics();
                 break;
             case 6:
+                saveSystemDataToFile();
+                break;
+            case 7:
                 exit = true;
-
                 break;
         }
         return exit;
 
     }
 
-    private void showStatistics()
+
+    public void saveSystemDataToFile()
+    {
+        String pathFile;
+        System.out.println("please enter the path of the file to save the system to:");
+        inputStream.nextLine();
+        pathFile=inputStream.nextLine();
+        StatusDTO result= engine.saveDataOfSystemToFile(pathFile);
+        System.out.println(result.getMessage());
+    }
+
+    public boolean loadSystemDataFromFile()
+    {
+        String pathFile;
+        System.out.println("please enter the path of the file to load the system from:");
+        inputStream.nextLine();
+        pathFile=inputStream.nextLine();
+        StatusDTO result=engine.loadDataOfSystemFromFile(pathFile);
+        System.out.println(result.getMessage());
+        return result.getStatus();
+    }
+
+
+    public void showStatistics()
     {
         System.out.println(engine.getStatistics());
     }
