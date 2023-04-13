@@ -507,9 +507,13 @@ public class Flow implements Serializable
         if(formal_outputs.size() > 0) {
             res += "FLOW'S FORMAL OUTPUTS:\n";
             for (String currOutput : formal_outputs.keySet()) {
-                int outPutIndex = steps.get(formal_outputs.get(currOutput)).getNameToOutputIndex().get(currOutput);
-                res += steps.get(formal_outputs.get(currOutput)).getOutput(outPutIndex).getUserString() + "\n";
-                res += steps.get(formal_outputs.get(currOutput)).getOutput(outPutIndex).getData().toString() + "\n";
+                Step step = steps.get(formal_outputs.get(currOutput));
+                int outPutIndex =step.getNameToOutputIndex().get(currOutput);
+                res += step.getOutput(outPutIndex).getUserString() + "\n";
+                if(step.getOutput(outPutIndex).getData() != null)
+                    res += step.getOutput(outPutIndex).getData().toString() + "\n";
+                else
+                    res += "The output wasn't produced\n";
 
             }
         }
@@ -588,8 +592,10 @@ public class Flow implements Serializable
     public String getOutputsHistoryData()
     {
         String res = "";
-        for(Step step: steps)
+        boolean flowStopped = false;
+        for(int i=0; i<steps.size() && !flowStopped ;i++)
         {
+            Step step = steps.get(i);
             List<Output> outputs = step.getOutputs();
             for(Output output : outputs)
             {
@@ -600,6 +606,8 @@ public class Flow implements Serializable
                     res += "Data:\n" + output.getData().toString() + "\n\n";
                 }
             }
+            if(step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+                flowStopped = true;
         }
         return res;
     }
@@ -607,9 +615,13 @@ public class Flow implements Serializable
     public String getStepsHistoryData()
     {
         String res = "";
-        for(Step step: steps)
+        boolean flowStopped = false;
+        for(int i = 0;i<steps.size() && !flowStopped;i++)
         {
+            Step step = steps.get(i);
             res += step.getStepHistoryData();
+            if(step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+                flowStopped = true;
         }
         return res;
     }

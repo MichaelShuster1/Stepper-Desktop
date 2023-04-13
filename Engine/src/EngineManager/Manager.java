@@ -4,6 +4,7 @@ import DTO.InputsDTO;
 import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
+import Steps.State;
 import Steps.Step;
 
 import java.io.*;
@@ -223,12 +224,15 @@ public class Manager implements EngineApi, Serializable
         Integer size=currentFlow.getNumberOfSteps();
         Statistics statistics=flowsStatistics.get(currentFlow.getName());
         statistics.addRunTime(currentFlow.getRunTime());
+        boolean flowStopped = false;
 
-        for(int i=0;i<size;i++)
+        for(int i=0;i<size && !flowStopped;i++)
         {
             Step step =currentFlow.getStep(i);
             statistics=stepsStatistics.get(step.getDefaultName());
             statistics.addRunTime(step.getRunTime());
+            if(step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+                flowStopped = true;
         }
     }
 }

@@ -92,30 +92,34 @@ public class FilesRenamer extends Step
                     row.put("Original name",currName);
                     row.put("Name after change",newNameFile.getName());
                     dataTable.addRow(row);
-                    setState_after_run(State.SUCCESS);
                     index++;
                 }
                 else {
                     addLineToLog("Problem renaming file " + currName);
-                    if(getState_after_run() != null && getState_after_run() == State.WARNING)
+                    if(failedToRenameFiles.length() == 0) {
                         failedToRenameFiles = currName;
-                    else {
-                        failedToRenameFiles = currName + ", " + failedToRenameFiles;
                         setState_after_run(State.WARNING);
                     }
+                    else
+                        failedToRenameFiles = currName + ", " + failedToRenameFiles;
                 }
-                failedToRenameFiles = "Renaming failed for the following files: " + failedToRenameFiles;
-                if(getState_after_run() != null && getState_after_run() == State.WARNING)
-                    summaryLine = "Warning: " + failedToRenameFiles + "\n" + "Other files(if any) were renamed successfully";
-
             }
 
 
         }
-        if(summaryLine == null)
-        {
-            summaryLine = "The step renamed the files successfully";
+
+        if(failedToRenameFiles.length() > 0) {
+            failedToRenameFiles = "Renaming failed for the following files: " + failedToRenameFiles;
         }
+        if(getState_after_run() != null && getState_after_run() == State.WARNING)
+            summaryLine = "Warning: " + failedToRenameFiles + "\n" + "Other files(if any) were renamed successfully";
+
+        if(summaryLine == null)
+            summaryLine = "The step renamed the files successfully";
+
+        if(state_after_run == null)
+            state_after_run = State.SUCCESS;
+
         outputs.get(0).setData(dataTable);
         runTime=System.currentTimeMillis()-startTime;
 
