@@ -165,7 +165,6 @@ public class UIapi
     {
         String pathFile;
         System.out.println("Please enter the full path of the file to save the system to (including the file name):");
-        inputStream.nextLine();
         pathFile=inputStream.nextLine();
         ResultDTO result= engine.saveDataOfSystemToFile(pathFile);
         System.out.println(result.getMessage());
@@ -175,7 +174,6 @@ public class UIapi
     {
         String pathFile;
         System.out.println("Please enter the full path of the file to load the system from:");
-        inputStream.nextLine();
         pathFile=inputStream.nextLine();
         ResultDTO result=engine.loadDataOfSystemFromFile(pathFile);
         System.out.println(result.getMessage());
@@ -282,10 +280,14 @@ public class UIapi
     {
         Integer res = null;
 
-        try {
+        try
+        {
             res = inputStream.nextInt();
-
-        } catch (Exception e) {
+            if(inputStream.hasNextLine())
+                inputStream.nextLine();
+        }
+        catch (Exception e)
+        {
             System.out.println("Incorrect input. please enter an Integer only");
             inputStream.nextLine();
         }
@@ -344,7 +346,6 @@ public class UIapi
 
                 System.out.println(user_string+":");
 
-                inputStream.nextLine();
                 data = inputStream.nextLine();
                 ResultDTO res=engine.processInput(inputName, data);
                 System.out.println(res.getMessage()+"\n");
