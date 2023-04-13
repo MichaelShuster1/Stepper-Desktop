@@ -336,6 +336,7 @@ public class UIapi
             } while (choice==null);
 
 
+
             if(choice<=size&& choice>=1)
             {
                 String inputName,user_string="";
@@ -350,15 +351,19 @@ public class UIapi
                 ResultDTO res=engine.processInput(inputName, data);
                 System.out.println(res.getMessage()+"\n");
             }
-            else if(choice.equals(size+1))
+            else if(choice.equals(size+1) && flowReady)
             {
                 runFlow=true;
                 System.out.println(engine.runFlow());
             }
             else if(choice.equals(0))
                 return;
-            else
-                System.out.println("Wrong number entered");
+            else {
+                if(flowReady)
+                   System.out.println("Incorrect index, please enter an index between 1-" + size+1 + ", or 0 to go back to the menu");
+                else
+                    System.out.println("Incorrect index, please enter an index between 1-" + size + ", or 0 to go back to the menu");
+            }
 
         }
     }
