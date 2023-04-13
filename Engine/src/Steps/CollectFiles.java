@@ -55,7 +55,9 @@ public class CollectFiles extends Step
 
         String log = "Reading folder "+ directory.getAbsolutePath()  + " content with filter: ";
         if(filter != null)
-            log += "filter";
+            log += filter;
+        else
+            log+= "no filter was provided";
         addLineToLog(log);
 
 

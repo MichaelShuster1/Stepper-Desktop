@@ -1,6 +1,6 @@
 import DTO.InputData;
 import DTO.InputsDTO;
-import DTO.StatusDTO;
+import DTO.ResultDTO;
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 
@@ -63,7 +63,7 @@ public class UIapi
                         correctInput = true;
                     }
                     else
-                        System.out.println("Incorrect index, please enter an index between 1-6");
+                        System.out.println("Incorrect index, please enter an index between 1-7");
                 }
             }
 
@@ -98,6 +98,9 @@ public class UIapi
                     exitFromMenu=true;
                     exitFromApp = true;
                     break;
+                default:
+                    System.out.println("Incorrect index, please enter an index between 1-3");
+                    break;
             }
         }
         return exitFromApp;
@@ -114,6 +117,7 @@ public class UIapi
 
     public void printMainMenu()
     {
+        System.out.println("The main menu:");
         System.out.println("Please select one of the following commands:");
         System.out.println("1. Load new XML file");
         System.out.println("2. Show current flows definitions");
@@ -163,7 +167,7 @@ public class UIapi
         System.out.println("please enter the path of the file to save the system to:");
         inputStream.nextLine();
         pathFile=inputStream.nextLine();
-        StatusDTO result= engine.saveDataOfSystemToFile(pathFile);
+        ResultDTO result= engine.saveDataOfSystemToFile(pathFile);
         System.out.println(result.getMessage());
     }
 
@@ -173,7 +177,7 @@ public class UIapi
         System.out.println("please enter the path of the file to load the system from:");
         inputStream.nextLine();
         pathFile=inputStream.nextLine();
-        StatusDTO result=engine.loadDataOfSystemFromFile(pathFile);
+        ResultDTO result=engine.loadDataOfSystemFromFile(pathFile);
         System.out.println(result.getMessage());
         return result.getStatus();
     }
@@ -258,12 +262,12 @@ public class UIapi
     }
 
 
-    public void printIndexedList(List<String> list)
+    private void printIndexedList(List<String> list)
     {
         printIndexedList(list, "");
     }
 
-    public void printIndexedList(List<String> list, String changeAfterIndex)
+    private void printIndexedList(List<String> list, String changeAfterIndex)
     {
         int index = 1;
         for (String data : list) {
@@ -274,7 +278,7 @@ public class UIapi
     }
 
 
-    public Integer getIntInput()
+    private Integer getIntInput()
     {
         Integer res = null;
 
@@ -309,7 +313,6 @@ public class UIapi
 
         while (!runFlow)
         {
-            System.out.println("0. Exit");
             System.out.println(inputMenu);
 
             flowReady=engine.IsFlowReady();
@@ -317,7 +320,7 @@ public class UIapi
             if(flowReady)
                 System.out.println((size+1)+".Execute the flow");
 
-            System.out.println("Enter the number 0 to go back to the menu");
+            System.out.println("Enter the number 0 to go back to the main menu");
             System.out.println("Enter a number between 1 to " + size + " to enter the data  of the desired input you want");
             if(flowReady)
                 System.out.println("Enter the number "+ (size+1) + " to to execute the current flow");
@@ -333,7 +336,6 @@ public class UIapi
 
             if(choice<=size&& choice>=1)
             {
-
                 String inputName,user_string="";
                 InputData input=inputsInfo.getFreeInput(choice-1);
 
@@ -344,7 +346,8 @@ public class UIapi
 
                 inputStream.nextLine();
                 data = inputStream.nextLine();
-                engine.processInput(inputName, data);
+                ResultDTO res=engine.processInput(inputName, data);
+                System.out.println(res.getMessage()+"\n");
             }
             else if(choice.equals(size+1))
             {
@@ -365,6 +368,8 @@ public class UIapi
     {
         String inputMenu="",inputToShow="";
         Integer size=inputsInfo.getNumberOfInputs();
+        inputMenu+="The input menu:\n";
+        inputMenu+="0. Exit\n";
         for (int i=0;i<size;i++)
         {
             InputData input=inputsInfo.getFreeInput(i);
@@ -377,7 +382,7 @@ public class UIapi
                 inputToShow+="optional";
             inputToShow+="]";
 
-            inputMenu+=(i+1)+"."+inputToShow+"\n";
+            inputMenu+=(i+1)+". "+inputToShow+"\n";
         }
         return  inputMenu;
     }

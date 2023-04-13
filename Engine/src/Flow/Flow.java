@@ -2,6 +2,7 @@ package Flow;
 
 import DTO.InputData;
 import DTO.InputsDTO;
+import DTO.ResultDTO;
 import DataDefinitions.Input;
 import DataDefinitions.Output;
 import Steps.State;
@@ -193,13 +194,10 @@ public class Flow implements Serializable
         return(freeMandatoryInputs.isEmpty());
     }
 
-    public void processInput(String inputName,String rawData)
+    public ResultDTO processInput(String inputName, String rawData)
     {
-        if(freeMandatoryInputs.contains(inputName))
-            freeMandatoryInputs.remove(inputName);
-
-
         List<Integer> indexList =flowFreeInputs.get(inputName);
+        String message;
 
         for(Integer stepIndex:indexList)
         {
@@ -210,17 +208,41 @@ public class Flow implements Serializable
             switch (input.getType())
             {
                 case "DataNumber":
-                    input.setData(Integer.parseInt(rawData));
+                    try
+                    {
+                        Integer number=Integer.parseInt(rawData);
+                        input.setData(number);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        message="the input was not processed successfully: "
+                                +"expects to receive an integer only";
+                        return new ResultDTO(false,message);
+                    }
                     break;
                 case "DataDouble":
-                    input.setData(Double.parseDouble(rawData));
+                    try
+                    {
+                        input.setData(Double.parseDouble(rawData));
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        message="the input was not processed successfully :"
+                                +" expects to receive a real number only with a dot"
+                                + " [for example: 2.0]";
+                        return new ResultDTO(false,message);
+                    }
                     break;
                 case "DataString":
                     input.setData(rawData);
                     break;
             }
-
         }
+
+        if(freeMandatoryInputs.contains(inputName))
+            freeMandatoryInputs.remove(inputName);
+
+        return new ResultDTO(true,"the input was processed successfully");
     }
 
 

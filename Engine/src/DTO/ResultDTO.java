@@ -1,11 +1,11 @@
 package DTO;
 
-public class StatusDTO
+public class ResultDTO
 {
     private boolean status;
     private String message;
 
-    public StatusDTO(boolean status, String message) {
+    public ResultDTO(boolean status, String message) {
         this.status = status;
         this.message = message;
     }

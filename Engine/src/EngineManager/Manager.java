@@ -1,7 +1,7 @@
 package EngineManager;
 
 import DTO.InputsDTO;
-import DTO.StatusDTO;
+import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
 import Steps.Step;
@@ -70,9 +70,9 @@ public class Manager implements EngineApi, Serializable
 
 
     @Override
-    public void processInput(String inputName, String data)
+    public ResultDTO processInput(String inputName, String data)
     {
-        currentFlow.processInput(inputName,data);
+        return currentFlow.processInput(inputName,data);
     }
 
 
@@ -124,7 +124,7 @@ public class Manager implements EngineApi, Serializable
 
 
     @Override
-    public StatusDTO saveDataOfSystemToFile(String FILE_NAME)
+    public ResultDTO saveDataOfSystemToFile(String FILE_NAME)
     {
         try(ObjectOutputStream out =
                     new ObjectOutputStream(
@@ -136,17 +136,17 @@ public class Manager implements EngineApi, Serializable
             out.writeObject(flowsStatistics);
             out.writeObject(stepsStatistics);
             out.flush();
-            return new StatusDTO(true,"System's parameters saved successfully");
+            return new ResultDTO(true,"System's parameters saved successfully");
         }
         catch (Exception e)
         {
-            return new StatusDTO(false,"the System's parameters were not saved successfully " +
+            return new ResultDTO(false,"the System's parameters were not saved successfully " +
                     "because: "+e.getMessage());
         }
     }
 
     @Override
-    public StatusDTO loadDataOfSystemFromFile(String FILE_NAME)
+    public ResultDTO loadDataOfSystemFromFile(String FILE_NAME)
     {
         File file = new File(FILE_NAME);
         Manager manager = null;
@@ -161,15 +161,15 @@ public class Manager implements EngineApi, Serializable
                 flowsStatistics=(Map<String, Statistics>) in.readObject();
                 stepsStatistics=(Map<String, Statistics>) in.readObject();
 
-                return new StatusDTO(true,"Loaded the system successfully");
+                return new ResultDTO(true,"Loaded the system successfully");
             }
             catch (Exception e)
             {
-                return new StatusDTO(false,"Failed to load data from the given file " +
+                return new ResultDTO(false,"Failed to load data from the given file " +
                         "because: "+e.getMessage());
             }
         }
-        return new StatusDTO(false,"The file in the given path dont exist");
+        return new ResultDTO(false,"The file in the given path dont exist");
     }
 
 
