@@ -350,7 +350,7 @@ public class UIapi
                 ResultDTO res=engine.processInput(inputName, data);
                 System.out.println(res.getMessage()+"\n");
             }
-            else if(choice.equals(size+1))
+            else if(choice.equals(size+1)&&flowReady)
             {
                 runFlow=true;
                 System.out.println(engine.runFlow());
