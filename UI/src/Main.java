@@ -65,13 +65,29 @@ public class Main
         flow1.AutomaticMapping();
         flow1.CalculateFreeInputs();
 
-        
+        Flow flow2 = new Flow("Test for extractor","Description");
+        flow2.AddFormalOutput("RESULT");
+        flow2.AddStep(new CollectFiles("Collect Files In Folder",false));
+        flow2.AddStep(new FilesContentExtractor("Files Content Extractor",false));
+        flow2.AddStep(new CSVExporter("CSV Exporter",false));
+
+        Map<Pair<String,String>,Pair<String,String>> customMappingInput1 = new HashMap<>();
+        customMappingInput1.put(new Pair<>("Files Content Extractor","DATA"), new Pair<>("CSV Exporter","SOURCE"));
+
+        flow2.CustomMapping(customMappingInput1);
+        flow2.AutomaticMapping();
+        flow2.CalculateFreeInputs();
+        flowsStatisticsMap.put(flow2.getName(), new Statistics());
+
+
+
         flowsStatisticsMap.put(flow1.getName(), new Statistics());
 
         Manager manager = new Manager(flowsStatisticsMap, HCSteps.getStatisticsMap());
 
         manager.addFlow(flow);
         manager.addFlow(flow1);
+        manager.addFlow(flow2);
 
         UIapi main = new UIapi(manager);
         main.runSystem();

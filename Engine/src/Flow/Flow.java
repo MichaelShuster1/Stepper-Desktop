@@ -41,6 +41,7 @@ public class Flow implements Serializable
         nameToIndex = new HashMap<>();
         formal_outputs = new HashMap<>();
         numberOfSteps=0;
+
     }
 
     public void AddStep(Step step)
@@ -79,9 +80,13 @@ public class Flow implements Serializable
 
     public void AutomaticMapping()
     {
-        initFlowInputs();
-        read_only = true;
         int a;
+        read_only = true;
+
+        initFlowInputs();
+        if(connections == null)
+            initConnections();
+
         for(int i=0;i<steps.size();i++)
         {
             Step step = steps.get(i);
@@ -93,7 +98,7 @@ public class Flow implements Serializable
             for(Output output:outputs)
             {
                 List<Pair<Integer,Integer>> pairs=new ArrayList<>();
-                List<Integer> integerList =flowInputs.get(output.getName());
+                List<Integer> integerList = flowInputs.get(output.getName());
                 if(formal_outputs.containsKey(output.getName()))
                 {
                     formal_outputs.put(output.getName(),i);

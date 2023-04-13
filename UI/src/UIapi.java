@@ -126,7 +126,7 @@ public class UIapi
         System.out.println("5. Show statistics");
         System.out.println("6. Save the current system's parameters to a file");
         System.out.println("7. Exit");
-        System.out.printf("Please enter the index of the desired action [number] :");
+        System.out.println("Please enter the index of the desired action [number] :");
     }
 
     public Boolean processInput(int index)
@@ -164,7 +164,7 @@ public class UIapi
     public void saveSystemDataToFile()
     {
         String pathFile;
-        System.out.println("please enter the path of the file to save the system to:");
+        System.out.println("Please enter the full path of the file to save the system to (including the file name):");
         inputStream.nextLine();
         pathFile=inputStream.nextLine();
         ResultDTO result= engine.saveDataOfSystemToFile(pathFile);
@@ -174,7 +174,7 @@ public class UIapi
     public boolean loadSystemDataFromFile()
     {
         String pathFile;
-        System.out.println("please enter the path of the file to load the system from:");
+        System.out.println("Please enter the full path of the file to load the system from:");
         inputStream.nextLine();
         pathFile=inputStream.nextLine();
         ResultDTO result=engine.loadDataOfSystemFromFile(pathFile);
@@ -213,7 +213,7 @@ public class UIapi
                 System.out.println(engine.getFullHistoryData(userChoice));
             }
         }
-        else System.out.println("There are currently no past executions");
+        else System.out.println("There are currently no past executions\n");
     }
 
 
