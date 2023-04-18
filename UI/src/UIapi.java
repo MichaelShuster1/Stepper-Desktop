@@ -47,7 +47,7 @@ public class UIapi
     {
         Boolean exit = false;
         boolean correctInput;
-        exit=InitialMenu();
+        System.out.println("Welcome to the Stepper application!");
         while(!exit)
         {
             correctInput = false;
@@ -57,13 +57,13 @@ public class UIapi
                 Integer userChoice = getIntInput();
                 if (userChoice != null)
                 {
-                    if (userChoice >= 1 && userChoice <= 7)
+                    if (userChoice >= 1 && userChoice <= 8)
                     {
                         exit = processInput(userChoice);
                         correctInput = true;
                     }
                     else
-                        System.out.println("Incorrect index, please enter an index between 1-7");
+                        System.out.println("Incorrect index, please enter an index between 1-8");
                 }
             }
 
@@ -71,7 +71,7 @@ public class UIapi
         System.out.println("Goodbye!");
     }
 
-
+/*
     public Boolean InitialMenu()
     {
         Integer userChoice;
@@ -106,7 +106,9 @@ public class UIapi
         return exitFromApp;
     }
 
-    public void printInitialMenu()
+ */
+
+   /* public void printInitialMenu()
     {
         System.out.println("Please select one of the following commands:");
         System.out.println("1. Start with a fresh system");
@@ -114,6 +116,8 @@ public class UIapi
         System.out.println("3. Exit");
         System.out.println("Please enter the index of the desired action [number] :");
     }
+
+    */
 
     public void printMainMenu()
     {
@@ -124,8 +128,9 @@ public class UIapi
         System.out.println("3. Execute a flow");
         System.out.println("4. Show past flows executions");
         System.out.println("5. Show statistics");
-        System.out.println("6. Save the current system's parameters to a file");
-        System.out.println("7. Exit");
+        System.out.println("6. Load previous system state from a file");
+        System.out.println("7. Save the current system's parameters to a file");
+        System.out.println("8. Exit");
         System.out.println("Please enter the index of the desired action [number] :");
     }
 
@@ -150,14 +155,16 @@ public class UIapi
                 showStatistics();
                 break;
             case 6:
-                saveSystemDataToFile();
+                loadSystemDataFromFile();
                 break;
             case 7:
+                saveSystemDataToFile();
+                break;
+            case 8:
                 exit = true;
                 break;
         }
         return exit;
-
     }
 
 
