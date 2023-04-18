@@ -7,7 +7,7 @@ public abstract class DataDefinition<T> implements Serializable
     protected String name;
     protected final String type;
 
-    public DataDefinition(String name, String type)
+    protected DataDefinition(String name, String type)
     {
         this.name = name;
         this.type = type;

@@ -24,7 +24,7 @@ public abstract class Step implements Serializable
 
     protected Long runTime;
 
-    public Step(String name, boolean read_only,boolean continue_if_failing)
+    protected Step(String name, boolean read_only,boolean continue_if_failing)
     {
         this.name = name;
         this.read_only = read_only;
