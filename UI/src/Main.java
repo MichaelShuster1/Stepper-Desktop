@@ -2,10 +2,14 @@ import DataDefinitions.DataString;
 import EngineManager.Manager;
 import EngineManager.Statistics;
 import Flow.Flow;
+import Generated.STStepper;
 import HardCodedData.HCSteps;
 import Steps.*;
 import javafx.util.Pair;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.*;
 
@@ -90,7 +94,23 @@ public class Main
         manager.addFlow(flow2);
 
         UIapi main = new UIapi(manager);
-        main.runSystem();
+       // main.runSystem();
+
+        STStepper stepper;
+        File file = new File("C:\\Users\\Igal\\Desktop\\New folder\\ex1.xml");
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
+            System.out.println("hello");
+            //System.out.println(STStepper);
+        }
+        catch (JAXBException e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("failed");
+
+        }
     }
 
 }
