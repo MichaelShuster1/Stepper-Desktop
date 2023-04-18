@@ -140,7 +140,7 @@ public class UIapi
         switch (index)
         {
             case 1:
-                //Load XML
+                loadXMLFile();
                 break;
             case 2:
                 showFlowsDefinitions();
@@ -165,6 +165,13 @@ public class UIapi
                 break;
         }
         return exit;
+    }
+
+    public void loadXMLFile() {
+        String path;
+        System.out.println("Please enter the full path of the XML file: ");
+        path = inputStream.nextLine();
+        engine.loadXmlFile(path);
     }
 
 

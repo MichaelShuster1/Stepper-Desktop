@@ -4,9 +4,13 @@ import DTO.InputsDTO;
 import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
+import Generated.STStepper;
 import Steps.State;
 import Steps.Step;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.*;
 
@@ -51,6 +55,20 @@ public class Manager implements EngineApi, Serializable
 
     @Override
     public String loadXmlFile(String path) {
+        STStepper stepper;
+        File file = new File(path);
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
+
+        }
+        catch (JAXBException e)
+        {
+            System.out.println(e.getMessage());
+
+        }
+
         return null;
     }
 

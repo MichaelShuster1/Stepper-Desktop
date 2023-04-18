@@ -93,23 +93,9 @@ public class Main
         manager.addFlow(flow2);
 
         UIapi main = new UIapi(manager);
-       // main.runSystem();
+        main.runSystem();
 
-        STStepper stepper;
-        File file = new File("C:\\Users\\Igal\\Desktop\\New folder\\ex1.xml");
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
-            System.out.println("hello");
-            //System.out.println(STStepper);
-        }
-        catch (JAXBException e)
-        {
-            System.out.println(e.getMessage());
-            System.out.println("failed");
 
-        }
     }
 
 }
