@@ -58,17 +58,23 @@ public class FilesDeleter extends Step
                     files_deleted++;
             }
 
-            if (paths.size() == 0)
+            if (files_deleted==files.size())
             {
                 state_after_run = State.SUCCESS;
                 addLineToLog("All files have been deleted successfully");
                 summaryLine="All files have been deleted successfully";
             }
-            else
+            else if(files_deleted!=0)
             {
                 state_after_run = State.WARNING;
-                addLineToLog("Not all files were deleted successfully");
-                summaryLine="Not all files were deleted successfully";
+                addLineToLog("Only part of the given files were deleted successfully");
+                summaryLine="Only part of the given files were deleted successfully";
+            }
+            else
+            {
+                state_after_run = State.FAILURE;
+                addLineToLog("All files were not deleted successfully");
+                summaryLine="All files were not deleted successfully";
             }
         }
         else
