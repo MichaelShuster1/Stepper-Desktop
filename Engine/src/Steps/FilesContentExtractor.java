@@ -66,21 +66,21 @@ public class FilesContentExtractor extends Step
                         }
                         else
                         {
-                            addLineToLog("Problem extracting line number " + line_number
+                            addLineToLog("Problem extracting line number " + (line_number+1)
                                     + " from file "+ file.getName());
                             row.put("the info that been extracted","Not such line");
                         }
                     }
                     catch (FileNotFoundException e)
                     {
-                        addLineToLog("Problem extracting line number " + line_number
+                        addLineToLog("Problem extracting line number " + (line_number+1)
                                 + " from file "+ file.getName());
                         row.put("the info that been extracted","File not found");
                     }
                 }
                 else
                 {
-                    addLineToLog("Problem extracting line number " + line_number
+                    addLineToLog("Problem extracting line number " + (line_number+1)
                             + " from file "+ file.getName());
                     row.put("the info that been extracted","File not found");
                 }

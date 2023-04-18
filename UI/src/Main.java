@@ -13,7 +13,6 @@ public class Main
 {
     public static void main(String[] args)
     {
-
         Map<String,Statistics> flowsStatisticsMap =new LinkedHashMap<>();
 
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
