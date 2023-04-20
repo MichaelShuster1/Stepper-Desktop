@@ -1,6 +1,8 @@
 package HardCodedData;
 
 import EngineManager.Statistics;
+import Steps.SpendSomeTime;
+import Steps.Step;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

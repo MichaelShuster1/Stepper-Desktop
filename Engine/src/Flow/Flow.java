@@ -56,7 +56,7 @@ public class Flow implements Serializable
         return numberOfSteps;
     }
 
-    public void AddFormalOutput(String outputName)
+    public void addFormalOutput(String outputName)
     {
         formal_outputs.put(outputName,-1);
     }
@@ -74,7 +74,6 @@ public class Flow implements Serializable
             connections.get(outPutStepIndex).get(outPutIndex).add(new Pair<>(inputStepIndex,inputIndex));
             steps.get(inputStepIndex).getInput(inputIndex).setConnected(true);
         }
-
     }
 
 
@@ -168,6 +167,11 @@ public class Flow implements Serializable
         }
     }
 
+
+    public Integer getStepIndexByName(String name)
+    {
+        return nameToIndex.get(name);
+    }
 
     public Long getRunTime() {
         return runTime;

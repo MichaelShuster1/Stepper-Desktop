@@ -51,14 +51,14 @@ public abstract class Step implements Serializable
         this.name = name;
     }
 
-    public void ChangeInputName(String oldName,String newName)
+    public void changeInputName(String oldName, String newName)
     {
         Integer index=nameToInputIndex.remove(oldName);
         nameToInputIndex.put(newName,index);
         inputs.get(index).setName(newName);
     }
 
-    public void ChangeOutputName(String oldName,String newName)
+    public void changeOutputName(String oldName, String newName)
     {
         Integer index=nameToOutputIndex.remove(oldName);
         nameToOutputIndex.put(newName,index);

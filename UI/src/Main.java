@@ -1,16 +1,10 @@
-import DataDefinitions.DataString;
 import EngineManager.Manager;
 import EngineManager.Statistics;
 import Flow.Flow;
-import Generated.STStepper;
 import HardCodedData.HCSteps;
 import Steps.*;
 import javafx.util.Pair;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.*;
 import java.util.*;
 
 public class Main
@@ -19,11 +13,12 @@ public class Main
     {
         Map<String,Statistics> flowsStatisticsMap =new LinkedHashMap<>();
 
+        /*
         Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
                 " suffix to each file name. The renaming results are expressed via CSV and Properties files");
 
-        flow.AddFormalOutput("PROP_RESULT");
-        flow.AddFormalOutput("CSV_RESULT");
+        flow.addFormalOutput("PROP_RESULT");
+        flow.addFormalOutput("CSV_RESULT");
 
 
         flow.AddStep(new CollectFiles("Collect Files In Folder",false));
@@ -34,13 +29,13 @@ public class Main
         flow.AddStep(new FileDumper("Properties File Dumper",true));
 
 
-        flow.getStep(1).ChangeOutputName("RENAME_RESULT","SOURCE");
-        flow.getStep(2).ChangeOutputName("RESULT","CSV_RESULT");
-        flow.getStep(3).ChangeInputName("FILE_NAME","CSV_FILE_NAME");
-        flow.getStep(3).ChangeOutputName("RESULT","CSV_FILE_DUMP_RESULT");
-        flow.getStep(4).ChangeOutputName("RESULT","PROP_RESULT");
-        flow.getStep(5).ChangeInputName("FILE_NAME","PROP_FILE_NAME");
-        flow.getStep(5).ChangeOutputName("RESULT","PROP_FILE_DUMP_RESULT");
+        flow.getStep(1).changeOutputName("RENAME_RESULT","SOURCE");
+        flow.getStep(2).changeOutputName("RESULT","CSV_RESULT");
+        flow.getStep(3).changeInputName("FILE_NAME","CSV_FILE_NAME");
+        flow.getStep(3).changeOutputName("RESULT","CSV_FILE_DUMP_RESULT");
+        flow.getStep(4).changeOutputName("RESULT","PROP_RESULT");
+        flow.getStep(5).changeInputName("FILE_NAME","PROP_FILE_NAME");
+        flow.getStep(5).changeOutputName("RESULT","PROP_FILE_DUMP_RESULT");
 
 
         Map<Pair<String,String>,Pair<String,String>> customMappingInput = new HashMap<>();
@@ -57,8 +52,8 @@ public class Main
 
         Flow flow1 = new Flow("Delete Matched Files", "Given a folder, deletes files matching a certain pattern");
 
-        flow1.AddFormalOutput("TOTAL_FOUND");
-        flow1.AddFormalOutput("DELETION_STATS");
+        flow1.addFormalOutput("TOTAL_FOUND");
+        flow1.addFormalOutput("DELETION_STATS");
 
         flow1.AddStep(new CollectFiles("Collect Files In Folder", false));
         flow1.AddStep(new SpendSomeTime("Spend Some Time", false));
@@ -69,7 +64,7 @@ public class Main
         flow1.CalculateFreeInputs();
 
         Flow flow2 = new Flow("Test for extractor","Description");
-        flow2.AddFormalOutput("RESULT");
+        flow2.addFormalOutput("RESULT");
         flow2.AddStep(new CollectFiles("Collect Files In Folder",false));
         flow2.AddStep(new FilesContentExtractor("Files Content Extractor",false));
         flow2.AddStep(new CSVExporter("CSV Exporter",false));
@@ -82,15 +77,17 @@ public class Main
         flow2.CalculateFreeInputs();
         flowsStatisticsMap.put(flow2.getName(), new Statistics());
 
-
-
         flowsStatisticsMap.put(flow1.getName(), new Statistics());
 
-        Manager manager = new Manager(flowsStatisticsMap, HCSteps.getStatisticsMap());
+         */
 
+        Manager manager = new Manager();
+
+        /*
         manager.addFlow(flow);
         manager.addFlow(flow1);
         manager.addFlow(flow2);
+        */
 
         UIapi main = new UIapi(manager);
         main.runSystem();

@@ -4,9 +4,9 @@ import DTO.InputsDTO;
 import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
-import Generated.STStepper;
-import Steps.State;
-import Steps.Step;
+import Generated.*;
+import Steps.*;
+import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -54,14 +54,16 @@ public class Manager implements EngineApi, Serializable
     }
 
     @Override
-    public String loadXmlFile(String path) {
+    public String loadXmlFile(String path)
+    {
         STStepper stepper;
         File file = new File(path);
-        try {
+        try
+        {
             JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
-
+            createFlows(stepper);
         }
         catch (JAXBException e)
         {
@@ -70,6 +72,139 @@ public class Manager implements EngineApi, Serializable
         }
 
         return null;
+    }
+
+    private void createFlows(STStepper stepper)
+    {
+        List<STFlow> stFlows= stepper.getSTFlows().getSTFlow();
+        for (STFlow stFlow: stFlows)
+        {
+            currentFlow=new Flow(stFlow.getName(),stFlow.getSTFlowDescription());
+            addFlowOutputs(stFlow);
+            addSteps(stFlow);
+            implementAliasing(stFlow);
+            currentFlow.CustomMapping(getCustomMappings(stFlow));
+            currentFlow.AutomaticMapping();
+            currentFlow.CalculateFreeInputs();
+            flows.add(currentFlow);
+        }
+    }
+
+    private Map<Pair<String,String>,Pair<String,String>> getCustomMappings(STFlow stFlow)
+    {
+        Map<Pair<String,String>,Pair<String,String>> customMappings=new HashMap<>();
+
+        if(stFlow.getSTCustomMappings()==null)
+            return  customMappings;
+
+        List<STCustomMapping> customMappingsList= stFlow.getSTCustomMappings().getSTCustomMapping();
+
+        for(STCustomMapping customMapping:customMappingsList)
+        {
+            customMappings.put(new Pair<>(customMapping.getSourceStep(),customMapping.getSourceData()),
+                    new Pair<>(customMapping.getTargetStep(),customMapping.getTargetData()));
+        }
+        return  customMappings;
+    }
+
+    private void implementAliasing(STFlow stFlow)
+    {
+        if(stFlow.getSTFlowLevelAliasing()==null)
+            return;
+
+        List<STFlowLevelAlias> aliases= stFlow.getSTFlowLevelAliasing().getSTFlowLevelAlias();
+
+        for(STFlowLevelAlias alias:aliases)
+        {
+            implementAlias(alias);
+        }
+    }
+
+    private void implementAlias(STFlowLevelAlias alias)
+    {
+        Boolean found=false;
+        Integer stepIndex= currentFlow.getStepIndexByName(alias.getStep());
+        Step step=currentFlow.getStep(stepIndex);
+        String oldName= alias.getSourceDataName(),newName= alias.getAlias();
+
+        if(step.getNameToInputIndex().get(oldName)!=null)
+        {
+            step.changeInputName(oldName, newName);
+            found=true;
+        }
+
+        if(!found&& step.getNameToOutputIndex().get(oldName)!=null)
+        {
+            step.changeOutputName(oldName,newName);
+            found=true;
+        }
+
+        if(!found)
+        {
+            //error
+        }
+    }
+
+    private void addSteps(STFlow stFlow)
+    {
+        List<STStepInFlow> steps= stFlow.getSTStepsInFlow().getSTStepInFlow();
+        for(STStepInFlow step:steps)
+        {
+            currentFlow.AddStep(createStep(step));
+        }
+    }
+
+    private Step createStep(STStepInFlow step)
+    {
+        Step newStep=null;
+        boolean continueIfFailing=false;
+        String finalName=step.getName();
+
+        if(step.getAlias()!=null)
+            finalName=step.getAlias();
+
+        if(step.isContinueIfFailing()!=null)
+            continueIfFailing=true;
+
+        switch (step.getName())
+        {
+            case "Spend some Time":
+                newStep= new SpendSomeTime(finalName,continueIfFailing);
+                break;
+            case "Collect Files In Folder":
+                newStep= new CollectFiles(finalName,continueIfFailing);
+                break;
+            case "Files Renamer":
+                newStep= new FilesRenamer(finalName,continueIfFailing);
+                break;
+            case "Files Content Extractor":
+                newStep= new FilesContentExtractor(finalName,continueIfFailing);
+                break;
+            case "CSV Exporter":
+                newStep= new CSVExporter(finalName,continueIfFailing);
+                break;
+            case "Properties Exporter":
+                newStep= new PropertiesExporter(finalName,continueIfFailing);
+                break;
+            case "File Dumper":
+                newStep=  new FileDumper(finalName,continueIfFailing);
+                break;
+            case "Files Deleter":
+                newStep= new FilesDeleter(finalName,continueIfFailing);
+                break;
+            default:
+                //error
+                break;
+        }
+        return newStep;
+    }
+
+
+    private void addFlowOutputs(STFlow stFlow)
+    {
+        String[] outputs= stFlow.getSTFlowOutput().split(",");
+        for(String output:outputs)
+            currentFlow.addFormalOutput(output);
     }
 
 
