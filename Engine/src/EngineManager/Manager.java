@@ -5,6 +5,7 @@ import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
 import Generated.*;
+import HardCodedData.HCSteps;
 import Steps.*;
 import javafx.util.Pair;
 
@@ -38,7 +39,7 @@ public class Manager implements EngineApi, Serializable
         flows = new ArrayList<>();
         flowsHistory = new ArrayList<>();
         flowsStatistics=new LinkedHashMap<>();
-        stepsStatistics=new LinkedHashMap<>();
+        stepsStatistics= new HashMap<>();
     }
 
 
@@ -76,18 +77,37 @@ public class Manager implements EngineApi, Serializable
 
     private void createFlows(STStepper stepper)
     {
+        Set<String> flowNames=new HashSet<>();
         List<STFlow> stFlows= stepper.getSTFlows().getSTFlow();
+        List<Flow> flowList=new ArrayList<>();
+        Map<String,Statistics> statisticsMap=new LinkedHashMap<>();
+
         for (STFlow stFlow: stFlows)
         {
-            currentFlow=new Flow(stFlow.getName(),stFlow.getSTFlowDescription());
+            String flowName=stFlow.getName();
+            if(flowNames.contains(flowName))
+            {
+                //error
+            }
+            currentFlow=new Flow(flowName,stFlow.getSTFlowDescription());
             addFlowOutputs(stFlow);
             addSteps(stFlow);
             implementAliasing(stFlow);
             currentFlow.CustomMapping(getCustomMappings(stFlow));
             currentFlow.AutomaticMapping();
             currentFlow.CalculateFreeInputs();
-            flows.add(currentFlow);
+            currentFlow.checkFlowIsValid();
+            statisticsMap.put(currentFlow.getName(), new Statistics());
+            flowList.add(currentFlow);
         }
+
+        flows.clear();
+        flowsStatistics.clear();
+        currentFlow=null;
+
+        flows=flowList;
+        flowsStatistics=statisticsMap;
+        stepsStatistics=HCSteps.getStatisticsMap();
     }
 
     private Map<Pair<String,String>,Pair<String,String>> getCustomMappings(STFlow stFlow)
@@ -124,6 +144,12 @@ public class Manager implements EngineApi, Serializable
     {
         Boolean found=false;
         Integer stepIndex= currentFlow.getStepIndexByName(alias.getStep());
+
+        if(stepIndex==null)
+        {
+            //error
+        }
+
         Step step=currentFlow.getStep(stepIndex);
         String oldName= alias.getSourceDataName(),newName= alias.getAlias();
 

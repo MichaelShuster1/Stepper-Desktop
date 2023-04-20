@@ -52,7 +52,7 @@ public class Flow implements Serializable {
         return numberOfSteps;
     }
 
-    public void AddFormalOutput(String outputName) {
+    public void addFormalOutput(String outputName) {
         formal_outputs.put(outputName, -1);
     }
 
@@ -622,11 +622,10 @@ public class Flow implements Serializable {
         //or throw exception here
     }
 
-    public void checkFlowIsValid(Map<Pair<String, String>, Pair<String, String>> customMapping)
+    public void checkFlowIsValid()
     {
         checkMandatoryInputsAreFriendlyAndSameType();
         checkNoOutputWithSameNameAndFormalExists();
-        CustomMapping(customMapping);
     }
 
 
