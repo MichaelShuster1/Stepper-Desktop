@@ -7,6 +7,7 @@ import Flow.FlowHistory;
 import Generated.*;
 import HardCodedData.HCSteps;
 import Steps.*;
+import exceptions.FlowNameExistException;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -87,8 +88,10 @@ public class Manager implements EngineApi, Serializable
             String flowName=stFlow.getName();
             if(flowNames.contains(flowName))
             {
-                //error
+                throw new FlowNameExistException("The xml file contains two flows with the same name");
             }
+            flowNames.add(flowName);
+
             currentFlow=new Flow(flowName,stFlow.getSTFlowDescription());
             addFlowOutputs(stFlow);
             addSteps(stFlow);
@@ -194,7 +197,7 @@ public class Manager implements EngineApi, Serializable
 
         switch (step.getName())
         {
-            case "Spend some Time":
+            case "Spend Some Time":
                 newStep= new SpendSomeTime(finalName,continueIfFailing);
                 break;
             case "Collect Files In Folder":
