@@ -56,12 +56,13 @@ public class Manager implements EngineApi, Serializable
     @Override
     public String loadXmlFile(String path) {
         STStepper stepper;
-        File file = new File(path);
         try {
+            File file = checkXMLPathAndGetFile(path);
             JAXBContext jaxbContext = JAXBContext.newInstance(STStepper.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
-
+            //get all data from STStepper
+            checkIfXMLFileIsValid();
         }
         catch (JAXBException e)
         {
@@ -253,4 +254,38 @@ public class Manager implements EngineApi, Serializable
                 flowStopped = true;
         }
     }
+
+    private File checkXMLPathAndGetFile(String path)
+    {
+        File file = null;
+        if(!path.endsWith(".xml")) {
+            //throw exception
+        }
+        else {
+            file = new File(path);
+            if (!file.exists()) {
+                //throw exception
+            }
+        }
+        return file;
+    }
+
+
+    private void checkIfXMLFileIsValid()
+    {
+        try {
+            for(Flow flow: flows) {
+                //flow.checkFlowIsValid(); need custom mapping map here
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+
+
+
+
 }
