@@ -622,11 +622,10 @@ public class Flow implements Serializable {
         //or throw exception here
     }
 
-    public void checkFlowIsValid(Map<Pair<String, String>, Pair<String, String>> customMapping)
+    public void checkFlowIsValid()
     {
         checkMandatoryInputsAreFriendlyAndSameType();
         checkNoOutputWithSameNameAndFormalExists();
-        CustomMapping(customMapping);
     }
 
 

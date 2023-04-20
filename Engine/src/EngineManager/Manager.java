@@ -5,7 +5,9 @@ import DTO.ResultDTO;
 import Flow.Flow;
 import Flow.FlowHistory;
 import Generated.*;
+import HardCodedData.HCSteps;
 import Steps.*;
+import exceptions.FlowNameExistException;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -76,19 +78,39 @@ public class Manager implements EngineApi, Serializable
 
     private void createFlows(STStepper stepper)
     {
+        Set<String> flowNames=new HashSet<>();
         List<STFlow> stFlows= stepper.getSTFlows().getSTFlow();
+        List<Flow> flowList=new ArrayList<>();
+        Map<String,Statistics> statisticsMap=new LinkedHashMap<>();
+
         for (STFlow stFlow: stFlows)
         {
-            currentFlow=new Flow(stFlow.getName(),stFlow.getSTFlowDescription());
+            String flowName=stFlow.getName();
+            if(flowNames.contains(flowName))
+            {
+                throw new FlowNameExistException("The xml file contains two flows with the same name");
+            }
+            flowNames.add(flowName);
+
+            currentFlow=new Flow(flowName,stFlow.getSTFlowDescription());
             addFlowOutputs(stFlow);
             addSteps(stFlow);
             implementAliasing(stFlow);
             currentFlow.CustomMapping(getCustomMappings(stFlow));
             currentFlow.AutomaticMapping();
             currentFlow.CalculateFreeInputs();
-            flowsStatistics.put(currentFlow.getName(), new Statistics());
-            flows.add(currentFlow);
+            currentFlow.checkFlowIsValid();
+            statisticsMap.put(currentFlow.getName(), new Statistics());
+            flowList.add(currentFlow);
         }
+
+        flows.clear();
+        flowsStatistics.clear();
+        currentFlow=null;
+
+        flows=flowList;
+        flowsStatistics=statisticsMap;
+        stepsStatistics=HCSteps.getStatisticsMap();
     }
 
     private Map<Pair<String,String>,Pair<String,String>> getCustomMappings(STFlow stFlow)
@@ -125,6 +147,12 @@ public class Manager implements EngineApi, Serializable
     {
         Boolean found=false;
         Integer stepIndex= currentFlow.getStepIndexByName(alias.getStep());
+
+        if(stepIndex==null)
+        {
+            //error
+        }
+
         Step step=currentFlow.getStep(stepIndex);
         String oldName= alias.getSourceDataName(),newName= alias.getAlias();
 
@@ -169,7 +197,7 @@ public class Manager implements EngineApi, Serializable
 
         switch (step.getName())
         {
-            case "Spend some Time":
+            case "Spend Some Time":
                 newStep= new SpendSomeTime(finalName,continueIfFailing);
                 break;
             case "Collect Files In Folder":
