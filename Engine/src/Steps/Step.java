@@ -152,6 +152,12 @@ public abstract class Step implements Serializable
         return nameToOutputIndex;
     }
 
+    public Input getInputByName(String name)
+    {
+        return inputs.get(getNameToInputIndex().get(name));
+    }
+
+
     public Long getRunTime()
     {
         return runTime;

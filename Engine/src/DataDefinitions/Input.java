@@ -54,6 +54,10 @@ public class Input implements Serializable
 
     public boolean isMandatory() {return mandatory;}
 
+    public boolean isUser_friendly() {
+        return user_friendly;
+    }
+
     public String getUserString() {
         return userString;
     }
