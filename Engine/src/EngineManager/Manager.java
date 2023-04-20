@@ -8,7 +8,7 @@ import Generated.*;
 import HardCodedData.HCSteps;
 import Steps.*;
 import exceptions.FlowNameExistException;
-import exceptions.InputOutputNotExist;
+import exceptions.InputOutputNotExistException;
 import exceptions.StepNameNotExistException;
 import exceptions.XmlFileException;
 import javafx.util.Pair;
@@ -175,7 +175,7 @@ public class Manager implements EngineApi, Serializable
 
         if(!found)
         {
-            throw new InputOutputNotExist("In the flow named: " +currentFlow.getName()
+            throw new InputOutputNotExistException("In the flow named: " +currentFlow.getName()
                     + "\nthere is an attempt to perform FlowLevelAliasing "
                     + "in the step: "+stepName+" for the data: "
                     + oldName+"\nthat was not defined in the step");
