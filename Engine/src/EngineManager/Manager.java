@@ -86,6 +86,7 @@ public class Manager implements EngineApi, Serializable
             currentFlow.CustomMapping(getCustomMappings(stFlow));
             currentFlow.AutomaticMapping();
             currentFlow.CalculateFreeInputs();
+            flowsStatistics.put(currentFlow.getName(), new Statistics());
             flows.add(currentFlow);
         }
     }

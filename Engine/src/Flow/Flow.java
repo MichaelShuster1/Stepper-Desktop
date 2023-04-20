@@ -52,7 +52,7 @@ public class Flow implements Serializable {
         return numberOfSteps;
     }
 
-    public void AddFormalOutput(String outputName) {
+    public void addFormalOutput(String outputName) {
         formal_outputs.put(outputName, -1);
     }
 
