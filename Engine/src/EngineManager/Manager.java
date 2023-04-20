@@ -8,6 +8,9 @@ import Generated.*;
 import HardCodedData.HCSteps;
 import Steps.*;
 import exceptions.FlowNameExistException;
+import exceptions.InputOutputNotExist;
+import exceptions.StepNameNotExistException;
+import exceptions.XmlFileException;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -65,7 +68,6 @@ public class Manager implements EngineApi, Serializable
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
             createFlows(stepper);
-            checkIfXMLFileIsValid();
         }
         catch (JAXBException e)
         {
@@ -146,11 +148,14 @@ public class Manager implements EngineApi, Serializable
     private void implementAlias(STFlowLevelAlias alias)
     {
         Boolean found=false;
-        Integer stepIndex= currentFlow.getStepIndexByName(alias.getStep());
+        String stepName=alias.getStep();
+        Integer stepIndex= currentFlow.getStepIndexByName(stepName);
 
         if(stepIndex==null)
         {
-            //error
+            throw new StepNameNotExistException("In the flow named: " +currentFlow.getName()
+                    + "\nthere is an attempt to perform FlowLevelAliasing "
+                    + " in the step by the name: "+stepName+" that was not defined in the flow");
         }
 
         Step step=currentFlow.getStep(stepIndex);
@@ -170,7 +175,10 @@ public class Manager implements EngineApi, Serializable
 
         if(!found)
         {
-            //error
+            throw new InputOutputNotExist("In the flow named: " +currentFlow.getName()
+                    + "\nthere is an attempt to perform FlowLevelAliasing "
+                    + "in the step: "+stepName+" for the data: "
+                    + oldName+"\nthat was not defined in the step");
         }
     }
 
@@ -187,7 +195,7 @@ public class Manager implements EngineApi, Serializable
     {
         Step newStep=null;
         boolean continueIfFailing=false;
-        String finalName=step.getName();
+        String finalName=step.getName(),name=step.getName();
 
         if(step.getAlias()!=null)
             finalName=step.getAlias();
@@ -195,7 +203,7 @@ public class Manager implements EngineApi, Serializable
         if(step.isContinueIfFailing()!=null)
             continueIfFailing=true;
 
-        switch (step.getName())
+        switch (name)
         {
             case "Spend Some Time":
                 newStep= new SpendSomeTime(finalName,continueIfFailing);
@@ -222,8 +230,9 @@ public class Manager implements EngineApi, Serializable
                 newStep= new FilesDeleter(finalName,continueIfFailing);
                 break;
             default:
-                //error
-                break;
+                throw new StepNameNotExistException("In the flow named: "+ currentFlow.getName()
+                        + "\nthere is an attempt to define a step by the name: "
+                        + step.getName()+" that does not exist");
         }
         return newStep;
     }
@@ -313,7 +322,6 @@ public class Manager implements EngineApi, Serializable
                     new ObjectOutputStream(
                             new FileOutputStream(FILE_NAME)))
         {
-            //out.writeObject(this);
             out.writeObject(flows);
             out.writeObject(flowsHistory);
             out.writeObject(flowsStatistics);
@@ -422,30 +430,18 @@ public class Manager implements EngineApi, Serializable
     {
         File file = null;
         if(!path.endsWith(".xml")) {
-            //throw exception
+            throw new XmlFileException("The given file does not end with an extension xml");
         }
         else {
             file = new File(path);
             if (!file.exists()) {
-                //throw exception
+                throw new XmlFileException("The given file does not exist in the given path");
             }
         }
         return file;
     }
 
 
-    private void checkIfXMLFileIsValid()
-    {
-        try {
-            for(Flow flow: flows) {
-                //flow.checkFlowIsValid(); need custom mapping map here
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
 
 
 
