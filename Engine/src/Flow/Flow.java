@@ -7,6 +7,7 @@ import DataDefinitions.Input;
 import DataDefinitions.Output;
 import Steps.State;
 import Steps.Step;
+import exceptions.*;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -63,27 +64,31 @@ public class Flow implements Serializable {
             Pair<String, String> currValue = customMapping.get(key);
             Integer outPutStepIndex = nameToIndex.get(key.getKey());
             if(outPutStepIndex == null) {
-                //throw exception
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
             }
             Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(key.getValue());
             if(outPutIndex == null) {
-                //throw exception
+                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist, step name:"
+                        + key.getKey() + " input name:" + key.getValue());
             }
             Integer inputStepIndex = nameToIndex.get(currValue.getKey());
             if(inputStepIndex == null) {
-                //throw exception
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
             }
             Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(currValue.getValue());
             if(inputIndex == null) {
-                //throw exception
+                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist\n step name:"
+                        + key.getKey() + " input name:" + currValue.getValue());
             }
 
             if(outPutStepIndex >= inputStepIndex) {
-                //throw exception
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping from the step:" + key.getValue() +" to the step:" + currValue.getKey() +
+                        "While the step:" + currValue.getKey() + "is executed in the flow before the step:" + key.getValue());
             }
 
             if(!(steps.get(outPutStepIndex).getInput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
-                //throw exception
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping for the input:" + currValue.getValue() + "\nto the output:" + key.getValue() +
+                        "while the input and output have data of different types");
             }
 
             connections.get(outPutStepIndex).get(outPutIndex).add(new Pair<>(inputStepIndex, inputIndex));
@@ -591,29 +596,26 @@ public class Flow implements Serializable {
         }
 
         if (foundDuplicate) {
-            //throw exception
+           throw new SameOutputNameException("The flow \"" + name +"\" contains the same output name for two different outputs");
         }
         if (formalOutputsCount != formal_outputs.size()) {
-            //throw exception
+            throw new InputOutputNotExistException("The flow \"" + name +"\" contains a formal output that doesn't exists");
         }
     }
 
 
     private void checkMandatoryInputsAreFriendlyAndSameType() {
-        boolean foundNotFriendly = false;
-        boolean foundDiffType = false;
         for (String input : flowFreeInputs.keySet()) {
             String type = null;
             for (Integer i : flowFreeInputs.get(input)) {
                 Input currInput = steps.get(i).getInputByName(input);
                 if (currInput.isMandatory() && !currInput.isUser_friendly()) {
-                    foundNotFriendly = true;
-                    //can throw exception here
+                    throw new MandatoryInputException("The free input:" + currInput.getName() + " in the flow:" + name + " is mandatory but isn't user-friendly");
                 }
                 if (type != null) {
-                    if (!currInput.getType().equals(type))
-                        foundDiffType = true;
-                    //can throw exception here
+                    if (!currInput.getType().equals(type)) {
+                        throw new MappingDifferentTypesException("The free input:" + currInput.getName() + " in the flow:" + name + " have ambiguity in the input's type (required in different steps)");
+                    }
                 } else
                     type = currInput.getType();
             }

@@ -65,7 +65,6 @@ public class Manager implements EngineApi, Serializable
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
             createFlows(stepper);
-            checkIfXMLFileIsValid();
         }
         catch (JAXBException e)
         {
@@ -434,18 +433,6 @@ public class Manager implements EngineApi, Serializable
     }
 
 
-    private void checkIfXMLFileIsValid()
-    {
-        try {
-            for(Flow flow: flows) {
-                //flow.checkFlowIsValid(); need custom mapping map here
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
 
 
 
