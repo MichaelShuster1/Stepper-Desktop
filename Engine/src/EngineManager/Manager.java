@@ -43,7 +43,7 @@ public class Manager implements EngineApi, Serializable
         flows = new ArrayList<>();
         flowsHistory = new ArrayList<>();
         flowsStatistics=new LinkedHashMap<>();
-        stepsStatistics= new HashMap<>();
+        stepsStatistics=new LinkedHashMap<>();
     }
 
 
