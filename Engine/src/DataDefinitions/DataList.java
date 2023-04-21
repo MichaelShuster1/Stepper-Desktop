@@ -28,7 +28,7 @@ public class DataList<T> extends DataDefinition<List<T>>
         for(T element: data)
         {
             user_presentation = user_presentation + index+".";
-            user_presentation = user_presentation + element.toString() +", ";
+            user_presentation = user_presentation + element.toString() +"\n";
             index++;
         }
         return user_presentation;

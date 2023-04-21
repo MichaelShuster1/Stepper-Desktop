@@ -56,8 +56,7 @@ public class Manager implements EngineApi, Serializable
     }
 
     @Override
-    public String loadXmlFile(String path)
-    {
+    public void loadXmlFile(String path) throws JAXBException {
         STStepper stepper;
         try {
             File file = checkXMLPathAndGetFile(path);
@@ -66,13 +65,9 @@ public class Manager implements EngineApi, Serializable
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
             createFlows(stepper);
         }
-        catch (JAXBException e)
-        {
-            System.out.println(e.getMessage());
-
+        catch (JAXBException e) {
+            throw e;
         }
-
-        return null;
     }
 
     private void createFlows(STStepper stepper)

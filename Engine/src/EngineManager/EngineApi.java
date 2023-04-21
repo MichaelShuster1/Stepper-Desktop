@@ -3,11 +3,12 @@ package EngineManager;
 import DTO.InputsDTO;
 import DTO.ResultDTO;
 
+import javax.xml.bind.JAXBException;
 import java.util.List;
 
 public interface EngineApi
 {
-    String loadXmlFile(String path);
+    void loadXmlFile(String path) throws JAXBException;
     List<String> getFlowsNames();
     String getFlowDefinition(int flowIndex);
     InputsDTO getFlowInputs(int flowIndex);

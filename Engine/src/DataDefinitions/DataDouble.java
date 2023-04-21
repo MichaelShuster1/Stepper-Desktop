@@ -8,8 +8,9 @@ public class DataDouble extends DataDefinition<Double>
     {
         super(name,"DataDouble");
     }
+
     @Override
-    public String  toString()
+    public String toString()
     {
         return data.toString();
     }

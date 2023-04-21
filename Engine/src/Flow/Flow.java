@@ -62,23 +62,19 @@ public class Flow implements Serializable {
 
         for (Pair<String, String> key : customMapping.keySet()) {
             Pair<String, String> currValue = customMapping.get(key);
-            //Integer outPutStepIndex = nameToIndex.get(key.getKey());
             Integer outPutStepIndex = nameToIndex.get(currValue.getKey());
             if(outPutStepIndex == null) {
                 throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
             }
-            //Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(key.getValue());
             Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(currValue.getValue());
             if(outPutIndex == null) {
                 throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist, step name:"
                         + key.getKey() + " input name:" + key.getValue());
             }
-            //Integer inputStepIndex = nameToIndex.get(currValue.getKey());
             Integer inputStepIndex = nameToIndex.get(key.getKey());
             if(inputStepIndex == null) {
                 throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
             }
-            //Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(currValue.getValue());
             Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(key.getValue());
             if(inputIndex == null) {
                 throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist\nstep name:"
@@ -223,7 +219,7 @@ public class Flow implements Serializable {
                         Integer number = Integer.parseInt(rawData);
                         input.setData(number);
                     } catch (NumberFormatException e) {
-                        message = "the input was not processed successfully: "
+                        message = "Input processing failed due to: "
                                 + "expects to receive an integer only";
                         return new ResultDTO(false, message);
                     }
@@ -232,7 +228,7 @@ public class Flow implements Serializable {
                     try {
                         input.setData(Double.parseDouble(rawData));
                     } catch (NumberFormatException e) {
-                        message = "the input was not processed successfully :"
+                        message = "Input processing failed due to:"
                                 + " expects to receive a real number only with a dot"
                                 + " [for example: 2.0]";
                         return new ResultDTO(false, message);
@@ -247,7 +243,7 @@ public class Flow implements Serializable {
         if (freeMandatoryInputs.contains(inputName))
             freeMandatoryInputs.remove(inputName);
 
-        return new ResultDTO(true, "the input was processed successfully");
+        return new ResultDTO(true, "The input was processed successfully");
     }
 
 
@@ -561,7 +557,7 @@ public class Flow implements Serializable {
                 if (output.getData() != null) {
                     res += "Name: " + output.getName() + "\n";
                     res += "Type: " + output.getType() + "\n";
-                    res += "Data:\n" + output.getData().toString() + "\n\n";
+                    res += "Data:\n" + output.getDataDefinition().toString() + "\n\n";
                 }
             }
             if (step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())

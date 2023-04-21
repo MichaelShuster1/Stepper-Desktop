@@ -4,6 +4,7 @@ import DTO.ResultDTO;
 import EngineManager.EngineApi;
 import EngineManager.Manager;
 
+import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -75,7 +76,7 @@ public class UIapi
 
     public void printMainMenu()
     {
-        System.out.println("The main menu:");
+        System.out.println("\nThe main menu:");
         System.out.println("Please select one of the following commands:");
         System.out.println("1. Load new XML file");
         System.out.println("2. Show current flows definitions");
@@ -132,6 +133,9 @@ public class UIapi
         catch (RuntimeException e) {
             System.out.println("The given file was not successfully loaded into the system because:");
             System.out.println(e.getMessage());
+        } catch (JAXBException e) {
+            System.out.println("The given file was not successfully loaded into the system because:"
+                    +"\nInvalid xml schema");
         }
 
     }
@@ -199,6 +203,7 @@ public class UIapi
         Integer userChoice = null;
         List<String> flowNames = engine.getFlowsNames();
         if(flowNames.size() > 0) {
+            System.out.println("The flows:");
             printIndexedList(flowNames);
             userChoice = getUserIndexInput(flowNames.size());
         }
