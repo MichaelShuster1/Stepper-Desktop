@@ -316,13 +316,12 @@ public class UIapi
 
             if(choice<=size&& choice>=1)
             {
-                String inputName,user_string="";
+                String inputName;
                 InputData input=inputsInfo.getFreeInput(choice-1);
 
                 inputName=input.getSystemName();
-                user_string=input.getUserString();
 
-                System.out.println(user_string+":");
+                System.out.println("Please enter the input here: ");
 
                 data = inputStream.nextLine();
                 if(inputName.equals("LINE"))
@@ -362,7 +361,11 @@ public class UIapi
         for (int i=0;i<size;i++)
         {
             InputData input=inputsInfo.getFreeInput(i);
-            inputToShow=input.getSystemName().toLowerCase().replace("_"," ");
+            inputToShow=input.getUserString();
+
+            inputToShow+=" [";
+            inputToShow+= input.getSystemName().toLowerCase().replace("_"," ");
+            inputToShow+="]";
 
             inputToShow+=" [";
             if(input.getNecessity())
