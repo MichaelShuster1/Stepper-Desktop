@@ -2,33 +2,28 @@ package dto;
 
 import java.util.List;
 
-public class InputsDTO
-{
+public class InputsDTO {
     private List<InputData> freeInputs;
 
     private Integer numberOfInputs;
 
     private String flowName;
 
-    public InputsDTO(List<InputData> freeInputs, String flowName)
-    {
+    public InputsDTO(List<InputData> freeInputs, String flowName) {
         this.freeInputs = freeInputs;
-        this.flowName =flowName;
-        this.numberOfInputs=freeInputs.size();
+        this.flowName = flowName;
+        this.numberOfInputs = freeInputs.size();
     }
 
-    public InputData getFreeInput(int index)
-    {
+    public InputData getFreeInput(int index) {
         return freeInputs.get(index);
     }
 
-    public String getFlowName()
-    {
+    public String getFlowName() {
         return flowName;
     }
 
-    public Integer getNumberOfInputs()
-    {
+    public Integer getNumberOfInputs() {
         return numberOfInputs;
     }
 }

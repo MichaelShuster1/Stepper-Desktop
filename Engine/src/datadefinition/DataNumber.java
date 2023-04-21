@@ -1,30 +1,25 @@
 package datadefinition;
 
 
-public class DataNumber extends DataDefinition<Integer>
-{
+public class DataNumber extends DataDefinition<Integer> {
     private Integer data;
 
-    public DataNumber(String name)
-    {
-        super(name,"DataNumber");
+    public DataNumber(String name) {
+        super(name, "DataNumber");
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return data.toString();
     }
 
     @Override
-    public void setData(Integer data)
-    {
-        this.data=data;
+    public void setData(Integer data) {
+        this.data = data;
     }
 
     @Override
-    public Integer getData()
-    {
+    public Integer getData() {
         return data;
     }
 }

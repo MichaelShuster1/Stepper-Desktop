@@ -10,22 +10,18 @@ import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.Scanner;
 
-public class UIapi
-{
+public class UIapi {
 
-    public enum CODE
-    {
+    public enum CODE {
         EMPTY(-2), BACK(-1);
 
         private int numVal;
 
-        CODE(int numVal)
-        {
+        CODE(int numVal) {
             this.numVal = numVal;
         }
 
-        public int getNumVal()
-        {
+        public int getNumVal() {
             return numVal;
         }
     }
@@ -68,9 +64,7 @@ public class UIapi
     }
 
 
-
-    public void printMainMenu()
-    {
+    public void printMainMenu() {
         System.out.println("\nThe main menu:");
         System.out.println("Please select one of the following commands:");
         System.out.println("1. Load new XML file");
@@ -84,11 +78,9 @@ public class UIapi
         System.out.println("Please enter the index of the desired action [number] :");
     }
 
-    public Boolean processInput(int index)
-    {
+    public Boolean processInput(int index) {
         Boolean exit = false;
-        switch (index)
-        {
+        switch (index) {
             case 1:
                 loadXMLFile();
                 break;
@@ -124,61 +116,54 @@ public class UIapi
         try {
             engine.loadXmlFile(path);
             System.out.println("The given xml file has been loaded successfully to the system");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             System.out.println("The given file has failed to load into the system because:");
             System.out.println(e.getMessage());
         } catch (JAXBException e) {
             System.out.println("The given file was not successfully loaded into the system because:"
-                    +"\nInvalid xml schema");
+                    + "\nInvalid xml schema");
         }
 
     }
 
 
-    public void saveSystemDataToFile()
-    {
+    public void saveSystemDataToFile() {
         String pathFile;
         System.out.println("Please enter the full path of the file to save the system to (including the file name):");
-        pathFile=inputStream.nextLine();
-        ResultDTO result= engine.saveDataOfSystemToFile(pathFile);
+        pathFile = inputStream.nextLine();
+        ResultDTO result = engine.saveDataOfSystemToFile(pathFile);
         System.out.println(result.getMessage());
     }
 
-    public boolean loadSystemDataFromFile()
-    {
+    public boolean loadSystemDataFromFile() {
         String pathFile;
         System.out.println("Please enter the full path of the file to load the system from:");
-        pathFile=inputStream.nextLine();
-        ResultDTO result=engine.loadDataOfSystemFromFile(pathFile);
+        pathFile = inputStream.nextLine();
+        ResultDTO result = engine.loadDataOfSystemFromFile(pathFile);
         System.out.println(result.getMessage());
         return result.getStatus();
     }
 
 
-    public void showStatistics()
-    {
+    public void showStatistics() {
         System.out.println(engine.getStatistics());
     }
 
 
-    public void showFlowsDefinitions()
-    {
-        if(engine.getCurrInitializedFlowsCount() > 0)
-             System.out.println("Please choose one of the following flows to get its full definition:");
+    public void showFlowsDefinitions() {
+        if (engine.getCurrInitializedFlowsCount() > 0)
+            System.out.println("Please choose one of the following flows to get its full definition:");
         Integer userChoice = chooseFlow();
 
-        if(userChoice != CODE.EMPTY.getNumVal() && userChoice != CODE.BACK.getNumVal())
-        {
+        if (userChoice != CODE.EMPTY.getNumVal() && userChoice != CODE.BACK.getNumVal()) {
             System.out.println(engine.getFlowDefinition(userChoice));
         }
     }
 
-    public void showFlowsHistory()
-    {
+    public void showFlowsHistory() {
         Integer userChoice = null;
         List<String> initialList = engine.getInitialHistoryList();
-        if(initialList.size() > 0) {
+        if (initialList.size() > 0) {
             System.out.println("Please choose one of the following flows to get its past execution data:");
             printIndexedList(initialList, "\n");
             userChoice = getUserIndexInput(initialList.size());
@@ -186,23 +171,18 @@ public class UIapi
             if (userChoice != CODE.BACK.getNumVal()) {
                 System.out.println(engine.getFullHistoryData(userChoice));
             }
-        }
-        else System.out.println("There are currently no past executions\n");
+        } else System.out.println("There are currently no past executions\n");
     }
 
 
-
-
-    public int chooseFlow()
-    {
+    public int chooseFlow() {
         Integer userChoice = null;
         List<String> flowNames = engine.getFlowsNames();
-        if(flowNames.size() > 0) {
+        if (flowNames.size() > 0) {
             System.out.println("The flows:");
             printIndexedList(flowNames);
             userChoice = getUserIndexInput(flowNames.size());
-        }
-        else {
+        } else {
             System.out.println("There are currently no defined flows in the system.\nYou can load flows to the system by using command 1 in the main menu.\n");
             userChoice = CODE.EMPTY.getNumVal();
         }
@@ -210,40 +190,33 @@ public class UIapi
         return userChoice;
     }
 
-    public boolean checkIndexInRange(int lastIndex, int index)
-    {
-        if(index > lastIndex || index < 0)
-        {
-            System.out.println("Incorrect index, please enter an index between 1-" + lastIndex +", or 0 to go back to the menu");
+    public boolean checkIndexInRange(int lastIndex, int index) {
+        if (index > lastIndex || index < 0) {
+            System.out.println("Incorrect index, please enter an index between 1-" + lastIndex + ", or 0 to go back to the menu");
             return false;
-        }
-        else
+        } else
             return true;
     }
 
-    public int getUserIndexInput(int lastIndex)
-    {
+    public int getUserIndexInput(int lastIndex) {
         boolean correctInput = false;
         Integer userChoice = null;
         while (!correctInput) {
             System.out.println("Enter the index of the desired flow, or 0 to go back to the menu [number] : ");
             userChoice = getIntInput();
-            if(userChoice != null)
-            {
-                correctInput = checkIndexInRange(lastIndex,userChoice);
+            if (userChoice != null) {
+                correctInput = checkIndexInRange(lastIndex, userChoice);
             }
         }
         return userChoice - 1;
     }
 
 
-    private void printIndexedList(List<String> list)
-    {
+    private void printIndexedList(List<String> list) {
         printIndexedList(list, "");
     }
 
-    private void printIndexedList(List<String> list, String changeAfterIndex)
-    {
+    private void printIndexedList(List<String> list, String changeAfterIndex) {
         int index = 1;
         for (String data : list) {
             System.out.println(index + ". " + changeAfterIndex + data);
@@ -253,18 +226,14 @@ public class UIapi
     }
 
 
-    private Integer getIntInput()
-    {
+    private Integer getIntInput() {
         Integer res = null;
 
-        try
-        {
+        try {
             res = inputStream.nextInt();
-            if(inputStream.hasNextLine())
+            if (inputStream.hasNextLine())
                 inputStream.nextLine();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Incorrect input. please enter an Integer only");
             inputStream.nextLine();
         }
@@ -273,51 +242,44 @@ public class UIapi
     }
 
 
-    public void ExecuteFlow()
-    {
+    public void ExecuteFlow() {
         InputsDTO inputsInfo;
-        Integer flowIndex,choice,size;
-        String inputMenu,data;
-        boolean flowReady=false,runFlow= false;
+        Integer flowIndex, choice, size;
+        String inputMenu, data;
+        boolean flowReady = false, runFlow = false;
 
-        flowIndex=chooseFlow();
+        flowIndex = chooseFlow();
 
-        if(flowIndex==CODE.BACK.getNumVal()||flowIndex==CODE.EMPTY.getNumVal())
+        if (flowIndex == CODE.BACK.getNumVal() || flowIndex == CODE.EMPTY.getNumVal())
             return;
 
-        inputsInfo=engine.getFlowInputs(flowIndex);
-        inputMenu=createInputMenu(inputsInfo);
-        size=inputsInfo.getNumberOfInputs();
+        inputsInfo = engine.getFlowInputs(flowIndex);
+        inputMenu = createInputMenu(inputsInfo);
+        size = inputsInfo.getNumberOfInputs();
 
-        while (!runFlow)
-        {
+        while (!runFlow) {
             System.out.println(inputMenu);
 
-            flowReady=engine.isFlowReady();
+            flowReady = engine.isFlowReady();
 
             printInstructions(size, flowReady);
 
-            do
-            {
+            do {
                 choice = getIntInput();
-            } while (choice==null);
+            } while (choice == null);
 
 
-            if(choice<=size&& choice>=1)
-            {
-                InputData input= inputsInfo.getFreeInput(choice -1);
+            if (choice <= size && choice >= 1) {
+                InputData input = inputsInfo.getFreeInput(choice - 1);
                 processDataInput(input);
-            }
-            else if(choice.equals(size+1) && flowReady)
-            {
-                runFlow=true;
+            } else if (choice.equals(size + 1) && flowReady) {
+                runFlow = true;
                 System.out.println(engine.runFlow());
-            }
-            else if(choice.equals(0))
+            } else if (choice.equals(0))
                 return;
             else {
-                if(flowReady)
-                   System.out.println("Incorrect index, please enter an index between 1-" + size+1 + ", or 0 to go back to the menu");
+                if (flowReady)
+                    System.out.println("Incorrect index, please enter an index between 1-" + size + 1 + ", or 0 to go back to the menu");
                 else
                     System.out.println("Incorrect index, please enter an index between 1-" + size + ", or 0 to go back to the menu");
             }
@@ -329,55 +291,53 @@ public class UIapi
         String data;
         String inputName;
 
-        inputName=input.getSystemName();
+        inputName = input.getSystemName();
 
         System.out.println("Please enter the input here: ");
 
         data = inputStream.nextLine();
 
-        ResultDTO res=engine.processInput(inputName, data);
-        System.out.println(res.getMessage()+"\n");
+        ResultDTO res = engine.processInput(inputName, data);
+        System.out.println(res.getMessage() + "\n");
     }
 
     private void printInstructions(Integer size, boolean flowReady) {
-        if(flowReady)
-            System.out.println((size +1)+".Execute the flow");
+        if (flowReady)
+            System.out.println((size + 1) + ".Execute the flow");
 
         System.out.println("Enter the number 0 to go back to the main menu");
         System.out.println("Enter a number between 1 to " + size + " to enter the data  of the desired input you want");
-        if(flowReady)
-            System.out.println("Enter the number "+ (size +1) + " to to execute the current flow");
-        if(!flowReady)
+        if (flowReady)
+            System.out.println("Enter the number " + (size + 1) + " to to execute the current flow");
+        if (!flowReady)
             System.out.println("When all mandatory inputs will be inserted, you will be able to execute the flow");
         System.out.println("Please enter your choice: ");
     }
 
 
-    private String createInputMenu(InputsDTO inputsInfo)
-    {
-        String inputMenu="",inputToShow="";
-        Integer size=inputsInfo.getNumberOfInputs();
-        inputMenu+="The input menu:\n";
-        inputMenu+="0. Exit\n";
-        for (int i=0;i<size;i++)
-        {
-            InputData input=inputsInfo.getFreeInput(i);
-            inputToShow=input.getUserString();
+    private String createInputMenu(InputsDTO inputsInfo) {
+        String inputMenu = "", inputToShow = "";
+        Integer size = inputsInfo.getNumberOfInputs();
+        inputMenu += "The input menu:\n";
+        inputMenu += "0. Exit\n";
+        for (int i = 0; i < size; i++) {
+            InputData input = inputsInfo.getFreeInput(i);
+            inputToShow = input.getUserString();
 
-            inputToShow+=" [";
-            inputToShow+= input.getSystemName().toLowerCase().replace("_"," ");
-            inputToShow+="]";
+            inputToShow += " [";
+            inputToShow += input.getSystemName().toLowerCase().replace("_", " ");
+            inputToShow += "]";
 
-            inputToShow+=" [";
-            if(input.getNecessity())
-                inputToShow+="mandatory";
+            inputToShow += " [";
+            if (input.getNecessity())
+                inputToShow += "mandatory";
             else
-                inputToShow+="optional";
-            inputToShow+="]";
+                inputToShow += "optional";
+            inputToShow += "]";
 
-            inputMenu+=(i+1)+". "+inputToShow+"\n";
+            inputMenu += (i + 1) + ". " + inputToShow + "\n";
         }
-        return  inputMenu;
+        return inputMenu;
     }
 
 

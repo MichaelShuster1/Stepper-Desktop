@@ -63,31 +63,31 @@ public class Flow implements Serializable {
         for (Pair<String, String> key : customMapping.keySet()) {
             Pair<String, String> currValue = customMapping.get(key);
             Integer outPutStepIndex = nameToIndex.get(currValue.getKey());
-            if(outPutStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
+            if (outPutStepIndex == null) {
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
             }
             Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(currValue.getValue());
-            if(outPutIndex == null) {
-                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's output that doesn't exist, step name:"
+            if (outPutIndex == null) {
+                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step's output that doesn't exist, step name:"
                         + currValue.getKey() + ", output name:" + currValue.getValue());
             }
             Integer inputStepIndex = nameToIndex.get(key.getKey());
-            if(inputStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
+            if (inputStepIndex == null) {
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
             }
             Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(key.getValue());
-            if(inputIndex == null) {
-                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist\nstep name:"
+            if (inputIndex == null) {
+                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step's input that doesn't exist\nstep name:"
                         + currValue.getKey() + ", input name:" + key.getValue());
             }
 
-            if(outPutStepIndex >= inputStepIndex) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping from the step:" + currValue.getKey() +" to the step:" + key.getKey() +
+            if (outPutStepIndex >= inputStepIndex) {
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name + "\" contains mapping from the step:" + currValue.getKey() + " to the step:" + key.getKey() +
                         " while the step:" + key.getKey() + " is executed in the flow before the step:" + currValue.getKey());
             }
 
-            if(!(steps.get(outPutStepIndex).getOutput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping for the input:" + key.getValue() + "\nfrom the output:" + currValue.getValue() +
+            if (!(steps.get(outPutStepIndex).getOutput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name + "\" contains mapping for the input:" + key.getValue() + "\nfrom the output:" + currValue.getValue() +
                         " while the input and output have data of different types");
             }
 
@@ -173,8 +173,7 @@ public class Flow implements Serializable {
     }
 
 
-    public Integer getStepIndexByName(String name)
-    {
+    public Integer getStepIndexByName(String name) {
         return nameToIndex.get(name);
     }
 
@@ -613,7 +612,6 @@ public class Flow implements Serializable {
     }
 
 
-
     private void checkMandatoryInputsAreFriendlyAndSameType() {
         for (String input : flowFreeInputs.keySet()) {
             String type = null;
@@ -634,8 +632,7 @@ public class Flow implements Serializable {
         //or throw exception here
     }
 
-    public void checkFlowIsValid()
-    {
+    public void checkFlowIsValid() {
         checkMandatoryInputsAreFriendlyAndSameType();
         checkNoOutputWithSameNameAndFormalExists();
     }

@@ -2,29 +2,24 @@ package datadefinition;
 
 import java.io.Serializable;
 
-public abstract class DataDefinition<T> implements Serializable
-{
+public abstract class DataDefinition<T> implements Serializable {
     protected String name;
     protected final String type;
 
-    protected DataDefinition(String name, String type)
-    {
+    protected DataDefinition(String name, String type) {
         this.name = name;
         this.type = type;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
