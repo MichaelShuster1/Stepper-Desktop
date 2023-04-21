@@ -309,9 +309,13 @@ public class Manager implements EngineApi, Serializable
     @Override
     public String getStatistics()
     {
-        String res="The Statistics of the flows: \n";
-        res+=getFlowsStatistics()+"\nThe Statistics of the steps: \n"+getStepsStatistics();
-        return res;
+        if(flows.size() > 0) {
+            String res = "The Statistics of the flows: \n";
+            res += getFlowsStatistics() + "\nThe Statistics of the steps: \n" + getStepsStatistics();
+            return res;
+        }
+        else
+            return "There are currently no defined flows in the system.\nYou can load flows to the system by using command 1 in the main menu.\n";
     }
 
 
