@@ -1,8 +1,8 @@
-import DTO.InputData;
-import DTO.InputsDTO;
-import DTO.ResultDTO;
-import EngineManager.EngineApi;
-import EngineManager.Manager;
+import dto.InputData;
+import dto.InputsDTO;
+import dto.ResultDTO;
+import enginemanager.EngineApi;
+import enginemanager.Manager;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -298,7 +298,7 @@ public class UIapi
         {
             System.out.println(inputMenu);
 
-            flowReady=engine.IsFlowReady();
+            flowReady=engine.isFlowReady();
 
             printInstructions(size, flowReady);
 
