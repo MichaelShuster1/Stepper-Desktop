@@ -203,7 +203,8 @@ public class UIapi
 
     public void showFlowsDefinitions()
     {
-        System.out.println("Please choose one of the following flows to get its full definition:");
+        if(engine.getCurrInitializedFlowsCount() > 0)
+             System.out.println("Please choose one of the following flows to get its full definition:");
         Integer userChoice = chooseFlow();
 
         if(userChoice != CODE.EMPTY.getNumVal() && userChoice != CODE.BACK.getNumVal())

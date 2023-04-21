@@ -19,4 +19,5 @@ public interface EngineApi
     String getStatistics();
     ResultDTO saveDataOfSystemToFile(String path);
     ResultDTO loadDataOfSystemFromFile(String path);
+    int getCurrInitializedFlowsCount();
 }

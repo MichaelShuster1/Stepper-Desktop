@@ -445,6 +445,12 @@ public class Manager implements EngineApi, Serializable
         return file;
     }
 
+    public int getCurrInitializedFlowsCount()
+    {
+        return flows.size();
+    }
+
+
 
 
 
