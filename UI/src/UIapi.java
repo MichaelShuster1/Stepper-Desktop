@@ -127,7 +127,7 @@ public class UIapi
         path = inputStream.nextLine();
         try {
             engine.loadXmlFile(path);
-            System.out.println("the given xml file was loaded successfully to the system");
+            System.out.println("The given xml file was loaded successfully to the system");
         }
         catch (RuntimeException e) {
             System.out.println("The given file was not successfully loaded into the system because:");

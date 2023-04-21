@@ -155,7 +155,7 @@ public class Manager implements EngineApi, Serializable
         if(stepIndex==null)
         {
             throw new StepNameNotExistException("In the flow named: " +currentFlow.getName()
-                    + "\nthere is an attempt to perform FlowLevelAliasing "
+                    + "\nthere is an attempt to perform FlowLevelAliasing"
                     + " in the step by the name: "+stepName+" that was not defined in the flow");
         }
 
@@ -336,7 +336,7 @@ public class Manager implements EngineApi, Serializable
         }
         catch (Exception e)
         {
-            return new ResultDTO(false,"the System's parameters were not saved successfully " +
+            return new ResultDTO(false,"The System's parameters were not saved successfully " +
                     "because: "+e.getMessage());
         }
     }
@@ -435,7 +435,7 @@ public class Manager implements EngineApi, Serializable
     {
         File file = null;
         if(!path.endsWith(".xml")) {
-            throw new XmlFileException("The given file does not end with an extension xml");
+            throw new XmlFileException("The given file does not end with an extension of .xml");
         }
         else {
             file = new File(path);
