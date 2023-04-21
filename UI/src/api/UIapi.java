@@ -1,3 +1,5 @@
+package api;
+
 import dto.InputData;
 import dto.InputsDTO;
 import dto.ResultDTO;
@@ -39,31 +41,24 @@ public class UIapi
     }
 
 
-    public void setEngine(EngineApi engine)
-    {
+    public void setEngine(EngineApi engine) {
         this.engine = engine;
     }
 
-    public void runSystem()
-    {
+    public void runSystem() {
         Boolean exit = false;
         boolean correctInput;
         System.out.println("Welcome to the Stepper application!");
-        while(!exit)
-        {
+        while (!exit) {
             correctInput = false;
             printMainMenu();
-            while(!correctInput)
-            {
+            while (!correctInput) {
                 Integer userChoice = getIntInput();
-                if (userChoice != null)
-                {
-                    if (userChoice >= 1 && userChoice <= 8)
-                    {
+                if (userChoice != null) {
+                    if (userChoice >= 1 && userChoice <= 8) {
                         exit = processInput(userChoice);
                         correctInput = true;
-                    }
-                    else
+                    } else
                         System.out.println("Incorrect index, please enter an index between 1-8");
                 }
             }

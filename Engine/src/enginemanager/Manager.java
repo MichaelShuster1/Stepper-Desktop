@@ -26,15 +26,6 @@ public class Manager implements EngineApi, Serializable
     private Flow currentFlow;
 
 
-    public Manager(Map<String, Statistics> flowsStatistics, Map<String, Statistics> stepsStatistics)
-    {
-        flows = new ArrayList<>();
-        flowsHistory = new ArrayList<>();
-        this.flowsStatistics = flowsStatistics;
-        this.stepsStatistics = stepsStatistics;
-    }
-
-
     public Manager()
     {
         flows = new ArrayList<>();
@@ -386,13 +377,6 @@ public class Manager implements EngineApi, Serializable
         }
         return new ResultDTO(false,"The file in the given path doesn't exist");
     }
-
-
-    public void addFlow(Flow flow)
-    {
-        flows.add(flow);
-    }
-
 
     private void addFlowHistory()
     {
