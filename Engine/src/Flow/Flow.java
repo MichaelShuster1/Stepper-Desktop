@@ -62,20 +62,24 @@ public class Flow implements Serializable {
 
         for (Pair<String, String> key : customMapping.keySet()) {
             Pair<String, String> currValue = customMapping.get(key);
-            Integer outPutStepIndex = nameToIndex.get(key.getKey());
+            //Integer outPutStepIndex = nameToIndex.get(key.getKey());
+            Integer outPutStepIndex = nameToIndex.get(currValue.getKey());
             if(outPutStepIndex == null) {
                 throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
             }
-            Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(key.getValue());
+            //Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(key.getValue());
+            Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(currValue.getValue());
             if(outPutIndex == null) {
                 throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist, step name:"
                         + key.getKey() + " input name:" + key.getValue());
             }
-            Integer inputStepIndex = nameToIndex.get(currValue.getKey());
+            //Integer inputStepIndex = nameToIndex.get(currValue.getKey());
+            Integer inputStepIndex = nameToIndex.get(key.getKey());
             if(inputStepIndex == null) {
                 throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
             }
-            Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(currValue.getValue());
+            //Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(currValue.getValue());
+            Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(key.getValue());
             if(inputIndex == null) {
                 throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist\nstep name:"
                         + key.getKey() + " input name:" + currValue.getValue());
