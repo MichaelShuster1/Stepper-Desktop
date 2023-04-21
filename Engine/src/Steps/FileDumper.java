@@ -72,7 +72,7 @@ public class FileDumper extends Step
         catch (Exception e)
         {
             setState_after_run(State.FAILURE);
-            summaryLine = "Step failed. " + e.getMessage();
+            summaryLine = "Step failed, " + e.getMessage();
             addLineToLog("Failed to create a file named " + file.getName() + " in the provided location");
             res = "Failed: " + e.getMessage();
         }

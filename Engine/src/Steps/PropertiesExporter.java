@@ -33,7 +33,7 @@ public class PropertiesExporter extends Step{
             state_after_run=State.WARNING;
             outputs.get(0).setData(result);
             addLineToLog("No table was given to convert from to properties format string");
-            summaryLine="No table was given to convert from to properties format string";
+            summaryLine="Warning: no table was given to convert to properties format";
         }
         else
         {
@@ -57,7 +57,7 @@ public class PropertiesExporter extends Step{
             state_after_run=State.SUCCESS;
             outputs.get(0).setData(result);
             addLineToLog("Extracted total of "+total_properties);
-            summaryLine=("Extracted total of "+total_properties);
+            summaryLine=("Step ended successfully, Extracted total of "+total_properties);
         }
         runTime=System.currentTimeMillis()-startTime;
 

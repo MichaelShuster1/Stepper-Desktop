@@ -40,8 +40,7 @@ public class SpendSomeTime extends Step
             addLineToLog("Failed to Run the step " + getName()
                     + " because the given time is a non-positive number");
 
-            summaryLine= "Failed to Run the step " + getName()
-                    + " because the given time is a non-positive number";
+            summaryLine= "Step failed, the given time is a non-positive number";
         }
         else
         {
@@ -50,7 +49,7 @@ public class SpendSomeTime extends Step
                 addLineToLog("About to sleep for " + sleeping_time + " seconds");
                 Thread.sleep(sleeping_time * 1000);
                 addLineToLog("Done sleeping");
-                summaryLine = "Done sleeping";
+                summaryLine = "Step ended successfully, Done sleeping";
                 state_after_run = State.SUCCESS;
             }
             catch (InterruptedException e)
@@ -58,7 +57,7 @@ public class SpendSomeTime extends Step
                 state_after_run = State.FAILURE;
                 addLineToLog("Failed to Run the step " + getName() + " because of an internal problem");
 
-                summaryLine="Failed to Run the step " + getName() + " because of an internal problem";
+                summaryLine="Step failed, an internal problem";
                 throw new RuntimeException(e);
             }
         }

@@ -339,11 +339,6 @@ public class UIapi
         System.out.println("Please enter the input here: ");
 
         data = inputStream.nextLine();
-        if(inputName.equals("LINE"))
-        {
-            Integer integer=Integer.parseInt(data)-1;
-            data=integer.toString();
-        }
 
         ResultDTO res=engine.processInput(inputName, data);
         System.out.println(res.getMessage()+"\n");

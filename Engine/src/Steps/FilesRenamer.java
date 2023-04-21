@@ -68,7 +68,7 @@ public class FilesRenamer extends Step
         if(fileList.size() == 0)
         {
             setState_after_run(State.SUCCESS);
-            summaryLine = "The list of files to rename was empty, the step ended successfully";
+            summaryLine = "Step ended successfully, the list of files to rename was empty";
         }
         else
         {
@@ -115,7 +115,7 @@ public class FilesRenamer extends Step
             summaryLine = "Warning: " + failedToRenameFiles + "\n" + "Other files(if any) were renamed successfully";
 
         if(summaryLine == null)
-            summaryLine = "The step renamed the files successfully";
+            summaryLine = "Step ended successfully, renamed the files successfully";
 
         if(state_after_run == null)
             state_after_run = State.SUCCESS;

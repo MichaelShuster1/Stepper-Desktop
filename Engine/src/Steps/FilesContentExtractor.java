@@ -34,6 +34,8 @@ public class FilesContentExtractor extends Step
         List<File> files =(List<File>)inputs.get(0).getData();
         Integer line_number=(Integer) inputs.get(1).getData();
         Relation relation =new Relation(new String[]{"Index", "File name", "the info that been extracted"});
+        boolean problem=false,extracted=false;
+        line_number=line_number-1;
 
         if(!checkGotInputs(2))
         {
@@ -63,12 +65,14 @@ public class FilesContentExtractor extends Step
                         {
                             String line = scanner.nextLine();
                             row.put("the info that been extracted",line);
+                            extracted=true;
                         }
                         else
                         {
                             addLineToLog("Problem extracting line number " + (line_number+1)
                                     + " from file "+ file.getName());
                             row.put("the info that been extracted","Not such line");
+                            problem=true;
                         }
                     }
                     catch (FileNotFoundException e)
@@ -76,6 +80,7 @@ public class FilesContentExtractor extends Step
                         addLineToLog("Problem extracting line number " + (line_number+1)
                                 + " from file "+ file.getName());
                         row.put("the info that been extracted","File not found");
+                        problem=true;
                     }
                 }
                 else
@@ -83,17 +88,25 @@ public class FilesContentExtractor extends Step
                     addLineToLog("Problem extracting line number " + (line_number+1)
                             + " from file "+ file.getName());
                     row.put("the info that been extracted","File not found");
+                    problem=true;
                 }
                 relation.addRow(row);
                 index++;
             }
             addLineToLog("Finished extracting the content from the given files");
-           summaryLine="Finished extracting the content from the given files";
+            summaryLine="Step ended successfully, ";
+
+            if(!problem)
+                summaryLine+="the content from all the given files was extracted";
+            else if(extracted)
+                summaryLine+="the content from part of the given files was extracted";
+            else
+                summaryLine+="the content was not extracted from the given files";
         }
         else
         {
             addLineToLog("No files given to extract content from");
-            summaryLine="No files given to extract content from";
+            summaryLine="Step ended successfully, no files given to extract content from";
         }
         outputs.get(0).setData(relation);
         state_after_run=State.SUCCESS;
