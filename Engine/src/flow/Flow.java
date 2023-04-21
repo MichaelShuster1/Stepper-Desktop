@@ -178,13 +178,16 @@ public class Flow implements Serializable {
         return nameToIndex.get(name);
     }
 
+
     public Long getRunTime() {
         return runTime;
     }
 
+
     public String getActivationTime() {
         return activationTime;
     }
+
 
     public InputsDTO getInputList() {
         int i = 1;
@@ -200,9 +203,11 @@ public class Flow implements Serializable {
         return new InputsDTO(inputMenu, getName());
     }
 
+
     public boolean isFlowReady() {
         return (freeMandatoryInputs.isEmpty());
     }
+
 
     public ResultDTO processInput(String inputName, String rawData) {
         List<Integer> indexList = flowFreeInputs.get(inputName);
@@ -267,6 +272,7 @@ public class Flow implements Serializable {
         for (Step step : steps)
             step.resetStep();
     }
+
 
     private void resetFreeMandatoryInputs() {
         for (String inputName : freeInputsIsReq.keySet()) {
@@ -334,12 +340,14 @@ public class Flow implements Serializable {
         return res;
     }
 
+
     public String getStrReadOnlyStatus() {
         if (read_only)
             return "The flow is Read-Only: YES\n";
         else
             return "The flow is Read-Only: NO\n";
     }
+
 
     public String getStrStepsData() {
         String res = "THE FLOW'S STEPS:\n";
@@ -488,6 +496,7 @@ public class Flow implements Serializable {
 
     }
 
+
     public String getFlowNameIDAndState() {
         String res = "Flows unique ID: " + flowId + "\n";
         res += "Flow name: " + name + "\n";
@@ -604,6 +613,7 @@ public class Flow implements Serializable {
     }
 
 
+
     private void checkMandatoryInputsAreFriendlyAndSameType() {
         for (String input : flowFreeInputs.keySet()) {
             String type = null;
@@ -631,24 +641,25 @@ public class Flow implements Serializable {
     }
 
 
-
-
-
     public String getName() {
         return name;
     }
+
 
     public String getDescription() {
         return description;
     }
 
+
     public boolean isRead_only() {
         return read_only;
     }
 
+
     public String getFlowId() {
         return flowId;
     }
+
 
     public State getState_after_run() {
         return state_after_run;
