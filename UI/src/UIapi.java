@@ -289,23 +289,13 @@ public class UIapi
         inputMenu=createInputMenu(inputsInfo);
         size=inputsInfo.getNumberOfInputs();
 
-
         while (!runFlow)
         {
             System.out.println(inputMenu);
 
             flowReady=engine.IsFlowReady();
 
-            if(flowReady)
-                System.out.println((size+1)+".Execute the flow");
-
-            System.out.println("Enter the number 0 to go back to the main menu");
-            System.out.println("Enter a number between 1 to " + size + " to enter the data  of the desired input you want");
-            if(flowReady)
-                System.out.println("Enter the number "+ (size+1) + " to to execute the current flow");
-            if(!flowReady)
-                System.out.println("When all mandatory inputs will be inserted, you will be able to execute the flow");
-            System.out.println("Please enter your choice: ");
+            printInstructions(size, flowReady);
 
             do
             {
@@ -313,25 +303,10 @@ public class UIapi
             } while (choice==null);
 
 
-
             if(choice<=size&& choice>=1)
             {
-                String inputName;
-                InputData input=inputsInfo.getFreeInput(choice-1);
-
-                inputName=input.getSystemName();
-
-                System.out.println("Please enter the input here: ");
-
-                data = inputStream.nextLine();
-                if(inputName.equals("LINE"))
-                {
-                    Integer integer=Integer.parseInt(data)-1;
-                    data=integer.toString();
-                }
-
-                ResultDTO res=engine.processInput(inputName, data);
-                System.out.println(res.getMessage()+"\n");
+                InputData input= inputsInfo.getFreeInput(choice -1);
+                processDataInput(input);
             }
             else if(choice.equals(size+1) && flowReady)
             {
@@ -350,6 +325,37 @@ public class UIapi
         }
     }
 
+    private void processDataInput(InputData input) {
+        String data;
+        String inputName;
+
+        inputName=input.getSystemName();
+
+        System.out.println("Please enter the input here: ");
+
+        data = inputStream.nextLine();
+        if(inputName.equals("LINE"))
+        {
+            Integer integer=Integer.parseInt(data)-1;
+            data=integer.toString();
+        }
+
+        ResultDTO res=engine.processInput(inputName, data);
+        System.out.println(res.getMessage()+"\n");
+    }
+
+    private void printInstructions(Integer size, boolean flowReady) {
+        if(flowReady)
+            System.out.println((size +1)+".Execute the flow");
+
+        System.out.println("Enter the number 0 to go back to the main menu");
+        System.out.println("Enter a number between 1 to " + size + " to enter the data  of the desired input you want");
+        if(flowReady)
+            System.out.println("Enter the number "+ (size +1) + " to to execute the current flow");
+        if(!flowReady)
+            System.out.println("When all mandatory inputs will be inserted, you will be able to execute the flow");
+        System.out.println("Please enter your choice: ");
+    }
 
 
     private String createInputMenu(InputsDTO inputsInfo)
