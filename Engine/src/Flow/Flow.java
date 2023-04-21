@@ -64,30 +64,30 @@ public class Flow implements Serializable {
             Pair<String, String> currValue = customMapping.get(key);
             Integer outPutStepIndex = nameToIndex.get(currValue.getKey());
             if(outPutStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
             }
             Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(currValue.getValue());
             if(outPutIndex == null) {
-                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist, step name:"
-                        + key.getKey() + " input name:" + key.getValue());
+                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's output that doesn't exist, step name:"
+                        + currValue.getKey() + ", output name:" + currValue.getValue());
             }
             Integer inputStepIndex = nameToIndex.get(key.getKey());
             if(inputStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
+                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
             }
             Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(key.getValue());
             if(inputIndex == null) {
                 throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name +"\" contains mapping for a step's input that doesn't exist\nstep name:"
-                        + key.getKey() + " input name:" + currValue.getValue());
+                        + currValue.getKey() + ", input name:" + key.getValue());
             }
 
             if(outPutStepIndex >= inputStepIndex) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping from the step:" + key.getKey() +" to the step:" + currValue.getKey() +
-                        " while the step:" + currValue.getKey() + " is executed in the flow before the step:" + key.getKey());
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping from the step:" + currValue.getKey() +" to the step:" + key.getKey() +
+                        " while the step:" + key.getKey() + " is executed in the flow before the step:" + currValue.getKey());
             }
 
             if(!(steps.get(outPutStepIndex).getOutput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping for the input:" + currValue.getValue() + "\nfrom the output:" + key.getValue() +
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name +"\" contains mapping for the input:" + key.getValue() + "\nfrom the output:" + currValue.getValue() +
                         " while the input and output have data of different types");
             }
 
@@ -381,7 +381,7 @@ public class Flow implements Serializable {
                 for (Integer j : inputs) {
                     currInput += steps.get(j).getName() + ", ";
                 }
-                currInput = currInput.substring(0, currInput.length() - 1);
+                currInput = currInput.substring(0, currInput.length() - 2);
                 currInput += "\n";
                 if (freeInputsIsReq.get(input.getName()))
                     currInput += "This input is mandatory: Yes\n\n";
@@ -406,7 +406,7 @@ public class Flow implements Serializable {
             for (Output output : list) {
                 res += "Output name: " + output.getName() + "\n";
                 res += "Type: " + output.getType() + "\n";
-                res += "Belong to step: " + step.getName() + "\n\n";
+                res += "Belongs to step: " + step.getName() + "\n\n";
             }
 
         }

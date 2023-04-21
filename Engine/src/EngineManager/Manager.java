@@ -355,7 +355,7 @@ public class Manager implements EngineApi, Serializable
         }
         catch (Exception e)
         {
-            return new ResultDTO(false,"The System's parameters were not saved successfully " +
+            return new ResultDTO(false,"The System's parameters saving failed " +
                     "because: "+e.getMessage());
         }
     }
@@ -384,7 +384,7 @@ public class Manager implements EngineApi, Serializable
                         "because: "+e.getMessage());
             }
         }
-        return new ResultDTO(false,"The file in the given path dont exist");
+        return new ResultDTO(false,"The file in the given path doesn't exist");
     }
 
 
@@ -455,10 +455,10 @@ public class Manager implements EngineApi, Serializable
         File file = new File(path);
 
         if (!file.exists()) {
-            throw new XmlFileException("The given file does not exist in the given path");
+            throw new XmlFileException("The file does not exist in the given path");
         }
         else if(!path.endsWith(".xml")) {
-            throw new XmlFileException("The given file does not end with an extension xml");
+            throw new XmlFileException("The file name does not end with an .xml extension");
         }
 
         return file;
