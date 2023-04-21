@@ -7,10 +7,7 @@ import Flow.FlowHistory;
 import Generated.*;
 import HardCodedData.HCSteps;
 import Steps.*;
-import exceptions.FlowNameExistException;
-import exceptions.InputOutputNotExistException;
-import exceptions.StepNameNotExistException;
-import exceptions.XmlFileException;
+import exceptions.*;
 import javafx.util.Pair;
 
 import javax.xml.bind.JAXBContext;
@@ -125,6 +122,7 @@ public class Manager implements EngineApi, Serializable
 
         List<STCustomMapping> customMappingsList= stFlow.getSTCustomMappings().getSTCustomMapping();
 
+
         for(STCustomMapping customMapping:customMappingsList)
         {
             customMappings.put(new Pair<>(customMapping.getSourceStep(),customMapping.getSourceData()),
@@ -164,6 +162,15 @@ public class Manager implements EngineApi, Serializable
 
         if(step.getNameToInputIndex().get(oldName)!=null)
         {
+            if(step.getNameToInputIndex().get(newName)!=null)
+            {
+                throw new InputNameExistException("In the flow named: " +currentFlow.getName()
+                        + "\nThere is an attempt to perform FlowLevelAliasing for a input data "
+                        + "in the step: "+stepName
+                        + "\nTo the name: "+newName+
+                        " which is already used as a name for another input data");
+            }
+
             step.changeInputName(oldName, newName);
             found=true;
         }
@@ -188,6 +195,23 @@ public class Manager implements EngineApi, Serializable
         List<STStepInFlow> steps= stFlow.getSTStepsInFlow().getSTStepInFlow();
         for(STStepInFlow step:steps)
         {
+            String alias= step.getAlias(),name=step.getName();
+            if(alias!=null)
+            {
+                if(currentFlow.getStepIndexByName(alias) != null)
+                {
+                    throw new StepNameExistException("In the flow named: " + currentFlow.getName()
+                            + "\nthere is an attempt to perform aliasing "
+                            + "for name of the step: " + name
+                            + "\nTo the name: " + alias + " that was defined before");
+                }
+            }
+            else if(currentFlow.getStepIndexByName(name) != null)
+            {
+                throw new StepNameExistException("In the flow named: " + currentFlow.getName()
+                        + "\nthere is an attempt to define the step by the name: "+name
+                        + " that was defined before");
+            }
             currentFlow.AddStep(createStep(step));
         }
     }
@@ -433,16 +457,15 @@ public class Manager implements EngineApi, Serializable
 
     private File checkXMLPathAndGetFile(String path)
     {
-        File file = null;
-        if(!path.endsWith(".xml")) {
+        File file = new File(path);
+
+        if (!file.exists()) {
+            throw new XmlFileException("The given file does not exist in the given path");
+        }
+        else if(!path.endsWith(".xml")) {
             throw new XmlFileException("The given file does not end with an extension xml");
         }
-        else {
-            file = new File(path);
-            if (!file.exists()) {
-                throw new XmlFileException("The given file does not exist in the given path");
-            }
-        }
+
         return file;
     }
 
