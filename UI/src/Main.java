@@ -7,88 +7,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Map<String,Statistics> flowsStatisticsMap =new LinkedHashMap<>();
-
-        /*
-        Flow flow=new Flow("Rename Files","Given a folder adds prefix and\\or" +
-                " suffix to each file name. The renaming results are expressed via CSV and Properties files");
-
-        flow.addFormalOutput("PROP_RESULT");
-        flow.addFormalOutput("CSV_RESULT");
-
-
-        flow.AddStep(new CollectFiles("Collect Files In Folder",false));
-        flow.AddStep(new FilesRenamer("Files Renamer",false));
-        flow.AddStep(new CSVExporter("CSV Exporter",false));
-        flow.AddStep(new FileDumper("CSV File Dumper",true));
-        flow.AddStep(new PropertiesExporter( "Properties Exporter",false));
-        flow.AddStep(new FileDumper("Properties File Dumper",true));
-
-
-        flow.getStep(1).changeOutputName("RENAME_RESULT","SOURCE");
-        flow.getStep(2).changeOutputName("RESULT","CSV_RESULT");
-        flow.getStep(3).changeInputName("FILE_NAME","CSV_FILE_NAME");
-        flow.getStep(3).changeOutputName("RESULT","CSV_FILE_DUMP_RESULT");
-        flow.getStep(4).changeOutputName("RESULT","PROP_RESULT");
-        flow.getStep(5).changeInputName("FILE_NAME","PROP_FILE_NAME");
-        flow.getStep(5).changeOutputName("RESULT","PROP_FILE_DUMP_RESULT");
-
-
-        Map<Pair<String,String>,Pair<String,String>> customMappingInput = new HashMap<>();
-        customMappingInput.put(new Pair<>("Collect Files In Folder","FILES_LIST"), new Pair<>("Files Renamer","FILES_TO_RENAME"));
-        customMappingInput.put(new Pair<>("CSV Exporter","CSV_RESULT"), new Pair<>("CSV File Dumper","CONTENT"));
-        customMappingInput.put(new Pair<>("Properties Exporter","PROP_RESULT"), new Pair<>("Properties File Dumper","CONTENT"));
-
-        flow.CustomMapping(customMappingInput);
-        flow.AutomaticMapping();
-        flow.CalculateFreeInputs();
-
-
-        flowsStatisticsMap.put(flow.getName(), new Statistics());
-
-        Flow flow1 = new Flow("Delete Matched Files", "Given a folder, deletes files matching a certain pattern");
-
-        flow1.addFormalOutput("TOTAL_FOUND");
-        flow1.addFormalOutput("DELETION_STATS");
-
-        flow1.AddStep(new CollectFiles("Collect Files In Folder", false));
-        flow1.AddStep(new SpendSomeTime("Spend Some Time", false));
-        flow1.AddStep(new FilesDeleter("Files Deleter", false));
-
-        flow1.CustomMapping(new HashMap<>());
-        flow1.AutomaticMapping();
-        flow1.CalculateFreeInputs();
-
-        Flow flow2 = new Flow("Test for extractor","Description");
-        flow2.addFormalOutput("RESULT");
-        flow2.AddStep(new CollectFiles("Collect Files In Folder",false));
-        flow2.AddStep(new FilesContentExtractor("Files Content Extractor",false));
-        flow2.AddStep(new CSVExporter("CSV Exporter",false));
-
-        Map<Pair<String,String>,Pair<String,String>> customMappingInput1 = new HashMap<>();
-        customMappingInput1.put(new Pair<>("Files Content Extractor","DATA"), new Pair<>("CSV Exporter","SOURCE"));
-
-        flow2.CustomMapping(customMappingInput1);
-        flow2.AutomaticMapping();
-        flow2.CalculateFreeInputs();
-        flowsStatisticsMap.put(flow2.getName(), new Statistics());
-
-        flowsStatisticsMap.put(flow1.getName(), new Statistics());
-
-         */
-
-        Manager manager = new Manager();
-
-        /*
-        manager.addFlow(flow);
-        manager.addFlow(flow1);
-        manager.addFlow(flow2);
-        */
-
-        UIapi main = new UIapi(manager);
+        UIapi main = new UIapi(new Manager());
         main.runSystem();
-
-
     }
 
 }
