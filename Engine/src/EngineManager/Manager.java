@@ -125,8 +125,8 @@ public class Manager implements EngineApi, Serializable
 
         for(STCustomMapping customMapping:customMappingsList)
         {
-            customMappings.put(new Pair<>(customMapping.getSourceStep(),customMapping.getSourceData()),
-                    new Pair<>(customMapping.getTargetStep(),customMapping.getTargetData()));
+            customMappings.put(new Pair<>(customMapping.getTargetStep(), customMapping.getTargetData()),
+                    new Pair<>(customMapping.getSourceStep(),customMapping.getSourceData()));
         }
         return  customMappings;
     }
