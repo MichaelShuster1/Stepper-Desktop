@@ -71,53 +71,7 @@ public class UIapi
         System.out.println("Goodbye!");
     }
 
-/*
-    public Boolean InitialMenu()
-    {
-        Integer userChoice;
-        Boolean exitFromApp = false,exitFromMenu=false;
-        System.out.println("Welcome to the Stepper application!");
 
-        while (!exitFromMenu)
-        {
-            printInitialMenu();
-
-            do {
-                userChoice = getIntInput();
-            } while (userChoice == null);
-
-            switch (userChoice)
-            {
-                case 1:
-                    exitFromMenu=true;
-                    break;
-                case 2:
-                    exitFromMenu=loadSystemDataFromFile();
-                    break;
-                case 3:
-                    exitFromMenu=true;
-                    exitFromApp = true;
-                    break;
-                default:
-                    System.out.println("Incorrect index, please enter an index between 1-3");
-                    break;
-            }
-        }
-        return exitFromApp;
-    }
-
- */
-
-   /* public void printInitialMenu()
-    {
-        System.out.println("Please select one of the following commands:");
-        System.out.println("1. Start with a fresh system");
-        System.out.println("2. Load system from a file");
-        System.out.println("3. Exit");
-        System.out.println("Please enter the index of the desired action [number] :");
-    }
-
-    */
 
     public void printMainMenu()
     {
@@ -171,7 +125,15 @@ public class UIapi
         String path;
         System.out.println("Please enter the full path of the XML file: ");
         path = inputStream.nextLine();
-        engine.loadXmlFile(path);
+        try {
+            engine.loadXmlFile(path);
+            System.out.println("the given xml file was loaded successfully to the system");
+        }
+        catch (RuntimeException e) {
+            System.out.println("The given file was not successfully loaded into the system because:");
+            System.out.println(e.getMessage());
+        }
+
     }
 
 

@@ -108,6 +108,7 @@ public class Manager implements EngineApi, Serializable
 
         flows.clear();
         flowsStatistics.clear();
+        flowsHistory.clear();
         currentFlow=null;
 
         flows=flowList;
