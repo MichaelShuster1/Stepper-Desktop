@@ -1,7 +1,6 @@
 package step;
 
-public enum State
-{
+public enum State {
     SUCCESS,
     WARNING,
     FAILURE

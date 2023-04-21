@@ -1,29 +1,25 @@
 package datadefinition;
 
 
-public class DataDouble extends DataDefinition<Double>
-{
-    private  Double data;
-    public DataDouble(String name)
-    {
-        super(name,"DataDouble");
+public class DataDouble extends DataDefinition<Double> {
+    private Double data;
+
+    public DataDouble(String name) {
+        super(name, "DataDouble");
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return data.toString();
     }
 
     @Override
-    public Double getData()
-    {
+    public Double getData() {
         return data;
     }
 
     @Override
-    public void setData(Double data)
-    {
-        this.data=data;
+    public void setData(Double data) {
+        this.data = data;
     }
 }

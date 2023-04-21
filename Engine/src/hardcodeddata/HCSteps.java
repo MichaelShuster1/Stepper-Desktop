@@ -5,8 +5,7 @@ import enginemanager.Statistics;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public enum HCSteps
-{
+public enum HCSteps {
     SPEND_SOME_TIME("Spend some Time"),
     COLLECT_FILES("Collect Files In Folder"),
     FILES_RENAMER("Files Renamer"),
@@ -17,22 +16,19 @@ public enum HCSteps
     FILE_DELETER("Files Deleter");
 
     private String stepName;
-    HCSteps(String stepName)
-    {
-        this.stepName=stepName;
+
+    HCSteps(String stepName) {
+        this.stepName = stepName;
     }
 
-    public String getStepName()
-    {
+    public String getStepName() {
         return stepName;
     }
 
 
-    public static Map<String, Statistics> getStatisticsMap()
-    {
-        Map<String,Statistics> res = new LinkedHashMap<>();
-        for(HCSteps step: HCSteps.values())
-        {
+    public static Map<String, Statistics> getStatisticsMap() {
+        Map<String, Statistics> res = new LinkedHashMap<>();
+        for (HCSteps step : HCSteps.values()) {
             res.put(step.getStepName(), new Statistics());
         }
         return res;

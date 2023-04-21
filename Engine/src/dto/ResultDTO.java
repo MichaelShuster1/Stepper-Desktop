@@ -1,7 +1,6 @@
 package dto;
 
-public class ResultDTO
-{
+public class ResultDTO {
     private boolean status;
     private String message;
 

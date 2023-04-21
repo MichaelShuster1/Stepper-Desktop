@@ -10,13 +10,11 @@ import java.util.Map;
 
 public class Relation implements Serializable {
 
-    private List<Map<String,String>> rows;
+    private List<Map<String, String>> rows;
     private List<String> columnNames;
 
 
-
-    public Relation(String[] names)
-    {
+    public Relation(String[] names) {
         this.rows = new ArrayList<>();
         this.columnNames = new ArrayList<>();
         this.columnNames.addAll(Arrays.asList(names));
@@ -37,7 +35,7 @@ public class Relation implements Serializable {
     @Override
     public String toString() {
         String res = "";
-        for(String string : columnNames)
+        for (String string : columnNames)
             res = res + string + "\n";
         res = res + rows.size();
 
@@ -51,11 +49,9 @@ public class Relation implements Serializable {
     }
 
 
-    public Pair<List<Map<String, String>>, List<String>> getData()
-    {
-        return new Pair<List<Map<String, String>>, List<String>>(rows,columnNames);
+    public Pair<List<Map<String, String>>, List<String>> getData() {
+        return new Pair<List<Map<String, String>>, List<String>>(rows, columnNames);
     }
-
 
 
 }

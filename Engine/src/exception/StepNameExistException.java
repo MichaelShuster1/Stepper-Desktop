@@ -1,9 +1,7 @@
 package exception;
 
-public class StepNameExistException extends RuntimeException
-{
-    public StepNameExistException(String errorMessage)
-    {
+public class StepNameExistException extends RuntimeException {
+    public StepNameExistException(String errorMessage) {
         super(errorMessage);
     }
 }

@@ -1,7 +1,6 @@
 package dto;
 
-public class InputData
-{
+public class InputData {
     private String systemName;
     private String userString;
     private Boolean necessity;
