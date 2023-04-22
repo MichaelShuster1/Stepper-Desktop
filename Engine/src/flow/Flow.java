@@ -23,10 +23,10 @@ public class Flow implements Serializable {
     private State state_after_run;
     private Long runTime;
     private String activationTime;
-    private Map<String, Integer> formal_outputs;
-    private List<Step> steps;
+    private final Map<String, Integer> formal_outputs;
+    private final List<Step> steps;
     private int numberOfSteps;
-    private Map<String, Integer> nameToIndex;
+    private final Map<String, Integer> nameToIndex;
     private List<List<List<Pair<Integer, Integer>>>> connections;
     private Map<String, List<Integer>> flowInputs;
     private Map<String, List<Integer>> flowFreeInputs;
@@ -63,36 +63,59 @@ public class Flow implements Serializable {
         for (Pair<String, String> key : customMapping.keySet()) {
             Pair<String, String> currValue = customMapping.get(key);
             Integer outPutStepIndex = nameToIndex.get(currValue.getKey());
-            if (outPutStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step that doesn't exist, step name:" + currValue.getKey());
-            }
+
+            checkIfStepValid(currValue, outPutStepIndex);
+            
             Integer outPutIndex = steps.get(outPutStepIndex).getNameToOutputIndex().get(currValue.getValue());
-            if (outPutIndex == null) {
-                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step's output that doesn't exist, step name:"
-                        + currValue.getKey() + ", output name:" + currValue.getValue());
-            }
+            
+            checkIfOutputDataValid(currValue, outPutIndex);
+            
             Integer inputStepIndex = nameToIndex.get(key.getKey());
-            if (inputStepIndex == null) {
-                throw new StepNameNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step that doesn't exist, step name:" + key.getKey());
-            }
+            
+            checkIfStepValid(key,inputStepIndex);
+
             Integer inputIndex = steps.get(inputStepIndex).getNameToInputIndex().get(key.getValue());
-            if (inputIndex == null) {
-                throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name + "\" contains mapping for a step's input that doesn't exist\nstep name:"
-                        + currValue.getKey() + ", input name:" + key.getValue());
-            }
+            
+            checkInputDataValid(key, currValue, inputIndex);
 
             if (outPutStepIndex >= inputStepIndex) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name + "\" contains mapping from the step:" + currValue.getKey() + " to the step:" + key.getKey() +
+                throw new StepsMappingOrderException("The Custom mapping in the flow \""
+                        + name + "\" contains mapping from the step:" + currValue.getKey() + " to the step:" + key.getKey() +
                         " while the step:" + key.getKey() + " is executed in the flow before the step:" + currValue.getKey());
             }
 
             if (!(steps.get(outPutStepIndex).getOutput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
-                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name + "\" contains mapping for the input:" + key.getValue() + "\nfrom the output:" + currValue.getValue() +
-                        " while the input and output have data of different types");
+                throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name
+                        + "\" contains mapping for the input:" + key.getValue() + "\nfrom the output:"
+                        + currValue.getValue() + " while the input and output have data of different types");
             }
+
 
             connections.get(outPutStepIndex).get(outPutIndex).add(new Pair<>(inputStepIndex, inputIndex));
             steps.get(inputStepIndex).getInput(inputIndex).setConnected(true);
+        }
+    }
+
+    private void checkInputDataValid(Pair<String, String> key, Pair<String, String> currValue, Integer inputIndex) {
+        if (inputIndex == null) {
+            throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name 
+                    + "\" contains mapping for a step's input that doesn't exist\nstep name:"
+                    + currValue.getKey() + ", input name:" + key.getValue());
+        }
+    }
+
+    private void checkIfOutputDataValid(Pair<String, String> currValue, Integer outPutIndex) {
+        if (outPutIndex == null) {
+            throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name 
+                    + "\" contains mapping for a step's output that doesn't exist, step name:"
+                    + currValue.getKey() + ", output name:" + currValue.getValue());
+        }
+    }
+
+    private void checkIfStepValid(Pair<String, String> pair, Integer StepIndex) {
+        if (StepIndex == null) {
+            throw new StepNameNotExistException("The Custom mapping in the flow \"" + name 
+                    + "\" contains mapping for a step that doesn't exist, step name:" + pair.getKey());
         }
     }
 
@@ -109,33 +132,39 @@ public class Flow implements Serializable {
             Step step = steps.get(i);
             if (!step.isRead_only())
                 read_only = false;
-            List<Output> outputs = step.getOutputs();
-            List<List<Pair<Integer, Integer>>> list = new ArrayList<>();
-            a = 0;
-            for (Output output : outputs) {
-                List<Pair<Integer, Integer>> pairs = new ArrayList<>();
-                List<Integer> integerList = flowInputs.get(output.getName());
-                if (formal_outputs.containsKey(output.getName())) {
-                    formal_outputs.put(output.getName(), i);
-                }
-                if (integerList != null) {
-                    for (Integer stepIndex : integerList) {
-                        Step step1 = steps.get(stepIndex);
-                        if (stepIndex > i) {
-                            Integer inputIndex = step1.getNameToInputIndex().get(output.getName());
-                            Input input = step1.getInput(inputIndex);
-                            if (input.getType().equals(output.getType())
-                                    && !input.isConnected()) {
-                                input.setConnected(true);
-                                pairs.add(new Pair<>(stepIndex, inputIndex));
-                            }
-                        }
+            mapStepOutputsToInputs(i, step.getOutputs());
+        }
+    }
+
+    private void mapStepOutputsToInputs(int index, List<Output> outputs) {
+        int a=0;
+        for (Output output : outputs) {
+            if (formal_outputs.containsKey(output.getName())) {
+                formal_outputs.put(output.getName(), index);
+            }
+            List<Pair<Integer, Integer>> pairs = getListPairsOfTargetInputs(index, output);
+            connections.get(index).get(a).addAll(pairs);
+            a++;
+        }
+    }
+
+    private List<Pair<Integer, Integer>> getListPairsOfTargetInputs(int index, Output output) {
+        List<Pair<Integer, Integer>> pairs = new ArrayList<>();
+        List<Integer> integerList = flowInputs.get(output.getName());
+        if (integerList != null) {
+            for (Integer stepIndex : integerList) {
+                Step step = steps.get(stepIndex);
+                if (stepIndex > index) {
+                    Integer inputIndex = step.getNameToInputIndex().get(output.getName());
+                    Input input = step.getInput(inputIndex);
+                    if (input.getType().equals(output.getType()) && !input.isConnected()) {
+                        input.setConnected(true);
+                        pairs.add(new Pair<>(stepIndex, inputIndex));
                     }
                 }
-                connections.get(i).get(a).addAll(pairs);
-                a++;
             }
         }
+        return pairs;
     }
 
 
@@ -210,42 +239,47 @@ public class Flow implements Serializable {
 
     public ResultDTO processInput(String inputName, String rawData) {
         List<Integer> indexList = flowFreeInputs.get(inputName);
-        String message;
-
         for (Integer stepIndex : indexList) {
             Step step = steps.get(stepIndex);
             Integer inputIndex = step.getNameToInputIndex().get(inputName);
             Input input = step.getInput(inputIndex);
 
-            switch (input.getType()) {
-                case "DataNumber":
-                    try {
-                        Integer number = Integer.parseInt(rawData);
-                        input.setData(number);
-                    } catch (NumberFormatException e) {
-                        message = "Input processing failed due to: "
-                                + "expects to receive an integer only";
-                        return new ResultDTO(false, message);
-                    }
-                    break;
-                case "DataDouble":
-                    try {
-                        input.setData(Double.parseDouble(rawData));
-                    } catch (NumberFormatException e) {
-                        message = "Input processing failed due to:"
-                                + " expects to receive a real number only with a dot"
-                                + " [for example: 2.0]";
-                        return new ResultDTO(false, message);
-                    }
-                    break;
-                case "DataString":
-                    input.setData(rawData);
-                    break;
-            }
+            ResultDTO resultDTO = SetInputData(rawData, input);
+            if (!resultDTO.getStatus())
+                return resultDTO;
         }
+        freeMandatoryInputs.remove(inputName);
+        return new ResultDTO(true, "The input was processed successfully");
+    }
 
-        if (freeMandatoryInputs.contains(inputName))
-            freeMandatoryInputs.remove(inputName);
+    private ResultDTO SetInputData(String rawData, Input input) {
+        String message;
+        switch (input.getType()) {
+            case "DataNumber":
+                try {
+                    Integer number = Integer.parseInt(rawData);
+                    input.setData(number);
+                } catch (NumberFormatException e) {
+                    message = "Input processing failed due to: "
+                            + "expects to receive an integer only";
+                    return new ResultDTO(false, message);
+                }
+                break;
+            case "DataDouble":
+                try {
+                    Double realNumber= Double.parseDouble(rawData);
+                    input.setData(realNumber);
+                } catch (NumberFormatException e) {
+                    message = "Input processing failed due to:"
+                            + " expects to receive a real number only with a dot"
+                            + " [for example: 2.0]";
+                    return new ResultDTO(false, message);
+                }
+                break;
+            case "DataString":
+                input.setData(rawData);
+                break;
+        }
 
         return new ResultDTO(true, "The input was processed successfully");
     }
@@ -431,36 +465,43 @@ public class Flow implements Serializable {
         formatter.format(new Date());
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
-        int outPutIndex;
         state_after_run = State.SUCCESS;
+
         for (int i = 0; i < steps.size() && continueExecution; i++) {
             Step currStep = steps.get(i);
             currStep.run();
+
             if (currStep.getState_after_run() == State.FAILURE) {
                 if (!currStep.isContinue_if_failing()) {
                     state_after_run = State.FAILURE;
                     continueExecution = false;
                 }
             }
+
             if (continueExecution) {
                 if (currStep.getState_after_run() == State.WARNING)
                     state_after_run = State.WARNING;
-                List<List<Pair<Integer, Integer>>> stepConnections = connections.get(i);
-                for (List<Pair<Integer, Integer>> currOutput : stepConnections) {
-                    outPutIndex = 0;
-                    for (Pair<Integer, Integer> currConnection : currOutput) {
-                        int targetStepIndex = currConnection.getKey();
-                        int targetStepInputIndex = currConnection.getValue();
-                        steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
-
-                    }
-                    outPutIndex++;
-                }
+                streamStepOutputsToInputs(i, currStep);
             }
         }
+
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
         return getFlowExecutionStrData();
+    }
+
+    private void streamStepOutputsToInputs(int i, Step currStep) {
+        List<List<Pair<Integer, Integer>>> stepConnections = connections.get(i);
+        int outPutIndex=0;
+        for (List<Pair<Integer, Integer>> currOutput : stepConnections) {
+            for (Pair<Integer, Integer> currConnection : currOutput) {
+                int targetStepIndex = currConnection.getKey();
+                int targetStepInputIndex = currConnection.getValue();
+                steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
+
+            }
+            outPutIndex++;
+        }
     }
 
 
