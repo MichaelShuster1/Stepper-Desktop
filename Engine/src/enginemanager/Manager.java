@@ -132,15 +132,26 @@ public class Manager implements EngineApi, Serializable {
         Step step = currentFlow.getStep(stepIndex);
         String oldName = alias.getSourceDataName(), newName = alias.getAlias();
 
-        if (step.getNameToInputIndex().get(oldName) != null) {
-            if (step.getNameToInputIndex().get(newName) != null) {
-                throw new InputNameExistException("In the flow named: " + currentFlow.getName()
-                        + "\nThere is an attempt to perform FlowLevelAliasing for a input data "
-                        + "in the step: " + stepName
-                        + "\nTo the name: " + newName +
-                        " which is already used as a name for another input data");
-            }
+        if(oldName.equals(newName))
+            return;
 
+        if (step.getNameToInputIndex().get(newName) != null) {
+            throw new InputNameExistException("In the flow named: " + currentFlow.getName()
+                    + "\nThere is an attempt to perform FlowLevelAliasing for a data "
+                    + "in the step: " + stepName
+                    + "\nTo the name: " + newName +
+                    " which is already used as a name for another input data");
+        }
+
+        if (step.getNameToOutputIndex().get(newName) != null) {
+            throw new OutputNameExistException("In the flow named: " + currentFlow.getName()
+                    + "\nThere is an attempt to perform FlowLevelAliasing for a data "
+                    + "in the step: " + stepName
+                    + "\nTo the name: " + newName +
+                    " which is already used as a name for another output data");
+        }
+
+        if (step.getNameToInputIndex().get(oldName) != null) {
             step.changeInputName(oldName, newName);
             found = true;
         }
