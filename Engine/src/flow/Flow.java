@@ -446,8 +446,8 @@ public class Flow implements Serializable {
                 if (currStep.getState_after_run() == State.WARNING)
                     state_after_run = State.WARNING;
                 List<List<Pair<Integer, Integer>>> stepConnections = connections.get(i);
+                outPutIndex = 0;
                 for (List<Pair<Integer, Integer>> currOutput : stepConnections) {
-                    outPutIndex = 0;
                     for (Pair<Integer, Integer> currConnection : currOutput) {
                         int targetStepIndex = currConnection.getKey();
                         int targetStepInputIndex = currConnection.getValue();
@@ -483,7 +483,7 @@ public class Flow implements Serializable {
                 if (step.getOutput(outPutIndex).getData() != null)
                     res += step.getOutput(outPutIndex).getData().toString() + "\n";
                 else
-                    res += "The output wasn't produced\n";
+                    res += "Not created due to failure in flow\n";
 
             }
         } else {
@@ -557,19 +557,18 @@ public class Flow implements Serializable {
 
     public String getOutputsHistoryData() {
         String res = "";
-        boolean flowStopped = false;
-        for (int i = 0; i < steps.size() && !flowStopped; i++) {
+        for (int i = 0; i < steps.size(); i++) {
             Step step = steps.get(i);
             List<Output> outputs = step.getOutputs();
             for (Output output : outputs) {
-                if (output.getData() != null) {
-                    res += "Name: " + output.getName() + "\n";
-                    res += "Type: " + output.getType() + "\n";
+                res += "Name: " + output.getName() + "\n";
+                res += "Type: " + output.getType() + "\n";
+                if (output.getData() != null)
                     res += "Data:\n" + output.getDataDefinition().toString() + "\n\n";
-                }
+                else
+                    res += "Data:\n Not created due to failure in flow\n\n";
+
             }
-            if (step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
-                flowStopped = true;
         }
         return res;
     }
