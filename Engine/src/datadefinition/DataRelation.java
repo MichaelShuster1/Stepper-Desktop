@@ -7,6 +7,7 @@ public class DataRelation extends DataDefinition<Relation> {
 
     public DataRelation(String name) {
         super(name, "DataRelation");
+        this.data = null;
     }
 
 

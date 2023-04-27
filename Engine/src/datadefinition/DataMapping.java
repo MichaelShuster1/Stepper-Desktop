@@ -11,7 +11,7 @@ public class DataMapping<T> extends DataDefinition<Map<String, T>> {
 
     public DataMapping(String name) {
         super(name, "DataMapping");
-        this.data = new HashMap<>();
+       // this.data = new HashMap<>();
     }
 
     public void setData(T data1, T data2) {

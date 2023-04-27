@@ -8,7 +8,6 @@ public class DataList<T> extends DataDefinition<List<T>> {
 
     public DataList(String name) {
         super(name, "DataList");
-        data = new ArrayList<>();
     }
 
 

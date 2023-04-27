@@ -161,7 +161,8 @@ public class UIapi {
         if (userChoice != CODE.EMPTY.getNumVal() && userChoice != CODE.BACK.getNumVal()) {
             FlowDefinitionDTO flowDefinition=engine.getFlowDefinition(userChoice);
             String data;
-            data = "Flow name: " + flowDefinition.getName() + "\n\n";
+            data = "SELECTED FLOW DATA:\n\n";
+            data += "Flow name: " + flowDefinition.getName() + "\n\n";
             data += "Flow description: " + flowDefinition.getDescription() + "\n\n";
             data += getStrFormalOutputs(flowDefinition.getFormal_outputs()) + "\n";
             data += getStrReadOnlyStatus(flowDefinition.isReadOnly()) + "\n";
@@ -276,7 +277,7 @@ public class UIapi {
         String res = getFlowNameIDAndState(flowExecutionDTO);
         String temp;
 
-        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + "\n\n";
+        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + "ms \n\n";
         res += "FREE INPUTS THAT RECEIVED DATA:\n\n";
         temp = getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),true);
         temp += getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),false);
@@ -298,7 +299,8 @@ public class UIapi {
 
 
     private String getFlowNameIDAndState(FlowExecutionDTO flowExecutionDTO) {
-        String res = "Flows unique ID: " + flowExecutionDTO.getId() + "\n";
+        String res = "FLOW EXECUTION DATA:\n";
+        res += "Flows unique ID: " + flowExecutionDTO.getId() + "\n";
         res += "Flow name: " + flowExecutionDTO.getName() + "\n";
         res += "Flow's final state : " + flowExecutionDTO.getStateAfterRun() + "\n";
         return res;
@@ -345,14 +347,15 @@ public class UIapi {
 
 
     private String getStepsHistoryData(List<StepExecutionDTO> steps) {
-        String res = "";
+        String res = "------------------------------\n";
         for (StepExecutionDTO step: steps) {
             res += "Name: " + step.getName() + "\n";
-            res += "Run time: " + step.getRunTime() + "\n";
+            res += "Run time: " + step.getRunTime() + "ms \n";
             res += "Finish state: " + step.getStateAfterRun() + "\n";
             res += "Step summary:" + step.getSummaryLine()+ "\n";
             res += "STEP LOGS:\n\n";
             res += getStrLogs(step.getLogs());
+            res += "------------------------------\n";
         }
         return res;
     }
