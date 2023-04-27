@@ -5,9 +5,9 @@ import java.util.Set;
 
 public class FlowDefinitionDTO extends FlowDetailsDTO{
 
-    List<StepDefinitionDTO> steps;
-    List<FreeInputDefinitionDTO> freeInputs;
-    List<OutputDefintionDTO> outputs;
+    private final List<StepDefinitionDTO> steps;
+    private final List<FreeInputDefinitionDTO> freeInputs;
+    private final List<OutputDefintionDTO> outputs;
 
     public FlowDefinitionDTO(FlowDetailsDTO flowDetailsDTO, List<StepDefinitionDTO> steps, List<FreeInputDefinitionDTO> freeInputs, List<OutputDefintionDTO> outputs) {
         super(flowDetailsDTO);

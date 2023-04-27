@@ -3,11 +3,11 @@ package dto;
 import java.util.List;
 
 public class InputsDTO {
-    private List<InputData> freeInputs;
+    private final List<InputData> freeInputs;
 
-    private Integer numberOfInputs;
+    private final Integer numberOfInputs;
 
-    private String flowName;
+    private final String flowName;
 
     public InputsDTO(List<InputData> freeInputs, String flowName) {
         this.freeInputs = freeInputs;

@@ -1,9 +1,9 @@
 package dto;
 
 public class StepDefinitionDTO {
-    String name;
-    String defaultName;
-    boolean readOnly;
+    private final String name;
+    private final String defaultName;
+    private final boolean readOnly;
 
     public StepDefinitionDTO(String name,String defaultName, boolean readOnly) {
         this.name = name;

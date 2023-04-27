@@ -4,8 +4,8 @@ import java.util.List;
 
 public class FreeInputDefinitionDTO extends  DataDefintionDTO
 {
-    boolean necessity;
-    List<String> relatedSteps;
+    private final boolean necessity;
+    private final List<String> relatedSteps;
 
     public FreeInputDefinitionDTO(DataDefintionDTO inputData, List<String> relatedSteps, boolean necessity) {
         super(inputData);

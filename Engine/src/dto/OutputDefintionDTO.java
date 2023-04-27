@@ -2,7 +2,7 @@ package dto;
 
 public class OutputDefintionDTO extends DataDefintionDTO
 {
-    String stepName;
+    private final String stepName;
 
     public OutputDefintionDTO(DataDefintionDTO dataDefintionDTO, String stepName) {
         super(dataDefintionDTO);

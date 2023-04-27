@@ -3,10 +3,11 @@ package dto;
 import java.util.Set;
 
 public class FlowDetailsDTO {
-    String name;
-    String description;
-    Set<String> formal_outputs;
-    boolean readOnly;
+
+    private final String name;
+    private final String description;
+    private final Set<String> formal_outputs;
+    private final boolean readOnly;
 
     public FlowDetailsDTO(String name, String description, Set<String> formal_outputs, boolean readOnly) {
         this.name = name;

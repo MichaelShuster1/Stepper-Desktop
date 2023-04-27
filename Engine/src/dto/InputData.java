@@ -1,9 +1,9 @@
 package dto;
 
 public class InputData {
-    private String systemName;
-    private String userString;
-    private Boolean necessity;
+    private final String systemName;
+    private final String userString;
+    private final Boolean necessity;
 
     public InputData(String systemName, String userString, Boolean necessity) {
         this.systemName = systemName;

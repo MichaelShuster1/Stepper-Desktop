@@ -2,8 +2,8 @@ package dto;
 
 public class DataDefintionDTO
 {
-    String name;
-    String type;
+    private final String name;
+    private final String type;
 
     public DataDefintionDTO(String name,String type)
     {

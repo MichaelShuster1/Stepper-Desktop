@@ -1,8 +1,8 @@
 package dto;
 
 public class ResultDTO {
-    private boolean status;
-    private String message;
+    private final boolean status;
+    private final String message;
 
     public ResultDTO(boolean status, String message) {
         this.status = status;
