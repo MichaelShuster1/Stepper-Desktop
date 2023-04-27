@@ -105,7 +105,7 @@ public abstract class Step implements Serializable {
 
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.sss");
         formatter.format(new Date());
-        log.add(line + "\n [time: " + formatter.format(new Date()) + "]");
+        log.add(line + "\n[time: " + formatter.format(new Date()) + "]");
     }
 
     public Input getInput(int index) {
