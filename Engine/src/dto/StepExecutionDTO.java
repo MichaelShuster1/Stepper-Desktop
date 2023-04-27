@@ -1,5 +1,6 @@
 package dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StepExecutionDTO {
@@ -14,8 +15,10 @@ public class StepExecutionDTO {
         this.runTime = runTime;
         this.stateAfterRun = stateAfterRun;
         this.summaryLine = summaryLine;
-        this.logs = logs;
+        this.logs=new ArrayList<>();
+        this.logs.addAll(logs);
     }
+
 
     public String getName() {
         return name;
