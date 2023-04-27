@@ -353,6 +353,21 @@ public class Flow implements Serializable {
         return new FlowDefinitionDTO(details,steps,freeInputs,outputs);
     }
 
+    private List<OutputDefintionDTO> getOutputsDefinitionDTO()
+    {
+        List<OutputDefintionDTO> outputsList=new ArrayList<>();
+        List<Output> list;
+        for (Step step : steps) {
+            list = step.getOutputs();
+            for (Output output : list) {
+                DataDefintionDTO dataDefintionDTO= new DataDefintionDTO(output.getName(), output.getType());
+                OutputDefintionDTO outputDefintionDTO=new OutputDefintionDTO(dataDefintionDTO,step.getName());
+                outputsList.add(outputDefintionDTO);
+            }
+        }
+        return  outputsList;
+    }
+
     private List<StepDefinitionDTO> getStepsDefinitionDTO()
     {
         List<StepDefinitionDTO> stepsList = new ArrayList<>();
@@ -365,7 +380,21 @@ public class Flow implements Serializable {
 
     private List<FreeInputDefinitionDTO> getFreeInputsDefinitionDTO()
     {
+        List<FreeInputDefinitionDTO> freeInputsList = new ArrayList<>();
+        for (String key : flowFreeInputs.keySet()) {
+            List<Integer> inputs = flowFreeInputs.get(key);
+            int i = inputs.get(0);
+            int inputIndex = steps.get(i).getNameToInputIndex().get(key);
+            Input input = steps.get(i).getInput(inputIndex);
+            List<String> relatedSteps = new ArrayList<>();
+            for (Integer j : inputs) {
+                relatedSteps.add(steps.get(j).getName());
+            }
+            DataDefintionDTO inputData = new DataDefintionDTO(input.getName(),input.getType());
+            freeInputsList.add(new FreeInputDefinitionDTO(inputData,relatedSteps,input.isMandatory()));
+        }
 
+        return freeInputsList;
     }
 
 
