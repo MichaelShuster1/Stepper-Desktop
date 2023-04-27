@@ -163,7 +163,7 @@ public class UIapi {
             String data;
             data = "SELECTED FLOW DATA:\n\n";
             data += "Flow name: " + flowDefinition.getName() + "\n";
-            data += "Flow description: " + flowDefinition.getDescription() + "\n";
+            data += "Flow description: " + flowDefinition.getDescription() + "\n\n";
             data += getStrFormalOutputs(flowDefinition.getFormal_outputs()) + "\n";
             data += getStrReadOnlyStatus(flowDefinition.isReadOnly());
             data += "------------------------------\n";
