@@ -8,7 +8,7 @@ public class DataDefintionDTO
     public DataDefintionDTO(String name,String type)
     {
         this.name=name;
-        this.type=type;
+        this.type=type.substring(4);
     }
 
     public DataDefintionDTO(DataDefintionDTO other)

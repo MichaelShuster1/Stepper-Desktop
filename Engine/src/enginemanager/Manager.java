@@ -337,10 +337,22 @@ public class Manager implements EngineApi, Serializable {
                 stepsStatistics = (Map<String, Statistics>) in.readObject();
 
                 return new ResultDTO(true, "Loaded the system successfully");
-            } catch (Exception e) {
+            }
+            catch (IOException  e) {
                 return new ResultDTO(false, "Failed to load data from the given file " +
                         "because: " + e.getMessage());
             }
+            catch (ClassNotFoundException e) {
+                return new ResultDTO(false, "Failed to load data from the given file " +
+                        "because: " + e.getMessage());
+            }
+            catch (NoClassDefFoundError e){
+                return new ResultDTO(false, "Failed to load data from the given file " +
+                        "because: " + e.getMessage());
+            }
+
+
+
         }
         return new ResultDTO(false, "The file in the given path doesn't exist");
     }

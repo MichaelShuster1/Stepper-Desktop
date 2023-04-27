@@ -94,6 +94,7 @@ public class Flow implements Serializable {
         }
     }
 
+
     private void checkInputDataValid(Pair<String, String> key, Pair<String, String> currValue, Integer inputIndex) {
         if (inputIndex == null) {
             throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name
@@ -164,7 +165,6 @@ public class Flow implements Serializable {
         }
         return pairs;
     }
-
 
     public void calculateFreeInputs() {
         flowFreeInputs = new HashMap<>();
@@ -249,6 +249,7 @@ public class Flow implements Serializable {
         freeMandatoryInputs.remove(inputName);
         return new ResultDTO(true, "The input was processed successfully");
     }
+
 
     private ResultDTO SetInputData(String rawData, Input input) {
         String message;
@@ -513,6 +514,7 @@ public class Flow implements Serializable {
     }
 */
 
+
     public String executeFlow() {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -607,6 +609,7 @@ public class Flow implements Serializable {
         return new FlowExecutionDTO(executionDetails,steps,freeInputs,outputs);
     }
 
+
     private List<OutputExecutionDTO> getOutputsExecutionDTO() {
         List<OutputExecutionDTO> outputsList = new ArrayList<>();
         for (int i = 0; i < steps.size(); i++) {
@@ -622,6 +625,7 @@ public class Flow implements Serializable {
         }
         return outputsList;
     }
+
 
     private List<FreeInputExecutionDTO> getFreeInputsExecutionDTO() {
         List<FreeInputExecutionDTO> inputsList = new ArrayList<>();
@@ -639,6 +643,7 @@ public class Flow implements Serializable {
 
         return inputsList;
     }
+
 
     private List<StepExecutionDTO> getStepsExecutionDTO() {
         List<StepExecutionDTO> stepsList = new ArrayList<>();
@@ -735,7 +740,6 @@ public class Flow implements Serializable {
     }
 
     */
-
 
     private void checkNoOutputWithSameNameAndFormalExists() {
         Set<String> outputs = new HashSet<>();
