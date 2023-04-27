@@ -652,8 +652,8 @@ public class Flow implements Serializable {
         return stepsList;
     }
 
-
-    public String getFlowHistoryData() {
+    /*
+    public String getFlowHistoryData1() {
         String res = getFlowNameIDAndState();
         String temp;
         res += "Flow total run time: " + runTime + "\n\n";
@@ -778,8 +778,6 @@ public class Flow implements Serializable {
                     type = currInput.getType();
             }
         }
-
-        //or throw exception here
     }
 
     public void checkFlowIsValid() {

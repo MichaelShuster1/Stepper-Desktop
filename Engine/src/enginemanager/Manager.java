@@ -1,6 +1,7 @@
 package enginemanager;
 
 import dto.FlowDefinitionDTO;
+import dto.FlowExecutionDTO;
 import dto.InputsDTO;
 import dto.ResultDTO;
 import flow.Flow;
@@ -289,7 +290,7 @@ public class Manager implements EngineApi, Serializable {
 
 
     @Override
-    public String getFullHistoryData(int flowIndex) {
+    public FlowExecutionDTO getFullHistoryData(int flowIndex) {
         return flowsHistory.get(flowIndex).getFullData();
     }
 

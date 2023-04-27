@@ -67,7 +67,7 @@ public abstract class Step implements Serializable {
         return new StepExecutionDTO(name,runTime,state_after_run.toString(),summaryLine, log);
     }
 
-
+    /*
     public String getStepHistoryData() {
         String res = "Name: " + name + "\n";
         res += "Run time: " + runTime + "\n";
@@ -91,6 +91,7 @@ public abstract class Step implements Serializable {
         }
         return res;
     }
+    */
 
     public State getState_after_run() {
         return state_after_run;

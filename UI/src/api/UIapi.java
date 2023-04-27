@@ -5,6 +5,7 @@ import datadefinition.Output;
 import dto.*;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
+import step.State;
 import step.Step;
 
 import javax.xml.bind.JAXBException;
@@ -264,9 +265,109 @@ public class UIapi {
             userChoice = getUserIndexInput(initialList.size());
 
             if (userChoice != CODE.BACK.getNumVal()) {
-                System.out.println(engine.getFullHistoryData(userChoice));
+                String history=getFlowHistoryData(engine.getFullHistoryData(userChoice));
+                System.out.println(history);
             }
         } else System.out.println("There are currently no past executions\n");
+    }
+
+
+    private String getFlowHistoryData(FlowExecutionDTO flowExecutionDTO) {
+        String res = getFlowNameIDAndState(flowExecutionDTO);
+        String temp;
+
+        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + "\n\n";
+        res += "FREE INPUTS THAT RECEIVED DATA:\n\n";
+        temp = getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),true);
+        temp += getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),false);
+        if (temp.length() == 0)
+            res += "NO FREE INPUTS HAVE RECEIVED DATA\n\n";
+        else
+            res += temp;
+        res += "DATA PRODUCED (OUTPUTS):\n\n";
+        temp = getOutputsHistoryData(flowExecutionDTO.getOutputs());
+        if (temp.length() == 0)
+            res += "NO DATA WAS PRODUCED\n\n";
+        else
+            res += temp;
+        res += "FLOW STEPS DATA:\n\n";
+        res += getStepsHistoryData(flowExecutionDTO.getSteps());
+
+        return res;
+    }
+
+
+    private String getFlowNameIDAndState(FlowExecutionDTO flowExecutionDTO) {
+        String res = "Flows unique ID: " + flowExecutionDTO.getId() + "\n";
+        res += "Flow name: " + flowExecutionDTO.getName() + "\n";
+        res += "Flow's final state : " + flowExecutionDTO.getStateAfterRun() + "\n";
+        return res;
+    }
+
+
+    private String getFreeInputsHistoryData(List<FreeInputExecutionDTO> flowFreeInputs,boolean mandatoryOrNot) {
+        String res = "";
+        String currInput;
+        for (FreeInputExecutionDTO freeInput : flowFreeInputs) {
+            if (freeInput.getData() != null) {
+                currInput = "Name: " + freeInput.getName() + "\n";
+                currInput += "Type: " + freeInput.getType() + "\n";
+                currInput += "Input data:\n" + freeInput.getData() + "\n";
+                if (freeInput.isMandatory())
+                    currInput += "This input is mandatory: Yes\n\n";
+                else
+                    currInput += "This input is mandatory: No\n\n";
+
+                if (mandatoryOrNot && freeInput.isMandatory())
+                    res += currInput;
+                else if (!mandatoryOrNot && !freeInput.isMandatory())
+                    res += currInput;
+            }
+        }
+
+        return res;
+    }
+
+    private String getOutputsHistoryData(List<OutputExecutionDTO> outputs) {
+        String res = "";
+
+        for (OutputExecutionDTO output : outputs) {
+            res += "Name: " + output.getName() + "\n";
+            res += "Type: " + output.getType() + "\n";
+            if (output.getData() != null)
+                res += "Data:\n" + output.getData() + "\n\n";
+            else
+                res += "Data:\n Not created due to failure in flow\n\n";
+
+        }
+        return res;
+    }
+
+
+    private String getStepsHistoryData(List<StepExecutionDTO> steps) {
+        String res = "";
+        for (StepExecutionDTO step: steps) {
+            res += "Name: " + step.getName() + "\n";
+            res += "Run time: " + step.getRunTime() + "\n";
+            res += "Finish state: " + step.getStateAfterRun() + "\n";
+            res += "Step summary:" + step.getSummaryLine()+ "\n";
+            res += "STEP LOGS:\n\n";
+            res += getStrLogs(step.getLogs());
+        }
+        return res;
+    }
+
+
+    private String getStrLogs(List<String> logs) {
+        String res = "";
+        if (logs.size() == 0)
+            return "The step had no logs\n\n";
+        else {
+            for (String currLog : logs) {
+                res += currLog + "\n\n";
+            }
+        }
+        return res;
     }
 
 

@@ -1,14 +1,16 @@
 package flow;
 
+import dto.FlowExecutionDTO;
+
 import java.io.Serializable;
 
 public class FlowHistory implements Serializable {
     String flowName;
     String ID;
     String activationTime;
-    String fullData;
+    FlowExecutionDTO fullData;
 
-    public FlowHistory(String flowName, String ID, String activationTime, String fullData) {
+    public FlowHistory(String flowName, String ID, String activationTime, FlowExecutionDTO fullData) {
         this.flowName = flowName;
         this.ID = ID;
         this.activationTime = activationTime;
@@ -39,11 +41,11 @@ public class FlowHistory implements Serializable {
         this.activationTime = activationTime;
     }
 
-    public String getFullData() {
+    public FlowExecutionDTO getFullData() {
         return fullData;
     }
 
-    public void setFullData(String fullData) {
+    public void setFullData(FlowExecutionDTO fullData) {
         this.fullData = fullData;
     }
 }

@@ -1,6 +1,7 @@
 package enginemanager;
 
 import dto.FlowDefinitionDTO;
+import dto.FlowExecutionDTO;
 import dto.InputsDTO;
 import dto.ResultDTO;
 
@@ -24,7 +25,7 @@ public interface EngineApi {
 
     List<String> getInitialHistoryList();
 
-    String getFullHistoryData(int flowIndex);
+    FlowExecutionDTO getFullHistoryData(int flowIndex);
 
     String getStatistics();
 
