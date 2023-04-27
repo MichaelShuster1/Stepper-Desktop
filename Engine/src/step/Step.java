@@ -2,6 +2,7 @@ package step;
 
 import datadefinition.Input;
 import datadefinition.Output;
+import dto.StepExecutionDTO;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -60,6 +61,10 @@ public abstract class Step implements Serializable {
         Integer index = nameToOutputIndex.remove(oldName);
         nameToOutputIndex.put(newName, index);
         outputs.get(index).setName(newName);
+    }
+
+    public StepExecutionDTO getStepExecutionData() {
+        return new StepExecutionDTO(name,runTime,state_after_run.toString(),summaryLine, log);
     }
 
 
@@ -173,3 +178,4 @@ public abstract class Step implements Serializable {
         return isValid;
     }
 }
+

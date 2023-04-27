@@ -399,7 +399,7 @@ public class Flow implements Serializable {
 
 
 
-
+/*
     public String flowPrintData() //command 2
     {
         String data;
@@ -511,7 +511,7 @@ public class Flow implements Serializable {
         else
             return "THIS FLOW HAVE NO OUTPUTS";
     }
-
+*/
 
     public String executeFlow() {
         Long startTime = System.currentTimeMillis();
@@ -598,6 +598,60 @@ public class Flow implements Serializable {
         return res;
     }
 
+    public FlowExecutionDTO getFlowHistoryData()
+    {
+        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId,state_after_run.toString(),runTime);
+        List<StepExecutionDTO> steps = getStepsExecutionDTO();
+        List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
+        List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
+        return new FlowExecutionDTO(executionDetails,steps,freeInputs,outputs);
+    }
+
+    private List<OutputExecutionDTO> getOutputsExecutionDTO() {
+        List<OutputExecutionDTO> outputsList = new ArrayList<>();
+        for (int i = 0; i < steps.size(); i++) {
+            Step step = steps.get(i);
+            List<Output> outputs = step.getOutputs();
+            for (Output output : outputs) {
+                DataDefintionDTO outputDetails = new DataDefintionDTO(output.getName(),output.getType());
+                if (output.getData() != null)
+                   outputsList.add(new OutputExecutionDTO(outputDetails,output.getDataDefinition().toString()));
+                else
+                    outputsList.add(new OutputExecutionDTO(outputDetails,null));
+            }
+        }
+        return outputsList;
+    }
+
+    private List<FreeInputExecutionDTO> getFreeInputsExecutionDTO() {
+        List<FreeInputExecutionDTO> inputsList = new ArrayList<>();
+        for (String key : flowFreeInputs.keySet()) {
+            List<Integer> inputs = flowFreeInputs.get(key);
+            int i = inputs.get(0);
+            int inputIndex = steps.get(i).getNameToInputIndex().get(key);
+            Input input = steps.get(i).getInput(inputIndex);
+            DataDefintionDTO inputDetails = new DataDefintionDTO(input.getName(),input.getType());
+            if (input.getData() != null)
+                inputsList.add(new FreeInputExecutionDTO(inputDetails,input.getData().toString(),input.isMandatory()));
+            else
+                inputsList.add(new FreeInputExecutionDTO(inputDetails,null,input.isMandatory()));
+        }
+
+        return inputsList;
+    }
+
+    private List<StepExecutionDTO> getStepsExecutionDTO() {
+        List<StepExecutionDTO> stepsList = new ArrayList<>();
+        boolean flowStopped = false;
+        for (int i = 0; i < steps.size() && !flowStopped; i++) {
+            Step step = steps.get(i);
+            stepsList.add(step.getStepExecutionData());
+            if (step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+                flowStopped = true;
+        }
+        return stepsList;
+    }
+
 
     public String getFlowHistoryData() {
         String res = getFlowNameIDAndState();
@@ -679,6 +733,8 @@ public class Flow implements Serializable {
         }
         return res;
     }
+
+    */
 
 
     private void checkNoOutputWithSameNameAndFormalExists() {

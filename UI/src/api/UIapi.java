@@ -374,7 +374,7 @@ public class UIapi {
                 return;
             else {
                 if (flowReady)
-                    System.out.println("Incorrect index, please enter an index between 1-" + size + 1 + ", or 0 to go back to the menu");
+                    System.out.println("Incorrect index, please enter an index between 1-" + (size + 1) + ", or 0 to go back to the menu");
                 else
                     System.out.println("Incorrect index, please enter an index between 1-" + size + ", or 0 to go back to the menu");
             }
