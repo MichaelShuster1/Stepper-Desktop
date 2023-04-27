@@ -1,5 +1,6 @@
 package enginemanager;
 
+import dto.FlowDefinitionDTO;
 import dto.InputsDTO;
 import dto.ResultDTO;
 
@@ -11,7 +12,7 @@ public interface EngineApi {
 
     List<String> getFlowsNames();
 
-    String getFlowDefinition(int flowIndex);
+    FlowDefinitionDTO getFlowDefinition(int flowIndex);
 
     InputsDTO getFlowInputs(int flowIndex);
 

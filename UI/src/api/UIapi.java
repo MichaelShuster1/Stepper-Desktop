@@ -1,14 +1,16 @@
 package api;
 
-import dto.InputData;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import datadefinition.Input;
+import datadefinition.Output;
+import dto.*;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
+import step.Step;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class UIapi {
 
@@ -156,9 +158,102 @@ public class UIapi {
         Integer userChoice = chooseFlow();
 
         if (userChoice != CODE.EMPTY.getNumVal() && userChoice != CODE.BACK.getNumVal()) {
-            System.out.println(engine.getFlowDefinition(userChoice));
+            FlowDefinitionDTO flowDefinition=engine.getFlowDefinition(userChoice);
+            String data;
+            data = "Flow name: " + flowDefinition.getName() + "\n\n";
+            data += "Flow description: " + flowDefinition.getDescription() + "\n\n";
+            data += getStrFormalOutputs(flowDefinition.getFormal_outputs()) + "\n";
+            data += getStrReadOnlyStatus(flowDefinition.isReadOnly()) + "\n";
+            data += getStrStepsData(flowDefinition.getSteps()) + "\n";
+            data += getStrFreeInputs(flowDefinition.getFreeInputs()) + "\n";
+            data += getStrOutPuts(flowDefinition.getOutputs()) + "\n";
+            System.out.println(data);
         }
     }
+
+
+    private String getStrFormalOutputs(Set<String> formal_outputs) {
+        String res;
+        if (formal_outputs.size() > 0) {
+            res = "The formal outputs of the flow are:\n";
+            for (String currOutput : formal_outputs) {
+                res = res + currOutput + "\n";
+            }
+        } else
+            res = "The flow doesn't have formal outputs\n";
+
+        return res;
+    }
+
+    private String getStrReadOnlyStatus(boolean read_only) {
+        if (read_only)
+            return "The flow is Read-Only: YES\n";
+        else
+            return "The flow is Read-Only: NO\n";
+    }
+
+    private String getStrStepsData(List<StepDefinitionDTO> steps) {
+        String res = "THE FLOW'S STEPS:\n";
+        String currStep;
+        for (StepDefinitionDTO step : steps) {
+            if (step.getName().equals(step.getDefaultName()))
+                currStep = "Step name: " + step.getName() + "\n";
+            else {
+                currStep = "Step name: " + step.getDefaultName() + "\n";
+                currStep += "Step alias: " + step.getName() + "\n";
+            }
+            if (step.isReadOnly())
+                currStep = currStep + "The step is Read-Only: YES\n";
+            else
+                currStep = currStep + "This step is Read-Only: No\n";
+            currStep = currStep + "\n";
+            res += currStep;
+        }
+
+        return res;
+    }
+
+    private String getStrFreeInputs(List<FreeInputDefinitionDTO> flowFreeInputs) {
+        String res;
+        if (flowFreeInputs.isEmpty())
+            res = "The flow have no free inputs\n";
+        else {
+            res = "Flow's free input's are:\n\n";
+            String currInput;
+            for (FreeInputDefinitionDTO freeInput : flowFreeInputs) {
+                currInput = "Name: " + freeInput.getName() + "\n";
+                currInput += "Type: " + freeInput.getType() + "\n";
+                currInput += "Steps that are related to that input: ";
+                for (String stepName : freeInput.getRelatedSteps())
+                    currInput += stepName + ", ";
+                currInput = currInput.substring(0, currInput.length() - 2);
+                currInput += "\n";
+                if (freeInput.isMandatory())
+                    currInput += "This input is mandatory: Yes\n\n";
+                else
+                    currInput += "This input is mandatory: No\n\n";
+                res += currInput;
+            }
+        }
+
+        return res;
+    }
+
+    public String getStrOutPuts(List<OutputDefintionDTO> outputs) {
+        String res = "THE FLOW'S OUTPUTS:\n";
+
+        for (OutputDefintionDTO output : outputs) {
+                res += "Output name: " + output.getName() + "\n";
+                res += "Type: " + output.getType() + "\n";
+                res += "Belongs to step: " + output.getStepName() + "\n\n";
+        }
+
+        if (outputs.size() > 0)
+            return res;
+        else
+            return "THIS FLOW HAVE NO OUTPUTS";
+    }
+
 
     public void showFlowsHistory() {
         Integer userChoice = null;

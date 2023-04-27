@@ -1,5 +1,6 @@
 package enginemanager;
 
+import dto.FlowDefinitionDTO;
 import dto.InputsDTO;
 import dto.ResultDTO;
 import flow.Flow;
@@ -242,8 +243,8 @@ public class Manager implements EngineApi, Serializable {
 
 
     @Override
-    public String getFlowDefinition(int flowIndex) {
-        return flows.get(flowIndex).flowPrintData();
+    public FlowDefinitionDTO getFlowDefinition(int flowIndex) {
+        return flows.get(flowIndex).getFlowDefinition();
     }
 
 

@@ -7,7 +7,7 @@ import datadefinition.Input;
 public class SpendSomeTime extends Step {
     public SpendSomeTime(String name, boolean continue_if_failing) {
         super(name, true, continue_if_failing);
-        defaultName = "Spend some Time";
+        defaultName = "Spend Some Time";
 
         DataNumber dataNumber = new DataNumber("TIME_TO_SPEND");
         inputs.add(new Input(dataNumber, true, true, "Total sleeping time(sec)"));
