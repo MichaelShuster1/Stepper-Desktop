@@ -1,8 +1,6 @@
 package flow;
 
-import dto.InputData;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 import datadefinition.Input;
 import datadefinition.Output;
 import step.State;
@@ -344,6 +342,33 @@ public class Flow implements Serializable {
             }
         }
     }
+
+
+    public FlowDefinitionDTO getFlowDefinition()
+    {
+        FlowDetailsDTO details = new FlowDetailsDTO(name,description,formal_outputs.keySet(),read_only);
+        List<StepDefinitionDTO> steps = getStepsDefinitionDTO();
+        List<FreeInputDefinitionDTO> freeInputs = getFreeInputsDefinitionDTO();
+        List<OutputDefintionDTO> outputs = getOutputsDefinitionDTO();
+        return new FlowDefinitionDTO(details,steps,freeInputs,outputs);
+    }
+
+    private List<StepDefinitionDTO> getStepsDefinitionDTO()
+    {
+        List<StepDefinitionDTO> stepsList = new ArrayList<>();
+        for(Step step: steps)
+        {
+            stepsList.add(new StepDefinitionDTO(step.getName(),step.getDefaultName(),step.isRead_only()));
+        }
+        return stepsList;
+    }
+
+    private List<FreeInputDefinitionDTO> getFreeInputsDefinitionDTO()
+    {
+
+    }
+
+
 
 
     public String flowPrintData() //command 2
