@@ -20,6 +20,10 @@ public class DataList<T> extends DataDefinition<List<T>> {
     public String toString() {
         int index = 1;
         String user_presentation = "";
+        if(data == null)
+            return "[ ]";
+        else if (data.size() == 0)
+            return "[ ]";
         for (T element : data) {
             user_presentation = user_presentation + index + ".";
             user_presentation = user_presentation + element.toString() + "\n";

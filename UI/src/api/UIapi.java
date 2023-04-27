@@ -162,13 +162,17 @@ public class UIapi {
             FlowDefinitionDTO flowDefinition=engine.getFlowDefinition(userChoice);
             String data;
             data = "SELECTED FLOW DATA:\n\n";
-            data += "Flow name: " + flowDefinition.getName() + "\n\n";
-            data += "Flow description: " + flowDefinition.getDescription() + "\n\n";
+            data += "Flow name: " + flowDefinition.getName() + "\n";
+            data += "Flow description: " + flowDefinition.getDescription() + "\n";
             data += getStrFormalOutputs(flowDefinition.getFormal_outputs()) + "\n";
-            data += getStrReadOnlyStatus(flowDefinition.isReadOnly()) + "\n";
-            data += getStrStepsData(flowDefinition.getSteps()) + "\n";
-            data += getStrFreeInputs(flowDefinition.getFreeInputs()) + "\n";
-            data += getStrOutPuts(flowDefinition.getOutputs()) + "\n";
+            data += getStrReadOnlyStatus(flowDefinition.isReadOnly());
+            data += "------------------------------\n";
+            data += getStrStepsData(flowDefinition.getSteps());
+            data += "------------------------------\n";
+            data += getStrFreeInputs(flowDefinition.getFreeInputs());
+            data += "------------------------------\n";
+            data += getStrOutPuts(flowDefinition.getOutputs());
+            data += "------------------------------\n";
             System.out.println(data);
         }
     }
@@ -277,7 +281,8 @@ public class UIapi {
         String res = getFlowNameIDAndState(flowExecutionDTO);
         String temp;
 
-        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + "ms \n\n";
+        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + " ms\n\n";
+        res += "------------------------------\n";
         res += "FREE INPUTS THAT RECEIVED DATA:\n\n";
         temp = getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),true);
         temp += getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),false);
@@ -285,12 +290,14 @@ public class UIapi {
             res += "NO FREE INPUTS HAVE RECEIVED DATA\n\n";
         else
             res += temp;
+        res += "------------------------------\n";
         res += "DATA PRODUCED (OUTPUTS):\n\n";
         temp = getOutputsHistoryData(flowExecutionDTO.getOutputs());
         if (temp.length() == 0)
             res += "NO DATA WAS PRODUCED\n\n";
         else
             res += temp;
+        res += "------------------------------\n";
         res += "FLOW STEPS DATA:\n\n";
         res += getStepsHistoryData(flowExecutionDTO.getSteps());
 
@@ -314,7 +321,10 @@ public class UIapi {
             if (freeInput.getData() != null) {
                 currInput = "Name: " + freeInput.getName() + "\n";
                 currInput += "Type: " + freeInput.getType() + "\n";
-                currInput += "Input data:\n" + freeInput.getData() + "\n";
+                if(freeInput.getData().equals("List") || freeInput.getData().equals("Relation") || freeInput.getData().equals("Mapping"))
+                     currInput += "Input data:\n" + freeInput.getData() + "\n";
+                else
+                    currInput += "Input data: " + freeInput.getData() + "\n";
                 if (freeInput.isMandatory())
                     currInput += "This input is mandatory: Yes\n\n";
                 else
@@ -336,10 +346,15 @@ public class UIapi {
         for (OutputExecutionDTO output : outputs) {
             res += "Name: " + output.getName() + "\n";
             res += "Type: " + output.getType() + "\n";
-            if (output.getData() != null)
-                res += "Data:\n" + output.getData() + "\n\n";
+            if (output.getData() != null) {
+                if(output.getData().equals("List") || output.getData().equals("Relation") || output.getData().equals("Mapping"))
+                     res += "Data:\n" + output.getData() + "\n\n";
+                else
+                     res += "Data: " + output.getData() + "\n\n";
+
+            }
             else
-                res += "Data:\n Not created due to failure in flow\n\n";
+                res += "Data: Not created due to failure in flow\n\n";
 
         }
         return res;
@@ -347,10 +362,10 @@ public class UIapi {
 
 
     private String getStepsHistoryData(List<StepExecutionDTO> steps) {
-        String res = "------------------------------\n";
+        String res = "";
         for (StepExecutionDTO step: steps) {
             res += "Name: " + step.getName() + "\n";
-            res += "Run time: " + step.getRunTime() + "ms \n";
+            res += "Run time: " + step.getRunTime() + " ms\n";
             res += "Finish state: " + step.getStateAfterRun() + "\n";
             res += "Step summary:" + step.getSummaryLine()+ "\n";
             res += "STEP LOGS:\n\n";
