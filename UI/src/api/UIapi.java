@@ -1,12 +1,9 @@
 package api;
 
-import datadefinition.Input;
-import datadefinition.Output;
 import dto.*;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
-import step.State;
-import step.Step;
+import enginemanager.Statistics;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -149,7 +146,33 @@ public class UIapi {
 
 
     public void showStatistics() {
-        System.out.println(engine.getStatistics());
+        StatisticsDTO statistics=engine.getStatistics();
+
+        List<StatisticsUnitDTO> flowStatistics=statistics.getFlowsStatistics();
+
+        if(flowStatistics.size()>0) {
+            String data = "The Statistics of the flows: \n";
+            data += getStatistics(statistics.getFlowsStatistics());
+            data+="-------------------------\n";
+            data+= "\nThe Statistics of the steps: \n";
+            data += getStatistics(statistics.getStepsStatistics());
+            System.out.println(data);
+        }
+        else
+            System.out.println("There are currently no defined flows in the system." +
+                    "\nYou can load flows to the system by using command 1 in the main menu.\n");
+    }
+
+    private String getStatistics(List<StatisticsUnitDTO> StatisticsList) {
+        String res = "";
+
+        for (StatisticsUnitDTO statistics: StatisticsList) {
+            res += statistics.getName() + "\nNumber of times activated: ";
+            res += statistics.getAmountTimesActivated() + "\nAverage run time: ";
+            res+= String.format("%.2f",statistics.getAverageRunTime()) + " ms\n\n";;
+        }
+
+        return res;
     }
 
 

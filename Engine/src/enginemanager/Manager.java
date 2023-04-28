@@ -1,9 +1,6 @@
 package enginemanager;
 
-import dto.FlowDefinitionDTO;
-import dto.FlowExecutionDTO;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 import flow.Flow;
 import flow.FlowHistory;
 import generated.*;
@@ -295,16 +292,6 @@ public class Manager implements EngineApi, Serializable {
     }
 
 
-    @Override
-    public String getStatistics() {
-        if (flows.size() > 0) {
-            String res = "The Statistics of the flows: \n";
-            res += getFlowsStatistics() + "\nThe Statistics of the steps: \n" + getStepsStatistics();
-            return res;
-        } else
-            return "There are currently no defined flows in the system.\nYou can load flows to the system by using command 1 in the main menu.\n";
-    }
-
 
     @Override
     public ResultDTO saveDataOfSystemToFile(String FILE_NAME) {
@@ -363,8 +350,41 @@ public class Manager implements EngineApi, Serializable {
         flowsHistory.add(0, flowHistory);
     }
 
+    @Override
+    public StatisticsDTO getStatistics()
+    {
+        List<StatisticsUnitDTO> statisticsOfFlows= packageStatistics(flowsStatistics);
+        List<StatisticsUnitDTO> statisticsOfSteps= packageStatistics(stepsStatistics);
+        return new StatisticsDTO(statisticsOfFlows,statisticsOfSteps);
+    }
 
-    private String getFlowsStatistics() {
+
+    private List<StatisticsUnitDTO> packageStatistics(Map<String,Statistics> statisticsMap) {
+        List<StatisticsUnitDTO> statisticsOfFlows=new ArrayList<>();
+
+        for (String name : statisticsMap.keySet()) {
+            Statistics statistics = statisticsMap.get(name);
+            StatisticsUnitDTO statisticsUnitDTO= new StatisticsUnitDTO(statistics.getTimesActivated(),statistics.getAvgRunTime(), name);
+            statisticsOfFlows.add(statisticsUnitDTO);
+        }
+        return  statisticsOfFlows;
+    }
+
+
+
+    /*
+
+    public String getStatistics1() {
+        if (flows.size() > 0) {
+            String res = "The Statistics of the flows: \n";
+            res += packageStatistics() + "\nThe Statistics of the steps: \n" + getStepsStatistics();
+            return res;
+        } else
+            return "There are currently no defined flows in the system.\nYou can load flows to the system by using command 1 in the main menu.\n";
+    }
+
+
+    private String getFlowsStatistics1() {
         String currFlowStatistics, res = "";
         Statistics statistics;
 
@@ -379,7 +399,7 @@ public class Manager implements EngineApi, Serializable {
     }
 
 
-    private String getStepsStatistics() {
+    private String getStepsStatistics1() {
         String currFlowStatistics, res = "";
         Statistics statistics;
         for (String stepName : stepsStatistics.keySet()) {
@@ -390,6 +410,7 @@ public class Manager implements EngineApi, Serializable {
         }
         return res;
     }
+     */
 
     private void addStatistics() {
         Integer size = currentFlow.getNumberOfSteps();

@@ -1,9 +1,6 @@
 package enginemanager;
 
-import dto.FlowDefinitionDTO;
-import dto.FlowExecutionDTO;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -27,7 +24,7 @@ public interface EngineApi {
 
     FlowExecutionDTO getFullHistoryData(int flowIndex);
 
-    String getStatistics();
+    StatisticsDTO getStatistics();
 
     ResultDTO saveDataOfSystemToFile(String path);
 
