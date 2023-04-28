@@ -1,6 +1,8 @@
 package dto;
 
-public class FlowExecutionDetailsDTO {
+import java.io.Serializable;
+
+public class FlowExecutionDetailsDTO implements Serializable {
     private final String name;
     private final String id;
     private final String stateAfterRun;

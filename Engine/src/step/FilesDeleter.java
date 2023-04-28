@@ -38,7 +38,7 @@ public class FilesDeleter extends Step {
         }
 
         if (files.size() != 0) {
-            addLineToLog("About to start delete" + files.size() + "files");
+            addLineToLog("About to start delete " + files.size() + " files");
             for (File file : files) {
                 deleted = file.delete();
                 if (!deleted) {

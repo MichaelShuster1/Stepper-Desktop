@@ -321,7 +321,7 @@ public class UIapi {
             if (freeInput.getData() != null) {
                 currInput = "Name: " + freeInput.getName() + "\n";
                 currInput += "Type: " + freeInput.getType() + "\n";
-                if(freeInput.getData().equals("List") || freeInput.getData().equals("Relation") || freeInput.getData().equals("Mapping"))
+                if(freeInput.getType().equals("List") || freeInput.getType().equals("Relation") || freeInput.getType().equals("Mapping"))
                      currInput += "Input data:\n" + freeInput.getData() + "\n";
                 else
                     currInput += "Input data: " + freeInput.getData() + "\n";
@@ -347,7 +347,7 @@ public class UIapi {
             res += "Name: " + output.getName() + "\n";
             res += "Type: " + output.getType() + "\n";
             if (output.getData() != null) {
-                if(output.getData().equals("List") || output.getData().equals("Relation") || output.getData().equals("Mapping"))
+                if(output.getType().equals("List") || output.getType().equals("Relation") || output.getType().equals("Mapping"))
                      res += "Data:\n" + output.getData() + "\n\n";
                 else
                      res += "Data: " + output.getData() + "\n\n";

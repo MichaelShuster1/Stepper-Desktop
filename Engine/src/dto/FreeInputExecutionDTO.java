@@ -1,6 +1,8 @@
 package dto;
 
-public class FreeInputExecutionDTO extends DataDefintionDTO{
+import java.io.Serializable;
+
+public class FreeInputExecutionDTO extends DataDefintionDTO  {
     private final String data;
     private final boolean necessity;
 

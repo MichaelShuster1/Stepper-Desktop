@@ -1,6 +1,6 @@
 package dto;
 
-public class OutputExecutionDTO extends DataDefintionDTO{
+public class OutputExecutionDTO extends DataDefintionDTO {
     private String data;
 
     public OutputExecutionDTO(DataDefintionDTO other, String data) {

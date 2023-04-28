@@ -1,6 +1,8 @@
 package dto;
 
-public class DataDefintionDTO
+import java.io.Serializable;
+
+public class DataDefintionDTO implements Serializable
 {
     private final String name;
     private final String type;

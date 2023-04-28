@@ -1,8 +1,9 @@
 package dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FlowExecutionDTO extends FlowExecutionDetailsDTO {
+public class FlowExecutionDTO extends FlowExecutionDetailsDTO{
     private final List<StepExecutionDTO> steps;
     private final List<FreeInputExecutionDTO> freeInputs;
     private final List<OutputExecutionDTO> outputs;

@@ -1,9 +1,10 @@
 package dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepExecutionDTO {
+public class StepExecutionDTO implements Serializable {
     String name;
     long runTime;
     String stateAfterRun;

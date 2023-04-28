@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public enum HCSteps {
-    SPEND_SOME_TIME("Spend some Time"),
+    SPEND_SOME_TIME("Spend Some Time"),
     COLLECT_FILES("Collect Files In Folder"),
     FILES_RENAMER("Files Renamer"),
     FILES_CONTENT("Files Content Extractor"),

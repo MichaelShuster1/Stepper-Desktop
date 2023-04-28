@@ -371,7 +371,7 @@ public class Manager implements EngineApi, Serializable {
         for (String flowName : flowsStatistics.keySet()) {
             statistics = flowsStatistics.get(flowName);
             currFlowStatistics = flowName + "\nNumber of times activated: "
-                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + "\n\n";
+                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + " ms\n\n";
             res += currFlowStatistics;
         }
 
@@ -385,7 +385,7 @@ public class Manager implements EngineApi, Serializable {
         for (String stepName : stepsStatistics.keySet()) {
             statistics = stepsStatistics.get(stepName);
             currFlowStatistics = stepName + "\nNumber of times activated: "
-                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + "\n\n";
+                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + " ms\n\n";
             res += currFlowStatistics;
         }
         return res;
