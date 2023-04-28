@@ -70,10 +70,14 @@ public class FilesRenamer extends Step {
                 int extensionDotIndex = currName.lastIndexOf(".");
                 if (prefix != null)
                     newName = prefix;
-                newName += currName.substring(0, extensionDotIndex);
+                if(extensionDotIndex != -1)
+                      newName += currName.substring(0, extensionDotIndex);
+                else
+                    newName += currName;
                 if (suffix != null)
                     newName += suffix;
-                newName += currName.substring(extensionDotIndex, currName.length());
+                if(extensionDotIndex != -1)
+                       newName += currName.substring(extensionDotIndex, currName.length());
                 File newNameFile = new File(parentPath + "\\" + newName);
                 if (file.renameTo(newNameFile)) {
                     Map<String, String> row = new HashMap<>();

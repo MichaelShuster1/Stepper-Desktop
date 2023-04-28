@@ -18,7 +18,7 @@ public interface EngineApi {
 
     boolean isFlowReady();
 
-    String runFlow(); //getFlowInputs
+    FlowResultDTO runFlow(); //getFlowInputs
 
     List<String> getInitialHistoryList();
 

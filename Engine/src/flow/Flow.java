@@ -515,7 +515,7 @@ public class Flow implements Serializable {
 */
 
 
-    public String executeFlow() {
+    public FlowResultDTO executeFlow() {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
@@ -543,7 +543,7 @@ public class Flow implements Serializable {
 
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
-        return getFlowExecutionStrData();
+        return getFlowExecutionResultData();
     }
 
     private void streamStepOutputsToInputs(int i, Step currStep) {
@@ -567,6 +567,26 @@ public class Flow implements Serializable {
         return uuidAsString;
     }
 
+    public FlowResultDTO getFlowExecutionResultData()
+    {
+        List<OutputExecutionDTO> formalOutputs = new ArrayList<>();
+        for (String currOutput : formal_outputs.keySet()) {
+            Step step = steps.get(formal_outputs.get(currOutput));
+            int outPutIndex = step.getNameToOutputIndex().get(currOutput);
+            String userString = "    " + step.getOutput(outPutIndex).getUserString();
+            DataDefintionDTO currDetails = new DataDefintionDTO(null, userString);
+            OutputExecutionDTO currDTO;
+            if (step.getOutput(outPutIndex).getData() != null)
+                currDTO = new OutputExecutionDTO(currDetails, step.getOutput(outPutIndex).getData().toString());
+            else
+                currDTO = new OutputExecutionDTO(currDetails, null);
+            formalOutputs.add(currDTO);
+        }
+
+        return new FlowResultDTO(flowId,name,state_after_run.toString(),formalOutputs);
+    }
+
+
 
     public String getFlowExecutionStrData() {
         String res = getFlowNameIDAndState();
@@ -588,7 +608,6 @@ public class Flow implements Serializable {
         }
 
         return res;
-
 
     }
 
