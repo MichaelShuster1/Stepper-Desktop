@@ -261,6 +261,28 @@ public class UIapi {
     }
 
 
+    public String getFlowExecutionStrData(FlowResultDTO flowResult) {
+        String res = "Flows unique ID: " + flowResult.getId() + "\n";
+        res += "Flow name: " + flowResult.getName() + "\n";
+        res += "Flow's final state : " + flowResult.getState() + "\n";
+        List<OutputExecutionDTO> formalOutputs = flowResult.getFormalOutputs();
+        if (formalOutputs.size() > 0) {
+            res += "FLOW'S FORMAL OUTPUTS:\n";
+            for (OutputExecutionDTO output: formalOutputs) {
+                res += output.getType() + "\n";
+                if (output.getData() != null)
+                    res += output.getData() + "\n";
+                else
+                    res += "Not created due to failure in flow\n";
+
+            }
+        } else {
+            res += "THE FLOW HAVE NO OUTPUTS\n";
+        }
+        return res;
+    }
+
+
     public void showFlowsHistory() {
         Integer userChoice = null;
         List<String> initialList = engine.getInitialHistoryList();
@@ -488,7 +510,7 @@ public class UIapi {
                 processDataInput(input);
             } else if (choice.equals(size + 1) && flowReady) {
                 runFlow = true;
-                System.out.println(engine.runFlow());
+                System.out.println(getFlowExecutionStrData(engine.runFlow()));
             } else if (choice.equals(0))
                 return;
             else {

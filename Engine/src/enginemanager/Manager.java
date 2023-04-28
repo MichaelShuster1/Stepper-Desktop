@@ -1,9 +1,6 @@
 package enginemanager;
 
-import dto.FlowDefinitionDTO;
-import dto.FlowExecutionDTO;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 import flow.Flow;
 import flow.FlowHistory;
 import generated.*;
@@ -269,8 +266,8 @@ public class Manager implements EngineApi, Serializable {
 
 
     @Override
-    public String runFlow() {
-        String res = currentFlow.executeFlow();
+    public FlowResultDTO runFlow() {
+        FlowResultDTO res = currentFlow.executeFlow();
         addFlowHistory();
         addStatistics();
         currentFlow.resetFlow();

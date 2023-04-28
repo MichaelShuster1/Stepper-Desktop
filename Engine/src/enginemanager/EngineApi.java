@@ -1,9 +1,6 @@
 package enginemanager;
 
-import dto.FlowDefinitionDTO;
-import dto.FlowExecutionDTO;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -21,7 +18,7 @@ public interface EngineApi {
 
     boolean isFlowReady();
 
-    String runFlow(); //getFlowInputs
+    FlowResultDTO runFlow(); //getFlowInputs
 
     List<String> getInitialHistoryList();
 
