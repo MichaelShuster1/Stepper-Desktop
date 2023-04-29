@@ -11,13 +11,15 @@ public class Main {
 
         Zipper zipper =new Zipper("Zipper",false);
 
-        zipper.getInput(0).setData("C:\\Users\\michael\\Desktop\\test\\comppresed.zip");
+        zipper.getInput(0).setData("C:\\Users\\michael\\Desktop\\test\\Folder1.zip");
         zipper.getInput(1).setData("UNZIP");
 
         zipper.run();
 
-        UIapi main = new UIapi(new Manager());
-        main.runSystem();
+        System.out.println(zipper.getOutput(0).getData());
+
+        //UIapi main = new UIapi(new Manager());
+        //main.runSystem();
     }
 
 }
