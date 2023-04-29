@@ -24,7 +24,7 @@ public class PropertiesExporter extends Step {
         Relation relation = (Relation) inputs.get(0).getData();
         String result = "";
         if (relation == null || relation.getRows().size() == 0) {
-            state_after_run = State.WARNING;
+            stateAfterRun = State.WARNING;
             outputs.get(0).setData(result);
             addLineToLog("No table was given to convert from to properties format string");
             summaryLine = "Warning: no table was given to convert to properties format";
@@ -45,7 +45,7 @@ public class PropertiesExporter extends Step {
                 }
                 index++;
             }
-            state_after_run = State.SUCCESS;
+            stateAfterRun = State.SUCCESS;
             outputs.get(0).setData(result);
             addLineToLog("Extracted total of " + total_properties);
             summaryLine = ("Step ended successfully, Extracted total of " + total_properties);

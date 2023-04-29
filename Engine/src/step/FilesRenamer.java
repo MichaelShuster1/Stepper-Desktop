@@ -60,7 +60,7 @@ public class FilesRenamer extends Step {
         addLineToLog(log);
 
         if (fileList.size() == 0) {
-            setState_after_run(State.SUCCESS);
+            setStateAfterRun(State.SUCCESS);
             summaryLine = "Step ended successfully, the list of files to rename was empty";
         } else {
             for (File file : fileList) {
@@ -90,7 +90,7 @@ public class FilesRenamer extends Step {
                     addLineToLog("Problem renaming file " + currName);
                     if (failedToRenameFiles.length() == 0) {
                         failedToRenameFiles = currName;
-                        setState_after_run(State.WARNING);
+                        setStateAfterRun(State.WARNING);
                     } else
                         failedToRenameFiles = currName + ", " + failedToRenameFiles;
                 }
@@ -102,14 +102,14 @@ public class FilesRenamer extends Step {
         if (failedToRenameFiles.length() > 0) {
             failedToRenameFiles = "Renaming failed for the following files: " + failedToRenameFiles;
         }
-        if (getState_after_run() != null && getState_after_run() == State.WARNING)
+        if (getStateAfterRun() != null && getStateAfterRun() == State.WARNING)
             summaryLine = "Warning: " + failedToRenameFiles + "\n" + "Other files(if any) were renamed successfully";
 
         if (summaryLine == null)
             summaryLine = "Step ended successfully, renamed the files successfully";
 
-        if (state_after_run == null)
-            state_after_run = State.SUCCESS;
+        if (stateAfterRun == null)
+            stateAfterRun = State.SUCCESS;
 
         outputs.get(0).setData(dataTable);
         runTime = System.currentTimeMillis() - startTime;

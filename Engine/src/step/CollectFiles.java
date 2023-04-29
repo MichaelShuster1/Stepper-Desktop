@@ -58,11 +58,11 @@ public class CollectFiles extends Step {
 
 
         if (!directory.exists()) {
-            setState_after_run(State.FAILURE);
+            setStateAfterRun(State.FAILURE);
             addLineToLog("Accessing path  " + directoryPath + " has failed");
             summaryLine = "Step failed, the path provided was not found";
         } else if (!directory.isDirectory()) {
-            setState_after_run(State.FAILURE);
+            setStateAfterRun(State.FAILURE);
             addLineToLog("Found the path " + directoryPath + ", but its not a folder");
             summaryLine = "Step failed, the path provided was not a folder(directory)";
         } else {
@@ -82,10 +82,10 @@ public class CollectFiles extends Step {
             addLineToLog("Found " + count + " files in folder matching the filter");
 
             if (count == 0) {
-                setState_after_run(State.WARNING);
+                setStateAfterRun(State.WARNING);
                 summaryLine = "Warning: no matching files found in the provided folder";
             } else {
-                setState_after_run(State.SUCCESS);
+                setStateAfterRun(State.SUCCESS);
                 fileList.addAll(Arrays.asList(files));
                 summaryLine = "Step ended successfully," + count + " files were collected to the list";
             }

@@ -26,7 +26,7 @@ public class SpendSomeTime extends Step {
         }
 
         if (sleeping_time <= 0) {
-            state_after_run = State.FAILURE;
+            stateAfterRun = State.FAILURE;
 
             addLineToLog("Failed to Run the step " + getName()
                     + " because the given time is a non-positive number");
@@ -38,9 +38,9 @@ public class SpendSomeTime extends Step {
                 Thread.sleep(sleeping_time * 1000);
                 addLineToLog("Done sleeping");
                 summaryLine = "Step ended successfully, Done sleeping";
-                state_after_run = State.SUCCESS;
+                stateAfterRun = State.SUCCESS;
             } catch (InterruptedException e) {
-                state_after_run = State.FAILURE;
+                stateAfterRun = State.FAILURE;
                 addLineToLog("Failed to Run the step " + getName() + " because of an internal problem");
 
                 summaryLine = "Step failed, an internal problem";

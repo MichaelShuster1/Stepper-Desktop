@@ -49,17 +49,17 @@ public class FileDumper extends Step {
                                 new FileOutputStream(file), "UTF-8"))) {
                     writer.write(content);
                 }
-                setState_after_run(State.SUCCESS);
+                setStateAfterRun(State.SUCCESS);
                 summaryLine = "Step ended successfully, file was created with the provided content";
             } else {
-                setState_after_run(State.WARNING);
+                setStateAfterRun(State.WARNING);
                 summaryLine = "Warning: The content provided was empty, file was created successfully with no content (empty file)";
                 addLineToLog("Created a file named " + file.getName() + ", tried to write content but the content was empty");
 
             }
             res = "SUCCESS";
         } catch (Exception e) {
-            setState_after_run(State.FAILURE);
+            setStateAfterRun(State.FAILURE);
             summaryLine = "Step failed, " + e.getMessage();
             addLineToLog("Failed to create a file named " + file.getName() + " in the provided location");
             res = "Failed: " + e.getMessage();

@@ -372,46 +372,6 @@ public class Manager implements EngineApi, Serializable {
 
 
 
-    /*
-
-    public String getStatistics1() {
-        if (flows.size() > 0) {
-            String res = "The Statistics of the flows: \n";
-            res += packageStatistics() + "\nThe Statistics of the steps: \n" + getStepsStatistics();
-            return res;
-        } else
-            return "There are currently no defined flows in the system.\nYou can load flows to the system by using command 1 in the main menu.\n";
-    }
-
-
-    private String getFlowsStatistics1() {
-        String currFlowStatistics, res = "";
-        Statistics statistics;
-
-        for (String flowName : flowsStatistics.keySet()) {
-            statistics = flowsStatistics.get(flowName);
-            currFlowStatistics = flowName + "\nNumber of times activated: "
-                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + " ms\n\n";
-            res += currFlowStatistics;
-        }
-
-        return res;
-    }
-
-
-    private String getStepsStatistics1() {
-        String currFlowStatistics, res = "";
-        Statistics statistics;
-        for (String stepName : stepsStatistics.keySet()) {
-            statistics = stepsStatistics.get(stepName);
-            currFlowStatistics = stepName + "\nNumber of times activated: "
-                    + statistics.getTimesActivated() + "\nAverage run time: " + statistics.getAvgRunTime() + " ms\n\n";
-            res += currFlowStatistics;
-        }
-        return res;
-    }
-     */
-
     private void addStatistics() {
         Integer size = currentFlow.getNumberOfSteps();
         Statistics statistics = flowsStatistics.get(currentFlow.getName());
@@ -422,7 +382,7 @@ public class Manager implements EngineApi, Serializable {
             Step step = currentFlow.getStep(i);
             statistics = stepsStatistics.get(step.getDefaultName());
             statistics.addRunTime(step.getRunTime());
-            if (step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
                 flowStopped = true;
         }
     }

@@ -16,12 +16,12 @@ import java.util.*;
 public class Flow implements Serializable {
     private final String name;
     private final String description;
-    private boolean read_only;
+    private boolean readOnly;
     private String flowId;
-    private State state_after_run;
+    private State stateAfterRun;
     private Long runTime;
     private String activationTime;
-    private final Map<String, Integer> formal_outputs;
+    private final Map<String, Integer> formalOutputs;
     private final List<Step> steps;
     private int numberOfSteps;
     private final Map<String, Integer> nameToIndex;
@@ -36,7 +36,7 @@ public class Flow implements Serializable {
         this.description = description;
         steps = new ArrayList<>();
         nameToIndex = new HashMap<>();
-        formal_outputs = new HashMap<>();
+        formalOutputs = new HashMap<>();
         numberOfSteps = 0;
 
     }
@@ -52,7 +52,7 @@ public class Flow implements Serializable {
     }
 
     public void addFormalOutput(String outputName) {
-        formal_outputs.put(outputName, -1);
+        formalOutputs.put(outputName, -1);
     }
 
     public void customMapping(Map<Pair<String, String>, Pair<String, String>> customMapping) {
@@ -121,7 +121,7 @@ public class Flow implements Serializable {
 
     public void automaticMapping() {
         int a;
-        read_only = true;
+        readOnly = true;
 
         initFlowInputs();
         if (connections == null)
@@ -130,7 +130,7 @@ public class Flow implements Serializable {
         for (int i = 0; i < steps.size(); i++) {
             Step step = steps.get(i);
             if (!step.isRead_only())
-                read_only = false;
+                readOnly = false;
             mapStepOutputsToInputs(i, step.getOutputs());
         }
     }
@@ -138,8 +138,8 @@ public class Flow implements Serializable {
     private void mapStepOutputsToInputs(int index, List<Output> outputs) {
         int a=0;
         for (Output output : outputs) {
-            if (formal_outputs.containsKey(output.getName())) {
-                formal_outputs.put(output.getName(), index);
+            if (formalOutputs.containsKey(output.getName())) {
+                formalOutputs.put(output.getName(), index);
             }
             List<Pair<Integer, Integer>> pairs = getListPairsOfTargetInputs(index, output);
             connections.get(index).get(a).addAll(pairs);
@@ -290,7 +290,7 @@ public class Flow implements Serializable {
 
 
     public void resetFlow() {
-        state_after_run = null;
+        stateAfterRun = null;
         runTime = null;
         flowId = null;
         activationTime = null;
@@ -347,7 +347,7 @@ public class Flow implements Serializable {
 
     public FlowDefinitionDTO getFlowDefinition()
     {
-        FlowDetailsDTO details = new FlowDetailsDTO(name,description,formal_outputs.keySet(),read_only);
+        FlowDetailsDTO details = new FlowDetailsDTO(name,description, formalOutputs.keySet(), readOnly);
         List<StepDefinitionDTO> steps = getStepsDefinitionDTO();
         List<FreeInputDefinitionDTO> freeInputs = getFreeInputsDefinitionDTO();
         List<OutputDefintionDTO> outputs = getOutputsDefinitionDTO();
@@ -521,22 +521,24 @@ public class Flow implements Serializable {
         formatter.format(new Date());
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
-        state_after_run = State.SUCCESS;
+        stateAfterRun = State.SUCCESS;
 
         for (int i = 0; i < steps.size() && continueExecution; i++) {
             Step currStep = steps.get(i);
             currStep.run();
 
-            if (currStep.getState_after_run() == State.FAILURE) {
-                if (!currStep.isContinue_if_failing()) {
-                    state_after_run = State.FAILURE;
+            if (currStep.getStateAfterRun() == State.FAILURE) {
+                if (!currStep.isContinueIfFailing()) {
+                    stateAfterRun = State.FAILURE;
                     continueExecution = false;
                 }
+                else
+                    stateAfterRun =State.WARNING;
             }
 
             if (continueExecution) {
-                if (currStep.getState_after_run() == State.WARNING)
-                    state_after_run = State.WARNING;
+                if (currStep.getStateAfterRun() == State.WARNING)
+                    stateAfterRun = State.WARNING;
                 streamStepOutputsToInputs(i, currStep);
             }
         }
@@ -570,8 +572,8 @@ public class Flow implements Serializable {
     public FlowResultDTO getFlowExecutionResultData()
     {
         List<OutputExecutionDTO> formalOutputs = new ArrayList<>();
-        for (String currOutput : formal_outputs.keySet()) {
-            Step step = steps.get(formal_outputs.get(currOutput));
+        for (String currOutput : this.formalOutputs.keySet()) {
+            Step step = steps.get(this.formalOutputs.get(currOutput));
             int outPutIndex = step.getNameToOutputIndex().get(currOutput);
             String userString = "    " + step.getOutput(outPutIndex).getUserString();
             DataDefintionDTO currDetails = new DataDefintionDTO(null, userString);
@@ -583,7 +585,7 @@ public class Flow implements Serializable {
             formalOutputs.add(currDTO);
         }
 
-        return new FlowResultDTO(flowId,name,state_after_run.toString(),formalOutputs);
+        return new FlowResultDTO(flowId,name, stateAfterRun.toString(),formalOutputs);
     }
 
 
@@ -591,10 +593,10 @@ public class Flow implements Serializable {
     public String getFlowExecutionStrData() {
         String res = getFlowNameIDAndState();
 
-        if (formal_outputs.size() > 0) {
+        if (formalOutputs.size() > 0) {
             res += "FLOW'S FORMAL OUTPUTS:\n";
-            for (String currOutput : formal_outputs.keySet()) {
-                Step step = steps.get(formal_outputs.get(currOutput));
+            for (String currOutput : formalOutputs.keySet()) {
+                Step step = steps.get(formalOutputs.get(currOutput));
                 int outPutIndex = step.getNameToOutputIndex().get(currOutput);
                 res += step.getOutput(outPutIndex).getUserString() + "\n";
                 if (step.getOutput(outPutIndex).getData() != null)
@@ -615,13 +617,13 @@ public class Flow implements Serializable {
     public String getFlowNameIDAndState() {
         String res = "Flows unique ID: " + flowId + "\n";
         res += "Flow name: " + name + "\n";
-        res += "Flow's final state : " + state_after_run + "\n";
+        res += "Flow's final state : " + stateAfterRun + "\n";
         return res;
     }
 
     public FlowExecutionDTO getFlowHistoryData()
     {
-        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId,state_after_run.toString(),runTime);
+        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId, stateAfterRun.toString(),runTime);
         List<StepExecutionDTO> steps = getStepsExecutionDTO();
         List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
         List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
@@ -670,7 +672,7 @@ public class Flow implements Serializable {
         for (int i = 0; i < steps.size() && !flowStopped; i++) {
             Step step = steps.get(i);
             stepsList.add(step.getStepExecutionData());
-            if (step.getState_after_run() == State.FAILURE && !step.isContinue_if_failing())
+            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
                 flowStopped = true;
         }
         return stepsList;
@@ -770,7 +772,7 @@ public class Flow implements Serializable {
             for (Output output : currStep.getOutputs()) {
                 if (!outputs.add(output.getName()))
                     foundDuplicate = true;
-                if (formal_outputs.get(output.getName()) != null)
+                if (formalOutputs.get(output.getName()) != null)
                     formalOutputsCount++;
 
             }
@@ -779,7 +781,7 @@ public class Flow implements Serializable {
         if (foundDuplicate) {
             throw new SameOutputNameException("The flow \"" + name + "\" contains the same output name for two different outputs");
         }
-        if (formalOutputsCount != formal_outputs.size()) {
+        if (formalOutputsCount != formalOutputs.size()) {
             throw new InputOutputNotExistException("The flow \"" + name + "\" contains a formal output that doesn't exists");
         }
     }
@@ -819,8 +821,8 @@ public class Flow implements Serializable {
     }
 
 
-    public boolean isRead_only() {
-        return read_only;
+    public boolean isReadOnly() {
+        return readOnly;
     }
 
 
@@ -829,7 +831,7 @@ public class Flow implements Serializable {
     }
 
 
-    public State getState_after_run() {
-        return state_after_run;
+    public State getStateAfterRun() {
+        return stateAfterRun;
     }
 }

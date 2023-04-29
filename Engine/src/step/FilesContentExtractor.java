@@ -46,8 +46,7 @@ public class FilesContentExtractor extends Step {
                 row.put("Index", index.toString());
                 row.put("File name", file.getName());
                 if (file.exists()) {
-                    try {
-                        Scanner scanner = new Scanner(file);
+                    try (Scanner scanner = new Scanner(file)) {
                         int i;
                         for (i = 0; scanner.hasNextLine() && i < line_number; ++i)
                             scanner.nextLine();
@@ -62,6 +61,7 @@ public class FilesContentExtractor extends Step {
                             row.put("the info that been extracted", "Not such line");
                             problem = true;
                         }
+
                     } catch (FileNotFoundException e) {
                         addLineToLog("Problem extracting line number " + (line_number + 1)
                                 + " from file " + file.getName());
@@ -76,6 +76,7 @@ public class FilesContentExtractor extends Step {
                 }
                 relation.addRow(row);
                 index++;
+
             }
             addLineToLog("Finished extracting the content from the given files");
             summaryLine = "Step ended successfully, ";
@@ -91,7 +92,7 @@ public class FilesContentExtractor extends Step {
             summaryLine = "Step ended successfully, no files given to extract content from";
         }
         outputs.get(0).setData(relation);
-        state_after_run = State.SUCCESS;
+        stateAfterRun = State.SUCCESS;
         runTime = System.currentTimeMillis() - startTime;
     }
 }

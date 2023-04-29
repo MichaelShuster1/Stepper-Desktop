@@ -35,11 +35,11 @@ public class CSVExporter extends Step {
         addLineToLog("About to process " + (rows.size()) + " lines of data");
 
         if (rows.size() == 0) {
-            setState_after_run(State.WARNING);
+            setStateAfterRun(State.WARNING);
             summaryLine = "Warning: the data provided was empty, the CSV format created contains the columns names only";
 
         } else {
-            setState_after_run(State.SUCCESS);
+            setStateAfterRun(State.SUCCESS);
             summaryLine = "Step ended successfully, CSV format created.";
         }
         for (String name : dataTable.getColumnNames()) {

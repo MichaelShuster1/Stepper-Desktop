@@ -29,7 +29,7 @@ public class FilesDeleter extends Step {
         List<File> files = (List<File>) inputs.get(0).getData();
         List<String> paths = new ArrayList<>();
         Map<String, Integer> mapping = new HashMap<>();
-        int files_deleted = 0, files_not_deleted = 0;
+        int filesDeleted = 0, filesNotDeleted = 0;
         boolean deleted = false;
 
         if (!checkGotInputs(1)) {
@@ -43,33 +43,33 @@ public class FilesDeleter extends Step {
                 deleted = file.delete();
                 if (!deleted) {
                     paths.add(file.getAbsolutePath());
-                    files_not_deleted++;
+                    filesNotDeleted++;
                     addLineToLog("Failed to delete file " + file.getAbsolutePath());
                 } else
-                    files_deleted++;
+                    filesDeleted++;
             }
 
-            if (files_deleted == files.size()) {
-                state_after_run = State.SUCCESS;
+            if (filesDeleted == files.size()) {
+                stateAfterRun = State.SUCCESS;
                 addLineToLog("All files have been deleted successfully");
                 summaryLine = "Step ended successfully, all files have been deleted successfully";
-            } else if (files_deleted != 0) {
-                state_after_run = State.WARNING;
+            } else if (filesDeleted != 0) {
+                stateAfterRun = State.WARNING;
                 addLineToLog("Only part of the given files were deleted successfully");
                 summaryLine = "Warning: only part of the given files were deleted";
             } else {
-                state_after_run = State.FAILURE;
+                stateAfterRun = State.FAILURE;
                 addLineToLog("All files were not deleted successfully");
                 summaryLine = "Step failed, all files were not deleted";
             }
         } else {
-            state_after_run = State.SUCCESS;
+            stateAfterRun = State.SUCCESS;
             addLineToLog("No files to delete were given");
             summaryLine = "Step ended successfully, no files to delete were given";
         }
         outputs.get(0).setData(paths);
-        mapping.put("car", files_deleted);
-        mapping.put("cdr", files_not_deleted);
+        mapping.put("car", filesDeleted);
+        mapping.put("cdr", filesNotDeleted);
         outputs.get(1).setData(mapping);
         runTime = System.currentTimeMillis() - startTime;
     }

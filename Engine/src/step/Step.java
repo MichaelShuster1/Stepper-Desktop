@@ -9,25 +9,29 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class Step implements Serializable {
+
     protected String name;
+
     protected String defaultName;
     protected final boolean read_only;
-    protected final boolean continue_if_failing;
-    protected State state_after_run;
+    protected final boolean continueIfFailing;
+    protected State stateAfterRun;
 
     protected List<Input> inputs;
     protected Map<String, Integer> nameToInputIndex;
+
     protected List<Output> outputs;
     protected Map<String, Integer> nameToOutputIndex;
     protected List<String> log;
+
     protected String summaryLine;
 
     protected Long runTime;
 
-    protected Step(String name, boolean read_only, boolean continue_if_failing) {
+    protected Step(String name, boolean read_only, boolean continueIfFailing) {
         this.name = name;
         this.read_only = read_only;
-        this.continue_if_failing = continue_if_failing;
+        this.continueIfFailing = continueIfFailing;
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
         log = new ArrayList<>();
@@ -64,41 +68,15 @@ public abstract class Step implements Serializable {
     }
 
     public StepExecutionDTO getStepExecutionData() {
-        return new StepExecutionDTO(name,runTime,state_after_run.toString(),summaryLine, log);
+        return new StepExecutionDTO(name,runTime, stateAfterRun.toString(),summaryLine, log);
     }
 
-    /*
-    public String getStepHistoryData() {
-        String res = "Name: " + name + "\n";
-        res += "Run time: " + runTime + "\n";
-        res += "Finish state: " + state_after_run + "\n";
-        res += "Step summary:" + summaryLine + "\n";
-        res += "STEP LOGS:\n\n";
-        res += getStrLogs();
-
-        return res;
+    public State getStateAfterRun() {
+        return stateAfterRun;
     }
 
-
-    public String getStrLogs() {
-        String res = "";
-        if (log.size() == 0)
-            return "The step had no logs\n";
-        else {
-            for (String currLog : log) {
-                res += currLog + "\n\n";
-            }
-        }
-        return res;
-    }
-    */
-
-    public State getState_after_run() {
-        return state_after_run;
-    }
-
-    public void setState_after_run(State state_after_run) {
-        this.state_after_run = state_after_run;
+    public void setStateAfterRun(State stateAfterRun) {
+        this.stateAfterRun = stateAfterRun;
     }
 
     protected void addLineToLog(String line) {
@@ -124,8 +102,8 @@ public abstract class Step implements Serializable {
         return outputs;
     }
 
-    public boolean isContinue_if_failing() {
-        return continue_if_failing;
+    public boolean isContinueIfFailing() {
+        return continueIfFailing;
     }
 
     public List<String> getLog() {
@@ -172,7 +150,7 @@ public abstract class Step implements Serializable {
 
         if (!isValid) {
             addLineToLog("Trying to access inputs, but no inputs received");
-            setState_after_run(State.FAILURE);
+            setStateAfterRun(State.FAILURE);
             summaryLine = "Step failed, mandatory inputs not received";
         }
 
