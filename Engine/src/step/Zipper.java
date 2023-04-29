@@ -51,7 +51,7 @@ public class Zipper extends  Step{
         switch (operation)
         {
             case "ZIP":
-                zip();
+                res = zip(path);
                 break;
             case "UNZIP":
                 res=unzip(path);
@@ -64,116 +64,135 @@ public class Zipper extends  Step{
     }
 
 
-    public boolean zip(String srcFolder, String destZipFile,File file) {
-            boolean result = false;
+    public String zip(String srcFolder) {
 
-            try {
-                System.out.println("Program Start zipping the given files");
-                /*
-                 * send to the zip procedure
-                 */
-                zipFolder(srcFolder, destZipFile, file);
-                result = true;
-                System.out.println("Given files are successfully zipped");
-            } catch (Exception e) {
-                System.out.println("Some Errors happned during the zip process");
-            } finally {
-                return result;
-            }
+        File file = new File(srcFolder);
+        if(!file.exists())
+        {
+            setStateAfterRun(State.FAILURE);
+            addLineToLog("Accessing path  " + srcFolder + " has failed");
+            summaryLine = "Step failed, the path provided was not found";
+            return "Step failed, the path provided was not found";
+        }
+        String destZipFile;
+        if(file.isDirectory())
+         destZipFile = file.getParentFile() + "\\" +file.getName() + ".zip";
+        else {
+            String fileName = file.getName();
+            int index = fileName.lastIndexOf(".");
+            if(index != -1)
+                fileName = fileName.substring(0, index);
+            destZipFile = file.getParentFile() + "\\" + fileName + ".zip";
         }
 
-        /*
-         * zip the folders
-         */
-        private void zipFolder(String srcFolder, String destZipFile,File file) throws Exception {
-            ZipOutputStream zip = null;
-            FileOutputStream fileWriter = null;
-            /*
-             * create the output stream to zip file result
-             */
+        String res = zipFolder(srcFolder, destZipFile, file);
+        if(res.equals("SUCCESS")) {
+            summaryLine = "Step ended successfully, zip file created";
+            setStateAfterRun(State.SUCCESS);
+        }
+        else
+        {
+            setStateAfterRun(State.FAILURE);
+            addLineToLog(res);
+            summaryLine = res;
+        }
+
+        return res;
+    }
+
+    private String zipFolder(String srcFolder, String destZipFile,File file) {
+        ZipOutputStream zip = null;
+        FileOutputStream fileWriter = null;
+        String res = "";
+
+        try {
             fileWriter = new FileOutputStream(destZipFile);
             zip = new ZipOutputStream(fileWriter);
-            /*
-             * add the folder to the zip
-             */
-            if(file.isDirectory())
-                addFolderToZip("", srcFolder, zip);
-            else
-                addFileToZip(file.getName(),srcFolder,zip,false);
+        }
+        catch (Exception e)
+        {
+            return "Step failed, accessing " + destZipFile + " failed";
+        }
 
-            /*
-             * close the zip objects
-             */
+        if(file.isDirectory())
+           res = addFolderToZip("", srcFolder, zip);
+        else
+            res =addFileToZip("", file.getAbsolutePath(),zip,false,true);
+
+
+        try {
             zip.flush();
             zip.close();
         }
+        catch (Exception e)
+        {
+            return "Step failed, failed to close the zip output stream";
+        }
 
-        /*
-         * recursively add files to the zip files
-         */
-        private void addFileToZip(String path, String srcFile, ZipOutputStream zip, boolean flag) throws Exception {
-            /*
-             * create the file object for inputs
-             */
-            File folder = new File(srcFile);
+        return res;
+    }
 
-            /*
-             * if the folder is empty add empty folder to the Zip file
-             */
-            if (flag == true) {
+    private String addFileToZip(String path, String srcFile, ZipOutputStream zip, boolean flag, boolean oneFile) {
+        File folder = new File(srcFile);
+
+        if (flag) {
+            try {
                 zip.putNextEntry(new ZipEntry(path + "/" + folder.getName() + "/"));
-            } else { /*
-             * if the current name is directory, recursively traverse it
-             * to get the files
-             */
-                if (folder.isDirectory()) {
-                    /*
-                     * if folder is not empty
-                     */
-                    addFolderToZip(path, srcFile, zip);
-                } else {
-                    /*
-                     * write the file to the output
-                     */
+            }
+            catch (Exception e)
+            {
+                return "Step failed, failed to access " + path + "/" + folder.getName();
+            }
+        }
+        else {
+
+            if (folder.isDirectory()) {
+                addFolderToZip(path, srcFile, zip);
+            }
+            else {
+                try {
                     byte[] buf = new byte[1024];
                     int len;
                     FileInputStream in = new FileInputStream(srcFile);
-                    zip.putNextEntry(new ZipEntry(path + "/" + folder.getName()));
+                    if (!oneFile)
+                        zip.putNextEntry(new ZipEntry(path + "/" + folder.getName()));
+                    else
+                        zip.putNextEntry(new ZipEntry(folder.getName()));
                     while ((len = in.read(buf)) > 0) {
-                        /*
-                         * Write the Result
-                         */
                         zip.write(buf, 0, len);
                     }
                 }
-            }
-        }
-
-        /*
-         * add folder to the zip file
-         */
-        private void addFolderToZip(String path, String srcFolder, ZipOutputStream zip) throws Exception {
-            File folder = new File(srcFolder);
-
-            /*
-             * check the empty folder
-             */
-            if (folder.list().length == 0) {
-                System.out.println(folder.getName());
-                addFileToZip(path, srcFolder, zip, true);
-            } else {
-                /*
-                 * list the files in the folder
-                 */
-                for (String fileName : folder.list()) {
-                    if (path.equals("")) {
-                        addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false);
-                    } else {
-                        addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false);
-                    }
+                catch (Exception e)
+                {
+                    return "Step failed, failed to zip contents of " + folder.getAbsolutePath();
                 }
             }
         }
+
+        return "SUCCESS";
+    }
+
+    private String addFolderToZip(String path, String srcFolder, ZipOutputStream zip)  {
+        File folder = new File(srcFolder);
+        String res = "";
+
+        if (folder.list().length == 0) {
+            System.out.println(folder.getName());
+            addFileToZip(path, srcFolder, zip, true,false);
+        } else {
+
+            for (String fileName : folder.list()) {
+                if (path.equals("")) {
+                     res = addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false,false);
+                } else {
+                     res = addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false,false);
+                }
+                if(!res.equals("SUCCESS"))
+                    return res;
+            }
+        }
+        return res;
+    }
 
 
 
