@@ -6,29 +6,27 @@ import datadefinition.Input;
 import datadefinition.Output;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
-public class Zipper extends  Step{
+public class Zipper extends Step {
 
     public Zipper(String name, boolean continueIfFailing) {
         super(name, false, continueIfFailing);
-        defaultName="Zipper";
+        defaultName = "Zipper";
 
 
         DataString dataString = new DataString("SOURCE");
         inputs.add(new Input(dataString, true, true, "Source"));
         nameToInputIndex.put("SOURCE", 0);
 
-        Set<String> values=new HashSet<>();
+        Set<String> values = new HashSet<>();
         values.add("ZIP");
         values.add("UNZIP");
-        DataEnumerator dataEnumerator =new DataEnumerator("OPERATION",values);
-        inputs.add(new Input(dataEnumerator,true,true,"Operation type"));
+        DataEnumerator dataEnumerator = new DataEnumerator("OPERATION", values);
+        inputs.add(new Input(dataEnumerator, true, true, "Operation type"));
         nameToInputIndex.put("OPERATION", 1);
 
         outputs.add(new Output(new DataString("RESULT"), "Zip operation result"));
@@ -40,21 +38,22 @@ public class Zipper extends  Step{
         Long startTime = System.currentTimeMillis();
         String path = (String) inputs.get(0).getData();
         String operation = (String) inputs.get(1).getData();
-        String res="";
+        String res = "";
 
         if (!checkGotInputs(2)) {
+            outputs.get(0).setData("Failed, not all mandatory inputs received");
             runTime = System.currentTimeMillis() - startTime;
             return;
         }
 
 
-        switch (operation)
-        {
+        switch (operation) {
             case "ZIP":
                 res = zip(path);
                 break;
             case "UNZIP":
-                res=unzip(path);
+                addLineToLog("About to perform operation " + operation + " on source " + path);
+                res = unzip(path);
                 break;
         }
 
@@ -201,71 +200,90 @@ public class Zipper extends  Step{
         String res="";
 
 
-        if(file.exists())
+        if (file.exists()) {
+            if (path.endsWith("zip")) {
+                String targetPath = file.getParentFile().getAbsolutePath();
+                try (ZipInputStream zipStream = new ZipInputStream(
+                        new FileInputStream(path))) {
+                    extractZip(zipStream, targetPath);
+                } catch (IOException e) {
+                    res = processFailure(e.getMessage());
+                }
+            } else {
+                res = processFailure("the given file name does not end with an .zip extension");
+            }
+        } else {
+            res = processFailure("the file does not exist in the given path");
+        }
+
+        if(res.equals(""))
         {
-            if(path.endsWith("zip"))
-            {
-                String targetPath =file.getParentFile().getAbsolutePath();
-                byte[] buffer = new byte[1024];
-                try (ZipInputStream zipStream= new ZipInputStream(
-                        new FileInputStream(path)))
-                {
+            addLineToLog("finished to unzip the given file");
+            summaryLine="Step ended successfully, finished to unzip the given file";
+            res="SUCCESS";
+            stateAfterRun=State.SUCCESS;
+        }
+        return res;
+    }
 
-                    ZipEntry entry=zipStream.getNextEntry();
-                    while (entry!=null)
-                    {
-                        String name=entry.getName();
+    private String processFailure(String reason) {
+        String res;
+        addLineToLog("Failed to unzip: " + reason);
+        summaryLine = "Step failed, " + reason;
+        res = "Failed, " + reason;
+        stateAfterRun = State.FAILURE;
+        return res;
+    }
 
-                        if(entry.isDirectory())
-                        {
-                            File newDir=new File(targetPath + File.separator + name);
-                            if(!newDir.mkdirs())
-                            {
-                                //error
-                                //log
-                            }
-                        }
-                        else
-                        {
-                            File parent = new File(targetPath + File.separator + name).getParentFile();
 
-                            if(parent.mkdirs())
-                            {
-                                //error
-                                //log
-                            }
+    private String extractFile(ZipInputStream zipStream, String path) {
+        String res = "";
+        byte[] buffer = new byte[1024];
+        try (FileOutputStream outputStream = new FileOutputStream(path)) {
+            int len;
+            while ((len = zipStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            res = processFailure(e.getMessage());
+        }
+        return res;
+    }
 
-                            try (FileOutputStream outputStream = new FileOutputStream(targetPath + File.separator + name)) {
-                                int len;
-                                while ((len = zipStream.read(buffer)) > 0) {
-                                    outputStream.write(buffer, 0, len);
-                                }
-                            }
-                            zipStream.closeEntry();
-                            entry = zipStream.getNextEntry();
-                        }
+
+    private String extractZip(ZipInputStream zipStream, String path) {
+        String res = "";
+        boolean failed = false;
+
+        try {
+            ZipEntry entry = zipStream.getNextEntry();
+
+            while (entry != null && !failed) {
+                String name = entry.getName();;
+
+                if (entry.isDirectory()) {
+                    File newDir = new File(path + File.separator + name);
+                    if (!newDir.isDirectory() && !newDir.mkdirs()) {
+                        res = processFailure("an error occurred while trying to create a subfolder");
+                        failed = true;
                     }
-                    zipStream.closeEntry();
+                } else {
+                    File parent = new File(path + File.separator + name).getParentFile();
+
+                    if (!parent.isDirectory() && !parent.mkdirs()) {
+                        res = processFailure("an error occurred while trying to create a subfolder");
+                        failed = true;
+                    } else {
+                        extractFile(zipStream, path + File.separator + name);
+                    }
                 }
-                catch (IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-
-
+                zipStream.closeEntry();
+                entry = zipStream.getNextEntry();
             }
-            else
-            {
-                //add log
-                //add summery line
-            }
+            zipStream.closeEntry();
+        } catch (IOException e) {
+            res = processFailure(e.getMessage());
         }
-        else
-        {
-            //add log
-            //add summery line
-        }
-
         return res;
     }
 }
