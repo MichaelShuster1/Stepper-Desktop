@@ -3,6 +3,7 @@ package main;
 import api.UIapi;
 import datadefinition.Relation;
 import enginemanager.Manager;
+import step.CommandLine;
 import step.Zipper;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import java.util.zip.ZipOutputStream;
 public class Main {
     public static void main(String[] args) {
 
+        /*
         Zipper zipper =new Zipper("Zipper",false);
 
         zipper.getInput(0).setData("C:\\Users\\michael\\Desktop\\test\\Folder1.zip");
@@ -23,6 +25,17 @@ public class Main {
         zipper.run();
 
         System.out.println(zipper.getOutput(0).getData());
+        */
+
+        CommandLine commandLine= new CommandLine("CommandLine",false);
+
+        commandLine.getInput(0).setData("dir");
+
+        commandLine.run();
+
+        System.out.println(commandLine.getOutput(0).getData());
+
+
 
         //UIapi main = new UIapi(new Manager());
         //main.runSystem();
