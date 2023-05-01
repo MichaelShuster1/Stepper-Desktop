@@ -30,11 +30,16 @@ public class Main {
         CommandLine commandLine= new CommandLine("CommandLine",false);
 
         commandLine.getInput(0).setData("dir");
+        commandLine.getInput(1).setData("C:\\");
 
         commandLine.run();
-
         System.out.println(commandLine.getOutput(0).getData());
-
+        System.out.println("-------------------------");
+        System.out.println(commandLine.getLog());
+        System.out.println("-------------------------");
+        System.out.println(commandLine.getStateAfterRun());
+        System.out.println("-------------------------");
+        System.out.println(commandLine.getRunTime());
 
 
         //UIapi main = new UIapi(new Manager());

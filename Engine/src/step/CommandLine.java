@@ -30,7 +30,7 @@ public class CommandLine extends Step{
         long startTime = System.currentTimeMillis();
         String command = (String) inputs.get(0).getData();
         String commandArguments = (String) inputs.get(1).getData();
-        String res="";
+        String res="",logLine="About to invoke "+command;;
 
         if (!checkGotInputs(1)) {
             runTime = System.currentTimeMillis() - startTime;
@@ -39,30 +39,38 @@ public class CommandLine extends Step{
 
         ProcessBuilder process;
 
-        if(commandArguments!=null)
-            process= new ProcessBuilder("cmd.exe","/c",command,commandArguments);
+        if(commandArguments!=null) {
+            process = new ProcessBuilder("cmd.exe", "/c", command, commandArguments);
+            logLine+=" "+commandArguments;
+        }
 
         else
             process= new ProcessBuilder("cmd.exe","/c",command);
 
+        process.redirectErrorStream(true);
+
+        addLineToLog(logLine);
+
         try {
-            //add log here
+
             Process p=process.start();
             res=getCommandOutput(p);
 
         } catch (IOException e) {
-            //add log here
-            throw new RuntimeException(e);
+            addLineToLog("The command "+command+" "+commandArguments+" failed to execute"
+                    +"\nbecause: "+e.getMessage());
         }
 
-        //add log here
-        //add summery line here
+        addLineToLog("Finished to execute the command");
+        summaryLine="Step ended successfully, the process finished";
+        setStateAfterRun(State.SUCCESS);
         outputs.get(0).setData(res);
         runTime = System.currentTimeMillis() - startTime;
     }
 
     private  String getCommandOutput(Process p)  {
-        String res="",line;
+        StringBuilder res= new StringBuilder();
+        String line;
         BufferedReader reader =
                 new BufferedReader(
                         new InputStreamReader(p.getInputStream()));
@@ -71,15 +79,15 @@ public class CommandLine extends Step{
             line = reader.readLine();
 
             while (line != null) {
+                res.append(line).append("\n");
                 line = reader.readLine();
-                res += line + "\n";
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            addLineToLog("there was a problem in reading the command's output");
         }
 
 
-        return  res;
+        return res.toString();
     }
 }
