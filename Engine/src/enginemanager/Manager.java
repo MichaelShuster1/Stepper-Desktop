@@ -2,6 +2,7 @@ package enginemanager;
 
 import dto.*;
 import flow.Flow;
+import flow.FlowExecution;
 import flow.FlowHistory;
 import generated.*;
 import hardcodeddata.HCSteps;
@@ -199,35 +200,12 @@ public class Manager implements EngineApi, Serializable {
         if (step.isContinueIfFailing() != null)
             continueIfFailing = true;
 
-        switch (name) {
-            case "Spend Some Time":
-                newStep = new SpendSomeTime(finalName, continueIfFailing);
-                break;
-            case "Collect Files In Folder":
-                newStep = new CollectFiles(finalName, continueIfFailing);
-                break;
-            case "Files Renamer":
-                newStep = new FilesRenamer(finalName, continueIfFailing);
-                break;
-            case "Files Content Extractor":
-                newStep = new FilesContentExtractor(finalName, continueIfFailing);
-                break;
-            case "CSV Exporter":
-                newStep = new CSVExporter(finalName, continueIfFailing);
-                break;
-            case "Properties Exporter":
-                newStep = new PropertiesExporter(finalName, continueIfFailing);
-                break;
-            case "File Dumper":
-                newStep = new FileDumper(finalName, continueIfFailing);
-                break;
-            case "Files Deleter":
-                newStep = new FilesDeleter(finalName, continueIfFailing);
-                break;
-            default:
-                throw new StepNameNotExistException("In the flow named: " + currentFlow.getName()
-                        + "\nthere is an attempt to define a step by the name: "
-                        + step.getName() + " that does not exist");
+        newStep=HCSteps.CreateStep(name,finalName,continueIfFailing);
+
+        if(newStep==null) {
+            throw new StepNameNotExistException("In the flow named: " + currentFlow.getName()
+                    + "\nthere is an attempt to define a step by the name: "
+                    + step.getName() + " that does not exist");
         }
         return newStep;
     }
@@ -267,9 +245,11 @@ public class Manager implements EngineApi, Serializable {
 
     @Override
     public FlowResultDTO runFlow() {
-        FlowResultDTO res = currentFlow.executeFlow();
-        addFlowHistory();
-        addStatistics();
+        FlowExecution flowExecution=new FlowExecution(currentFlow);
+        flowExecution.run();
+        FlowResultDTO res=flowExecution.getFlowExecutionResultData();
+        addFlowHistory(flowExecution);
+        addStatistics(flowExecution);
         currentFlow.resetFlow();
         return res;
     }
@@ -344,7 +324,7 @@ public class Manager implements EngineApi, Serializable {
         return new ResultDTO(false, "The file in the given path doesn't exist");
     }
 
-    private void addFlowHistory() {
+    private void addFlowHistory(FlowExecution currentFlow) {
         FlowHistory flowHistory = new FlowHistory(currentFlow.getName(),
                 currentFlow.getFlowId(), currentFlow.getActivationTime(), currentFlow.getFlowHistoryData());
         flowsHistory.add(0, flowHistory);
@@ -372,7 +352,7 @@ public class Manager implements EngineApi, Serializable {
 
 
 
-    private void addStatistics() {
+    private void addStatistics(FlowExecution currentFlow) {
         Integer size = currentFlow.getNumberOfSteps();
         Statistics statistics = flowsStatistics.get(currentFlow.getName());
         statistics.addRunTime(currentFlow.getRunTime());

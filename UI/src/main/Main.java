@@ -16,7 +16,6 @@ import java.util.zip.ZipOutputStream;
 public class Main {
     public static void main(String[] args) {
 
-
         /*
         Zipper zipper =new Zipper("Zipper",false);
 
@@ -27,7 +26,7 @@ public class Main {
 
         System.out.println(zipper.getOutput(0).getData());
         */
-/*
+        /*
         CommandLine commandLine= new CommandLine("CommandLine",false);
 
         commandLine.getInput(0).setData("dir");

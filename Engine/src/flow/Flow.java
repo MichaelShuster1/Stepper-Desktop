@@ -17,10 +17,6 @@ public class Flow implements Serializable {
     private final String name;
     private final String description;
     private boolean readOnly;
-    private String flowId;
-    private State stateAfterRun;
-    private Long runTime;
-    private String activationTime;
     private final Map<String, Integer> formalOutputs;
     private final List<Step> steps;
     private int numberOfSteps;
@@ -50,6 +46,22 @@ public class Flow implements Serializable {
     public Integer getNumberOfSteps() {
         return numberOfSteps;
     }
+
+    public List<List<Pair<Integer, Integer>>> getStepConnections(int index)
+    {
+        return connections.get(index);
+    }
+
+    public Map<String, Integer> getFormalOutputs()
+    {
+        return formalOutputs;
+    }
+
+    public Map<String, List<Integer>> getFlowFreeInputs()
+    {
+        return  flowFreeInputs;
+    }
+
 
     public void addFormalOutput(String outputName) {
         formalOutputs.put(outputName, -1);
@@ -205,16 +217,6 @@ public class Flow implements Serializable {
     }
 
 
-    public Long getRunTime() {
-        return runTime;
-    }
-
-
-    public String getActivationTime() {
-        return activationTime;
-    }
-
-
     public InputsDTO getInputList() {
         int i = 1;
         List<InputData> inputMenu = new ArrayList<>();
@@ -290,10 +292,6 @@ public class Flow implements Serializable {
 
 
     public void resetFlow() {
-        stateAfterRun = null;
-        runTime = null;
-        flowId = null;
-        activationTime = null;
 
         resetSteps();
         resetFreeMandatoryInputs();
@@ -396,170 +394,6 @@ public class Flow implements Serializable {
         }
 
         return freeInputsList;
-    }
-
-
-    public FlowResultDTO executeFlow() {
-        Long startTime = System.currentTimeMillis();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        formatter.format(new Date());
-        activationTime = formatter.format(new Date());
-        boolean continueExecution = true;
-        stateAfterRun = State.SUCCESS;
-
-        for (int i = 0; i < steps.size() && continueExecution; i++) {
-            Step currStep = steps.get(i);
-            currStep.run();
-
-            if (currStep.getStateAfterRun() == State.FAILURE) {
-                if (!currStep.isContinueIfFailing()) {
-                    stateAfterRun = State.FAILURE;
-                    continueExecution = false;
-                }
-                else
-                    stateAfterRun =State.WARNING;
-            }
-
-            if (continueExecution) {
-                if (currStep.getStateAfterRun() == State.WARNING)
-                    stateAfterRun = State.WARNING;
-                streamStepOutputsToInputs(i, currStep);
-            }
-        }
-
-        flowId = generateFlowId();
-        runTime = System.currentTimeMillis() - startTime;
-        return getFlowExecutionResultData();
-    }
-
-    private void streamStepOutputsToInputs(int i, Step currStep) {
-        List<List<Pair<Integer, Integer>>> stepConnections = connections.get(i);
-        int outPutIndex=0;
-        for (List<Pair<Integer, Integer>> currOutput : stepConnections) {
-            for (Pair<Integer, Integer> currConnection : currOutput) {
-                int targetStepIndex = currConnection.getKey();
-                int targetStepInputIndex = currConnection.getValue();
-                steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
-
-            }
-            outPutIndex++;
-        }
-    }
-
-
-    public String generateFlowId() {
-        UUID uuid = UUID.randomUUID();
-        String uuidAsString = uuid.toString();
-        return uuidAsString;
-    }
-
-    public FlowResultDTO getFlowExecutionResultData()
-    {
-        List<OutputExecutionDTO> formalOutputs = new ArrayList<>();
-        for (String currOutput : this.formalOutputs.keySet()) {
-            Step step = steps.get(this.formalOutputs.get(currOutput));
-            int outPutIndex = step.getNameToOutputIndex().get(currOutput);
-            String userString = "    " + step.getOutput(outPutIndex).getUserString();
-            DataDefintionDTO currDetails = new DataDefintionDTO(null, userString);
-            OutputExecutionDTO currDTO;
-            if (step.getOutput(outPutIndex).getData() != null)
-                currDTO = new OutputExecutionDTO(currDetails, step.getOutput(outPutIndex).getData().toString());
-            else
-                currDTO = new OutputExecutionDTO(currDetails, null);
-            formalOutputs.add(currDTO);
-        }
-
-        return new FlowResultDTO(flowId,name, stateAfterRun.toString(),formalOutputs);
-    }
-
-
-
-    public String getFlowExecutionStrData() {
-        String res = getFlowNameIDAndState();
-
-        if (formalOutputs.size() > 0) {
-            res += "FLOW'S FORMAL OUTPUTS:\n";
-            for (String currOutput : formalOutputs.keySet()) {
-                Step step = steps.get(formalOutputs.get(currOutput));
-                int outPutIndex = step.getNameToOutputIndex().get(currOutput);
-                res += step.getOutput(outPutIndex).getUserString() + "\n";
-                if (step.getOutput(outPutIndex).getData() != null)
-                    res += step.getOutput(outPutIndex).getData().toString() + "\n";
-                else
-                    res += "Not created due to failure in flow\n";
-
-            }
-        } else {
-            res += "THE FLOW HAVE NO OUTPUTS\n";
-        }
-
-        return res;
-
-    }
-
-
-    public String getFlowNameIDAndState() {
-        String res = "Flows unique ID: " + flowId + "\n";
-        res += "Flow name: " + name + "\n";
-        res += "Flow's final state : " + stateAfterRun + "\n";
-        return res;
-    }
-
-    public FlowExecutionDTO getFlowHistoryData()
-    {
-        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId, stateAfterRun.toString(),runTime);
-        List<StepExecutionDTO> steps = getStepsExecutionDTO();
-        List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
-        List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
-        return new FlowExecutionDTO(executionDetails,steps,freeInputs,outputs);
-    }
-
-
-    private List<OutputExecutionDTO> getOutputsExecutionDTO() {
-        List<OutputExecutionDTO> outputsList = new ArrayList<>();
-        for (int i = 0; i < steps.size(); i++) {
-            Step step = steps.get(i);
-            List<Output> outputs = step.getOutputs();
-            for (Output output : outputs) {
-                DataDefintionDTO outputDetails = new DataDefintionDTO(output.getName(),output.getType());
-                if (output.getData() != null)
-                   outputsList.add(new OutputExecutionDTO(outputDetails,output.getDataDefinition().toString()));
-                else
-                    outputsList.add(new OutputExecutionDTO(outputDetails,null));
-            }
-        }
-        return outputsList;
-    }
-
-
-    private List<FreeInputExecutionDTO> getFreeInputsExecutionDTO() {
-        List<FreeInputExecutionDTO> inputsList = new ArrayList<>();
-        for (String key : flowFreeInputs.keySet()) {
-            List<Integer> inputs = flowFreeInputs.get(key);
-            int i = inputs.get(0);
-            int inputIndex = steps.get(i).getNameToInputIndex().get(key);
-            Input input = steps.get(i).getInput(inputIndex);
-            DataDefintionDTO inputDetails = new DataDefintionDTO(input.getName(),input.getType());
-            if (input.getData() != null)
-                inputsList.add(new FreeInputExecutionDTO(inputDetails,input.getData().toString(),input.isMandatory()));
-            else
-                inputsList.add(new FreeInputExecutionDTO(inputDetails,null,input.isMandatory()));
-        }
-
-        return inputsList;
-    }
-
-
-    private List<StepExecutionDTO> getStepsExecutionDTO() {
-        List<StepExecutionDTO> stepsList = new ArrayList<>();
-        boolean flowStopped = false;
-        for (int i = 0; i < steps.size() && !flowStopped; i++) {
-            Step step = steps.get(i);
-            stepsList.add(step.getStepExecutionData());
-            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
-                flowStopped = true;
-        }
-        return stepsList;
     }
 
     private void checkNoOutputWithSameNameAndFormalExists() {
