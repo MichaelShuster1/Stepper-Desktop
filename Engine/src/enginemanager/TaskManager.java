@@ -16,24 +16,28 @@ public class TaskManager implements Runnable{
     public void run() {
         boolean found = false;
         while(true) {
-           for(int i=0;i<currentFlows.size();i++) {
-               if(currentFlows.get(i).isDone()) {
-                   found = true;
-                   System.out.println("flow is finished");
-                   currentFlows.remove(i);
-               }
-           }
+            synchronized (currentFlows) {
+                for (int i = 0; i < currentFlows.size(); i++) {
+                    if (currentFlows.get(i).isDone()) {
+                        found = true;
+                        System.out.println("flow is finished");
+                        currentFlows.remove(i);
+                    }
+                }
+            }
 
-           if(currentFlows.size() == 0) {
-               //System.out.println("No flows....going to sleep zzz :(");
-               try {
-                   Thread.sleep(1000);
-               } catch (Exception e) {
+                if (currentFlows.size() == 0) {
+                    //System.out.println("No flows....going to sleep zzz :(");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
 
-               }
-           }
-           // if(!found)
+                    }
+                }
+
+                // if(!found)
                 //System.out.println("Still executing...");
+
         }
 
     }
