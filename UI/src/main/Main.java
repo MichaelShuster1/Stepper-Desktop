@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println(zipper.getOutput(0).getData());
         */
-
+/*
         CommandLine commandLine= new CommandLine("CommandLine",false);
 
         commandLine.getInput(0).setData("dir");
@@ -41,10 +41,10 @@ public class Main {
         System.out.println(commandLine.getStateAfterRun());
         System.out.println("-------------------------");
         System.out.println(commandLine.getRunTime());
+*/
 
-
-        //UIapi main = new UIapi(new Manager());
-        //main.runSystem();
+        UIapi main = new UIapi(new Manager());
+        main.runSystem();
     }
 
 
