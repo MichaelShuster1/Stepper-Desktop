@@ -42,7 +42,6 @@ public class Main {
         System.out.println("-------------------------");
         System.out.println(commandLine.getRunTime());
 */
-
         UIapi main = new UIapi(new Manager());
         main.runSystem();
     }
