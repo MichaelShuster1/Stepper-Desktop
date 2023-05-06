@@ -17,6 +17,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 
@@ -28,6 +29,10 @@ public class Manager implements EngineApi, Serializable {
     private Flow currentFlow;
     private ExecutorService threadPool;
 
+    private Thread taskManager;
+
+    List<Future> currentFlows;
+
 
 
     public Manager() {
@@ -35,6 +40,9 @@ public class Manager implements EngineApi, Serializable {
         flowsHistory = new ArrayList<>();
         flowsStatistics = new LinkedHashMap<>();
         stepsStatistics = new LinkedHashMap<>();
+        currentFlows = new ArrayList<>();
+        taskManager = new Thread(new TaskManager(currentFlows));
+        taskManager.start();
     }
 
 
@@ -257,12 +265,12 @@ public class Manager implements EngineApi, Serializable {
     @Override
     public FlowResultDTO runFlow() {
         FlowExecution flowExecution=new FlowExecution(currentFlow);
-        flowExecution.run();
-        FlowResultDTO res=flowExecution.getFlowExecutionResultData();
-        addFlowHistory(flowExecution);
-        addStatistics(flowExecution);
+        currentFlows.add(threadPool.submit(flowExecution));
+        //FlowResultDTO res=flowExecution.getFlowExecutionResultData();
+        //addFlowHistory(flowExecution);
+        //addStatistics(flowExecution);
         currentFlow.resetFlow();
-        return res;
+        return null;
     }
 
 

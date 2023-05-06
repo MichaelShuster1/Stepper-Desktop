@@ -533,7 +533,8 @@ public class UIapi {
                 processDataInput(input);
             } else if (choice.equals(size + 1) && flowReady) {
                 runFlow = true;
-                System.out.println(getFlowExecutionStrData(engine.runFlow()));
+                engine.runFlow();
+               // System.out.println(getFlowExecutionStrData(engine.runFlow()));
             } else if (choice.equals(0))
                 return;
             else {
