@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element ref="{}ST-CustomMapping" maxOccurs="unbounded"/>
+ *       &lt;sequence maxOccurs="unbounded">
+ *         &lt;element ref="{}ST-InitialInputValue"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "stCustomMapping"
+    "stInitialInputValue"
 })
-@XmlRootElement(name = "ST-CustomMappings")
-public class STCustomMappings {
+@XmlRootElement(name = "ST-InitialInputValues")
+public class STInitialInputValues {
 
-    @XmlElement(name = "ST-CustomMapping", required = true)
-    protected List<STCustomMapping> stCustomMapping;
+    @XmlElement(name = "ST-InitialInputValue", required = true)
+    protected List<STInitialInputValue> stInitialInputValue;
 
     /**
-     * Gets the value of the stCustomMapping property.
+     * Gets the value of the stInitialInputValue property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the stCustomMapping property.
+     * This is why there is not a <CODE>set</CODE> method for the stInitialInputValue property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSTCustomMapping().add(newItem);
+     *    getSTInitialInputValue().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link STCustomMapping }
+     * {@link STInitialInputValue }
      * 
      * 
      */
-    public List<STCustomMapping> getSTCustomMapping() {
-        if (stCustomMapping == null) {
-            stCustomMapping = new ArrayList<STCustomMapping>();
+    public List<STInitialInputValue> getSTInitialInputValue() {
+        if (stInitialInputValue == null) {
+            stInitialInputValue = new ArrayList<STInitialInputValue>();
         }
-        return this.stCustomMapping;
+        return this.stInitialInputValue;
     }
 
 }
