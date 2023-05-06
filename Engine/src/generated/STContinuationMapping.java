@@ -24,9 +24,13 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="target-step" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="target-data" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="source-step" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="target-data" use="required">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *             &lt;enumeration value="TIME_TO_SPEND"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
  *       &lt;attribute name="source-data" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -37,41 +41,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "ST-CustomMapping")
-public class STCustomMapping {
+@XmlRootElement(name = "ST-Continuation-Mapping")
+public class STContinuationMapping {
 
-    @XmlAttribute(name = "target-step", required = true)
-    protected String targetStep;
     @XmlAttribute(name = "target-data", required = true)
     protected String targetData;
-    @XmlAttribute(name = "source-step", required = true)
-    protected String sourceStep;
     @XmlAttribute(name = "source-data", required = true)
     protected String sourceData;
-
-    /**
-     * Gets the value of the targetStep property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTargetStep() {
-        return targetStep;
-    }
-
-    /**
-     * Sets the value of the targetStep property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTargetStep(String value) {
-        this.targetStep = value;
-    }
 
     /**
      * Gets the value of the targetData property.
@@ -95,30 +71,6 @@ public class STCustomMapping {
      */
     public void setTargetData(String value) {
         this.targetData = value;
-    }
-
-    /**
-     * Gets the value of the sourceStep property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSourceStep() {
-        return sourceStep;
-    }
-
-    /**
-     * Sets the value of the sourceStep property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSourceStep(String value) {
-        this.sourceStep = value;
     }
 
     /**
