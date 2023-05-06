@@ -15,6 +15,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class Manager implements EngineApi, Serializable {
@@ -23,6 +26,8 @@ public class Manager implements EngineApi, Serializable {
     private Map<String, Statistics> flowsStatistics;
     private Map<String, Statistics> stepsStatistics;
     private Flow currentFlow;
+    private ExecutorService threadPool;
+
 
 
     public Manager() {
@@ -51,9 +56,15 @@ public class Manager implements EngineApi, Serializable {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
             createFlows(stepper);
+            createThreadPool(stepper);
         } catch (JAXBException e) {
             throw e;
         }
+    }
+
+    private void createThreadPool(STStepper stepper)
+    {
+        threadPool= Executors.newFixedThreadPool(stepper.getSTThreadPool());
     }
 
     private void createFlows(STStepper stepper) {
