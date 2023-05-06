@@ -36,7 +36,7 @@ public class FlowExecution implements Runnable{
             for(int j = 0; j< currStepInputs.size(); j++) {
                 newStep.getInput(j).setData((currStepInputs.get(j)).getData());
             }
-            steps.add(currStep);
+            steps.add(newStep);
         }
     }
 
