@@ -4,6 +4,7 @@ import flow.FlowExecution;
 import flow.FlowHistory;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 public class TaskManager implements Runnable{
@@ -26,24 +27,28 @@ public class TaskManager implements Runnable{
     public void run() {
         boolean found = false;
         while(true) {
-           for(int i=0;i<currentFlows.size();i++) {
-               if(currentFlows.get(i).isDone()) {
-                   found = true;
-                   System.out.println("flow is finished");
-                   currentFlows.remove(i);
-                   addFlowHistory(flowExecutions.get(i));
-                   flowExecutions.remove(i);
-               }
-           }
-           if(currentFlows.size() == 0) {
-               //System.out.println("No flows....going to sleep zzz :(");
-               try {
-                   Thread.sleep(1000);
-               } catch (Exception ignored) {
+            synchronized (currentFlows) {
+                for (int i = 0; i < currentFlows.size(); i++) {
+                    if (currentFlows.get(i).isDone()) {
+                        found = true;
+                        System.out.println("flow is finished");
+                        currentFlows.remove(i);
+                        addFlowHistory(flowExecutions.get(i));
+                        flowExecutions.remove(i);
+                    }
+                }
+            }
 
-               }
-           }
-           // if(!found)
+                if (currentFlows.size() == 0) {
+                    //System.out.println("No flows....going to sleep zzz :(");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+
+                    }
+                }
+
+                // if(!found)
                 //System.out.println("Still executing...");
         }
 

@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class Manager implements EngineApi, Serializable {
@@ -265,15 +266,16 @@ public class Manager implements EngineApi, Serializable {
 
     @Override
     public FlowResultDTO runFlow() {
-        FlowExecution flowExecution=new FlowExecution(currentFlow);
-        flowExecutions.add(flowExecution);
-        currentFlows.add(threadPool.submit(flowExecution));
+        FlowExecution flowExecution = new FlowExecution(currentFlow);
 
-
+         Future<?> future = threadPool.submit(flowExecution);
+         synchronized (currentFlows) {
+            flowExecutions.add(flowExecution)
+            currentFlows.add(future);
+        }
         //FlowResultDTO res=flowExecution.getFlowExecutionResultData();
         //addFlowHistory(flowExecution);
         //addStatistics(flowExecution);
-
         currentFlow.resetFlow();
         return null;
     }
