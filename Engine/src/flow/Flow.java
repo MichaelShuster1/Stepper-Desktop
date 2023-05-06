@@ -626,12 +626,7 @@ public class Flow implements Serializable {
     }
 
 
-    public String getFlowId() {
-        return flowId;
-    }
-
-
-    public State getStateAfterRun() {
-        return stateAfterRun;
+    public List<Step> getSteps() {
+        return steps;
     }
 }
