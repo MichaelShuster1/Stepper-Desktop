@@ -1,5 +1,7 @@
 package datadefinition;
 
+import exception.EnumerationDataException;
+
 import java.util.Set;
 
 public class DataEnumerator extends DataDefinition<String>{
@@ -14,8 +16,10 @@ public class DataEnumerator extends DataDefinition<String>{
 
     @Override
     public void setData(String data) {
-        if(values.contains(data))
+        if(values.contains(data) || data == null)
             this.data=data;
+        else
+            throw new EnumerationDataException(values.toString());
     }
 
     @Override

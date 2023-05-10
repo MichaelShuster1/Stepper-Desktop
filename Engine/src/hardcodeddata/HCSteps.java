@@ -13,7 +13,9 @@ public enum HCSteps {
     CSV_EXPORTER("CSV Exporter"),
     PROPERTIES_EXPORTER("Properties Exporter"),
     FILE_DUMPER("File Dumper"),
-    FILE_DELETER("Files Deleter");
+    FILE_DELETER("Files Deleter"),
+    ZIPPER("Zipper"),
+    COMMAND_LINE("Command Line");
 
     private String stepName;
 

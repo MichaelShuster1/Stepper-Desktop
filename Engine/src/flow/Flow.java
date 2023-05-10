@@ -30,6 +30,7 @@ public class Flow implements Serializable {
     private Map<String, List<Integer>> flowFreeInputs;
     private Map<String, Boolean> freeInputsIsReq;
     private Set<String> freeMandatoryInputs;
+    private Map<String,String> initialValues;
 
     public Flow(String name, String description) {
         this.name = name;
@@ -278,6 +279,15 @@ public class Flow implements Serializable {
             case "DataString":
                 input.setData(rawData);
                 break;
+            case "DataEnumerator":
+                try {
+                    input.setData(rawData);
+                }
+                catch (EnumerationDataException e) {
+                    message = "Input processing failed due to: "
+                            + "this enumeration data expects to receive on of the following only: " + e.getMessage();
+                    return new ResultDTO(false,message);
+                }
         }
 
         return new ResultDTO(true, "The input was processed successfully");
@@ -610,6 +620,12 @@ public class Flow implements Serializable {
         checkNoOutputWithSameNameAndFormalExists();
     }
 
+    public boolean checkIfFlowContainsInput(String inputName)
+    {
+        return flowInputs.containsKey(inputName);
+    }
+
+
 
     public String getName() {
         return name;
@@ -633,5 +649,13 @@ public class Flow implements Serializable {
 
     public State getStateAfterRun() {
         return stateAfterRun;
+    }
+
+    public void setInitialValues(Map<String, String> initialValues) {
+        for (String name : initialValues.keySet()) {
+            if (!flowInputs.containsKey(name))
+                throw new InitialValueException("The flow \"" + name + "\" contains an initial value to an input that doesn't exists (input:" + name + ")");
+        }
+        this.initialValues = initialValues;
     }
 }

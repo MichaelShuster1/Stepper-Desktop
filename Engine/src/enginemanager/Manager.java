@@ -22,6 +22,8 @@ public class Manager implements EngineApi, Serializable {
     private Map<String, Statistics> flowsStatistics;
     private Map<String, Statistics> stepsStatistics;
     private Flow currentFlow;
+    private Set<String> flowNames;
+
 
 
     public Manager() {
@@ -60,6 +62,7 @@ public class Manager implements EngineApi, Serializable {
         List<STFlow> stFlows = stepper.getSTFlows().getSTFlow();
         List<Flow> flowList = new ArrayList<>();
         Map<String, Statistics> statisticsMap = new LinkedHashMap<>();
+        Map<String,String> intialValues = new HashMap<>();
 
         for (STFlow stFlow : stFlows) {
             String flowName = stFlow.getName();
@@ -75,10 +78,13 @@ public class Manager implements EngineApi, Serializable {
             currentFlow.customMapping(getCustomMappings(stFlow));
             currentFlow.automaticMapping();
             currentFlow.calculateFreeInputs();
+            currentFlow.setInitialValues(getInitialValues(stFlow));
             currentFlow.checkFlowIsValid();
             statisticsMap.put(currentFlow.getName(), new Statistics());
             flowList.add(currentFlow);
+            this.flowNames = flowNames;
         }
+
 
         flows.clear();
         flowsStatistics.clear();
@@ -89,6 +95,23 @@ public class Manager implements EngineApi, Serializable {
         flowsStatistics = statisticsMap;
         stepsStatistics = HCSteps.getStatisticsMap();
     }
+
+
+    private Map<String,String> getInitialValues(STFlow stFlow)
+    {
+        Map<String,String> initialValues = new HashMap<>();
+        if(stFlow.getSTInitialInputValues() == null)
+            return initialValues;
+
+        List<STInitialInputValue> initialInputValues = stFlow.getSTInitialInputValues().getSTInitialInputValue();
+        for(STInitialInputValue currValue : initialInputValues) {
+            initialValues.put(currValue.getInputName(),currValue.getInitialValue());
+        }
+
+        return initialValues;
+    }
+
+
 
     private Map<Pair<String, String>, Pair<String, String>> getCustomMappings(STFlow stFlow) {
         Map<Pair<String, String>, Pair<String, String>> customMappings = new HashMap<>();
@@ -223,6 +246,12 @@ public class Manager implements EngineApi, Serializable {
                 break;
             case "Files Deleter":
                 newStep = new FilesDeleter(finalName, continueIfFailing);
+                break;
+            case "Zipper":
+                newStep = new Zipper(finalName, continueIfFailing);
+                break;
+            case "Command Line":
+                newStep = new CommandLine(finalName, continueIfFailing);
                 break;
             default:
                 throw new StepNameNotExistException("In the flow named: " + currentFlow.getName()

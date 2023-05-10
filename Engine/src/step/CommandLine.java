@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 public class CommandLine extends Step{
     public CommandLine(String name, boolean continueIfFailing) {
         super(name, false, continueIfFailing);
-        defaultName="CommandLine";
+        defaultName="Command Line";
 
         DataString dataString = new DataString("COMMAND");
         inputs.add(new Input(dataString, true, true, "Command"));
@@ -82,6 +82,7 @@ public class CommandLine extends Step{
                 res.append(line).append("\n");
                 line = reader.readLine();
             }
+            reader.close();
 
         } catch (IOException e) {
             addLineToLog("there was a problem in reading the command's output");
