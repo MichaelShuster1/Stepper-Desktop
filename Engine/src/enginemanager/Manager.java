@@ -270,7 +270,7 @@ public class Manager implements EngineApi, Serializable {
 
          Future<?> future = threadPool.submit(flowExecution);
          synchronized (currentFlows) {
-            flowExecutions.add(flowExecution)
+            flowExecutions.add(flowExecution);
             currentFlows.add(future);
         }
         //FlowResultDTO res=flowExecution.getFlowExecutionResultData();
