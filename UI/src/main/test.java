@@ -60,6 +60,8 @@ public class test extends Application {
         Label loadedXML = new Label("No xml file loaded yet");
         loadedXML.setFont(Font.font(16));
         loadedXML.setStyle("-fx-border-color: black; -fx-background-color: lightpink");
+        loadedXML.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(loadedXML,Priority.ALWAYS);
 
 
 
@@ -69,7 +71,8 @@ public class test extends Application {
 
         HBox inputBox = new HBox(10, loadXMLButton, loadedXML);
         inputBox.setAlignment(Pos.BASELINE_LEFT);
-        HBox.setMargin(loadXMLButton,new Insets(0,0,0,30));
+        HBox.setMargin(loadXMLButton,new Insets(0,0,0,10));
+        HBox.setMargin(loadedXML,new Insets(0,10,0,0));
 
 
         // Create the buttons
@@ -117,12 +120,14 @@ public class test extends Application {
         flowDefinition.getChildren().add(pane);
 
         loadedXML.prefWidthProperty().bind(flowDefinition.prefWidthProperty());
+        HBox mainCenterScreen = new HBox(flowDefinition);
+        HBox.setHgrow(flowDefinition,Priority.ALWAYS);
 
 
 
         // Set the StackPane as the center component of the root BorderPane
-        root.setCenter(flowDefinition);
-        BorderPane.setMargin(flowDefinition,new Insets(10,10,10,10));
+        root.setCenter(mainCenterScreen);
+        BorderPane.setMargin(mainCenterScreen,new Insets(10,10,10,10));
 
         // Create an HBox for the buttons
         HBox buttonBox = new HBox(10, button1, button2,button3,button4);
@@ -190,6 +195,9 @@ public class test extends Application {
                 {
                     Button currButton = new Button(names.get(i));
                     currButton.setAlignment(Pos.CENTER);
+                    currButton.setMaxWidth(Double.MAX_VALUE);
+                    HBox.setHgrow(currButton,Priority.ALWAYS);
+
                     int finalI = i;
                     currButton.setOnAction(e -> showFlowDefinition(finalI,manager,definition));
                     flows.getChildren().add(currButton);
