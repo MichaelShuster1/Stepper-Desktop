@@ -1,5 +1,6 @@
 package flow;
 
+import datadefinition.DataEnumerator;
 import dto.*;
 import datadefinition.Input;
 import datadefinition.Output;
@@ -32,6 +33,10 @@ public class Flow implements Serializable {
     private Set<String> freeMandatoryInputs;
     private Map<String,String> initialValues;
 
+    private Map<String,Integer> flowOutputs;
+
+    private List<Continuation> continuations;
+
     public Flow(String name, String description) {
         this.name = name;
         this.description = description;
@@ -39,7 +44,7 @@ public class Flow implements Serializable {
         nameToIndex = new HashMap<>();
         formalOutputs = new HashMap<>();
         numberOfSteps = 0;
-
+        continuations = null;
     }
 
     public void addStep(Step step) {
@@ -177,7 +182,7 @@ public class Flow implements Serializable {
                 Step step = steps.get(stepIndex);
                 Integer inputIndex = step.getNameToInputIndex().get(inputName);
                 Input input = step.getInput(inputIndex);
-                if (!input.isConnected()) {
+                if (!input.isConnected() && !input.haveInitialValue()) {
                     if (!freeInputsIsReq.containsKey(inputName) && input.isMandatory()) {
                         freeInputsIsReq.put(inputName, true);
                         freeMandatoryInputs.add(inputName);
@@ -449,7 +454,8 @@ public class Flow implements Serializable {
             for (Pair<Integer, Integer> currConnection : currOutput) {
                 int targetStepIndex = currConnection.getKey();
                 int targetStepInputIndex = currConnection.getValue();
-                steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
+                if(!steps.get(targetStepIndex).getInput(targetStepInputIndex).haveInitialValue())
+                      steps.get(targetStepIndex).getInput(targetStepInputIndex).setData(currStep.getOutput(outPutIndex).getData());
 
             }
             outPutIndex++;
@@ -620,6 +626,21 @@ public class Flow implements Serializable {
         checkNoOutputWithSameNameAndFormalExists();
     }
 
+
+    public void setFlowOutputs() {
+        Map<String,Integer> flowOutputs = new HashMap<>();
+        for(int i = 0; i< steps.size();i++) {
+            Step currStep = steps.get(i);
+            List<Output> currOutputs = currStep.getOutputs();
+            for(Output output: currOutputs) {
+                flowOutputs.put(output.getName(),i);
+            }
+
+        }
+        this.flowOutputs = flowOutputs;
+    }
+
+
     public boolean checkIfFlowContainsInput(String inputName)
     {
         return flowInputs.containsKey(inputName);
@@ -654,8 +675,50 @@ public class Flow implements Serializable {
     public void setInitialValues(Map<String, String> initialValues) {
         for (String name : initialValues.keySet()) {
             if (!flowInputs.containsKey(name))
-                throw new InitialValueException("The flow \"" + name + "\" contains an initial value to an input that doesn't exists (input:" + name + ")");
+                throw new InitialValueException("The flow \"" + this.name + "\" contains an initial value to an input that doesn't exists (input:" + name + ")");
         }
         this.initialValues = initialValues;
+        applyInitialValues();
+    }
+
+    private void applyInitialValues() {
+        for(String inputName : initialValues.keySet()) {
+           List<Integer> targetInputs =  flowInputs.get(inputName);
+           for(int stepIndex: targetInputs) {
+               Step currStep = steps.get(stepIndex);
+               Input currInput = currStep.getInputByName(inputName);
+               if(!currInput.isUser_friendly())
+                   throw new InitialValueDataTypeException("Initial values contains a value for a non user-friendly input, input name: " + inputName);
+               if(!SetInputData(initialValues.get(inputName), currInput).getStatus()) {
+                   if(!currInput.getType().equals("DataEnumerator"))
+                         throw new InitialValueDataTypeException("The initial value for the input \"" + inputName + "\" have the wrong data type\n" +
+                           "the correct data type is: " + currInput.getType().substring(4));
+                   else
+                       throw new InitialValueDataTypeException("The initial value for the input \"" + inputName + "\" have a wrong value\n" +
+                           "this input is an enumerator data type and the entered values isn't allowed" );
+               }
+               currInput.setHaveInitialValue(true);
+           }
+        }
+    }
+
+    public Map<String, Integer> getFlowOutputs() {
+        return flowOutputs;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public Map<String, List<Integer>> getFlowFreeInputs() {
+        return flowFreeInputs;
+    }
+
+    public List<Continuation> getContinuations() {
+        return continuations;
+    }
+
+    public void setContinuations(List<Continuation> continuations) {
+        this.continuations = continuations;
     }
 }

@@ -57,9 +57,9 @@ public class test extends Application {
         Button loadXMLButton = new Button("Load XML File");
         loadXMLButton.setBackground(new Background(new BackgroundFill(Color.LAWNGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
         loadXMLButton.setAlignment(Pos.BASELINE_LEFT);
-        Text loadedXML = new Text("No xml file loaded yet");
+        Label loadedXML = new Label("No xml file loaded yet");
         loadedXML.setFont(Font.font(16));
-        loadedXML.setStyle("-fx-border-color: black");
+        loadedXML.setStyle("-fx-border-color: black; -fx-background-color: lightpink");
 
 
 
@@ -116,6 +116,8 @@ public class test extends Application {
         flowDefinition.setStyle("-fx-border-color: black");
         flowDefinition.getChildren().add(pane);
 
+        loadedXML.prefWidthProperty().bind(flowDefinition.prefWidthProperty());
+
 
 
         // Set the StackPane as the center component of the root BorderPane
@@ -165,7 +167,7 @@ public class test extends Application {
         pane.toFront();
     }
 
-    private void openFileChooser(Stage stage,Manager manager,Pane pane, Text loadedXML, Pane definition) {
+    private void openFileChooser(Stage stage,Manager manager,Pane pane, Label loadedXML, Pane definition) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
 
@@ -207,13 +209,13 @@ public class test extends Application {
                 // Define the initial keyframe
                 KeyFrame initialKeyFrame = new KeyFrame(Duration.ZERO, e -> {
                     loadedXML.setText(ex.getMessage());
-                    loadedXML.setFill(Color.RED);
+                    loadedXML.setTextFill(Color.RED);
                 });
 
                 // Define the final keyframe
                 KeyFrame finalKeyFrame = new KeyFrame(TEXT_CHANGE_DURATION, e -> {
                     loadedXML.setText(INITIAL_TEXT);
-                    loadedXML.setFill(Color.BLACK);
+                    loadedXML.setTextFill(Color.BLACK);
                 });
 
                 // Add keyframes to the timeline

@@ -1,6 +1,7 @@
 package enginemanager;
 
 import dto.*;
+import flow.Continuation;
 import flow.Flow;
 import flow.FlowHistory;
 import generated.*;
@@ -22,7 +23,7 @@ public class Manager implements EngineApi, Serializable {
     private Map<String, Statistics> flowsStatistics;
     private Map<String, Statistics> stepsStatistics;
     private Flow currentFlow;
-    private Set<String> flowNames;
+    private Map<String,Integer> flowNames2Index;
 
 
 
@@ -58,18 +59,19 @@ public class Manager implements EngineApi, Serializable {
     }
 
     private void createFlows(STStepper stepper) {
-        Set<String> flowNames = new HashSet<>();
+        Map<String,Integer> flowNames = new HashMap<>();
         List<STFlow> stFlows = stepper.getSTFlows().getSTFlow();
         List<Flow> flowList = new ArrayList<>();
+        Map<String,List<Continuation>> continuationMap = new HashMap<>();
         Map<String, Statistics> statisticsMap = new LinkedHashMap<>();
-        Map<String,String> intialValues = new HashMap<>();
+        int i = 0;
 
         for (STFlow stFlow : stFlows) {
             String flowName = stFlow.getName();
-            if (flowNames.contains(flowName)) {
+            if (flowNames.containsKey(flowName)) {
                 throw new FlowNameExistException("The xml file contains two flows with the same name");
             }
-            flowNames.add(flowName);
+            flowNames.put(flowName,i);
 
             currentFlow = new Flow(flowName, stFlow.getSTFlowDescription());
             addFlowOutputs(stFlow);
@@ -77,14 +79,18 @@ public class Manager implements EngineApi, Serializable {
             implementAliasing(stFlow);
             currentFlow.customMapping(getCustomMappings(stFlow));
             currentFlow.automaticMapping();
-            currentFlow.calculateFreeInputs();
             currentFlow.setInitialValues(getInitialValues(stFlow));
+            currentFlow.calculateFreeInputs();
+            currentFlow.setFlowOutputs();
+            if(getContinuations(stFlow).size() != 0)
+                continuationMap.put(currentFlow.getName(),getContinuations(stFlow));
             currentFlow.checkFlowIsValid();
             statisticsMap.put(currentFlow.getName(), new Statistics());
             flowList.add(currentFlow);
-            this.flowNames = flowNames;
+            i++;
         }
-
+        this.flowNames2Index = flowNames;
+        createContinuations(continuationMap,flowList);
 
         flows.clear();
         flowsStatistics.clear();
@@ -92,8 +98,53 @@ public class Manager implements EngineApi, Serializable {
         currentFlow = null;
 
         flows = flowList;
+        setFlowsContinuations(continuationMap);
         flowsStatistics = statisticsMap;
         stepsStatistics = HCSteps.getStatisticsMap();
+    }
+
+    private void setFlowsContinuations(Map<String, List<Continuation>> continuationMap) {
+        for(String flowName: continuationMap.keySet()) {
+            flows.get(flowNames2Index.get(flowName)).setContinuations(continuationMap.get(flowName));
+        }
+    }
+
+    private void createContinuations(Map<String,List<Continuation>> mapping,List<Flow> flowList) {
+        for(String name : mapping.keySet()) {
+            Integer sourceIndex = flowNames2Index.get(name);
+            List<Continuation> currContinuationList = mapping.get(name);
+            for (Continuation continuation : currContinuationList) {
+                Integer targetIndex = flowNames2Index.get(continuation.getTargetFlow());
+                if (targetIndex == null)
+                    throw new ContinuationException("The flow \""+name+"\" contains a continuation to a flow that doesn't exists, flow name: " + continuation.getTargetFlow());
+
+                Flow targetFlow = flowList.get(targetIndex);
+                Flow sourceFlow = flowList.get(sourceIndex);
+                continuation.createContinuation(sourceFlow, targetFlow);
+            }
+        }
+    }
+
+    private List<Continuation> getContinuations(STFlow stFlow) {
+        List<Continuation> continuations = new ArrayList<>();
+        if(stFlow.getSTContinuations() == null)
+            return continuations;
+
+        List<STContinuation> XMLContinuations = stFlow.getSTContinuations().getSTContinuation();
+        for(STContinuation continuation : XMLContinuations) {
+            Continuation currContinuation = new Continuation(continuation.getTargetFlow());
+            List<STContinuationMapping> mapping = continuation.getSTContinuationMapping();
+            if (mapping != null) {
+                for (STContinuationMapping currMapping : mapping) {
+                    String from = currMapping.getSourceData();
+                    String to = currMapping.getTargetData();
+                    currContinuation.addForcedConnection(from, to);
+                }
+            }
+            continuations.add(currContinuation);
+        }
+
+        return continuations;
     }
 
 

@@ -14,6 +14,11 @@ public class DataEnumerator extends DataDefinition<String>{
         this.values = values;
     }
 
+    public String getAllowedValues() {
+        return values.toString();
+    }
+
+
     @Override
     public void setData(String data) {
         if(values.contains(data) || data == null)

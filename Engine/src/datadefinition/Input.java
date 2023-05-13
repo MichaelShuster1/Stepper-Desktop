@@ -9,12 +9,15 @@ public class Input implements Serializable {
     private final String userString;
     private boolean isConnected;
 
+    private boolean haveInitialValue;
+
     public Input(DataDefinition dataDefinition, boolean user_friendly, boolean mandatory, String userString) {
         this.dataDefinition = dataDefinition;
         this.user_friendly = user_friendly;
         this.mandatory = mandatory;
         this.isConnected = false;
         this.userString = userString;
+        this.haveInitialValue = false;
     }
 
     public Object getData() {
@@ -60,5 +63,13 @@ public class Input implements Serializable {
     public void resetInput() {
         setData(null);
         isConnected = false;
+    }
+
+    public boolean haveInitialValue() {
+        return haveInitialValue;
+    }
+
+    public void setHaveInitialValue(boolean haveInitialValue) {
+        this.haveInitialValue = haveInitialValue;
     }
 }
