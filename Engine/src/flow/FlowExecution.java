@@ -21,9 +21,13 @@ public class FlowExecution implements Runnable{
 
     private final Flow flowDefinition;
 
+    private boolean finished;
+    private FlowExecutionDTO executionData;
+
     public FlowExecution(Flow flowDefinition) {
         this.flowDefinition = flowDefinition;
         initSteps();
+        finished = false;
     }
 
     private void initSteps() {
@@ -71,8 +75,17 @@ public class FlowExecution implements Runnable{
 
         flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
+        executionData = getFlowHistoryData();
+        finished = true;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public FlowExecutionDTO getExecutionData() {
+        return executionData;
+    }
 
     private void streamStepOutputsToInputs(int i, Step currStep) {
         List<List<Pair<Integer, Integer>>> stepConnections = flowDefinition.getStepConnections(i);
