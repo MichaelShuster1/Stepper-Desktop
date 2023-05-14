@@ -36,6 +36,8 @@ public class FlowExecution implements Runnable{
         for(int i = 0; i< definitionSteps.size(); i++) {
             Step currStep = definitionSteps.get(i);
             Step newStep = HCSteps.CreateStep(currStep.getDefaultName(), currStep.getName(), currStep.isContinueIfFailing());
+            newStep.setNameToInputIndex(currStep.getNameToInputIndex());
+            newStep.setNameToOutputIndex(currStep.getNameToOutputIndex());
             List<Input> currStepInputs =  currStep.getInputs();
             for(int j = 0; j< currStepInputs.size(); j++) {
                 newStep.getInput(j).setData((currStepInputs.get(j)).getData());

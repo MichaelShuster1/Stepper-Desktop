@@ -156,5 +156,15 @@ public abstract class Step implements Serializable {
 
         return isValid;
     }
+
+    public void setNameToInputIndex(Map<String, Integer> nameToInputIndex) {
+        this.nameToInputIndex = nameToInputIndex;
+    }
+
+    public void setNameToOutputIndex(Map<String, Integer> nameToOutputIndex) {
+        this.nameToOutputIndex = nameToOutputIndex;
+    }
+
+
 }
 
