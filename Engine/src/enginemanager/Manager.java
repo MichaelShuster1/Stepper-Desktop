@@ -268,8 +268,8 @@ public class Manager implements EngineApi, Serializable {
     public FlowResultDTO runFlow() {
         FlowExecution flowExecution = new FlowExecution(currentFlow);
         threadPool.execute(flowExecution);
-        ProgressTracker trackExecution = new ProgressTracker(flowExecution,flowsHistory,flowsStatistics,stepsStatistics);
-        trackExecution.start();
+        //ProgressTracker trackExecution = new ProgressTracker(flowExecution,flowsHistory,flowsStatistics,stepsStatistics);
+        //trackExecution.start();
 
 
         // Future<?> future = threadPool.submit(flowExecution);
