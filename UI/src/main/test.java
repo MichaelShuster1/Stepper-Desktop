@@ -12,9 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -204,7 +202,7 @@ public class test extends Application {
                 }
 
                 definition.getChildren().clear();
-                loadedXML.setText(selectedFile.getAbsolutePath());
+                loadedXML.setText("Currently loaded file: " + selectedFile.getAbsolutePath());
                 pane.getChildren().add(flows);
 
             }
@@ -258,11 +256,16 @@ public class test extends Application {
         flowDefinitionText.setFont(Font.font(16));
         TextFlow textFlow = new TextFlow(flowDefinitionText);
         textFlow.prefWidthProperty().bind(definition.widthProperty());
+        Accordion accordion = new Accordion();
+        Label test = new Label("data for the spend some time step");
+        TitledPane step1 = new TitledPane("Spend some time",test);
+        accordion.getPanes().add(step1);
         ScrollPane scrollPane = new ScrollPane(textFlow);
         scrollPane.setPrefWidth(definition.getPrefWidth());
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         definition.getChildren().clear();
         definition.getChildren().add(scrollPane);
+        definition.getChildren().add(accordion);
 
     }
 
