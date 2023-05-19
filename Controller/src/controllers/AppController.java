@@ -65,6 +65,7 @@ public class AppController {
         try {
             engine.loadXmlFile(selectedFile.getAbsolutePath());
             loadedXML.setText("Currently loaded file: " + selectedFile.getAbsolutePath());
+            definitionComponentController.addTable();
         }
         catch (Exception ex)
         {

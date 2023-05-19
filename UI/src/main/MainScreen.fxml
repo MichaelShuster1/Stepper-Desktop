@@ -15,7 +15,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppController">
    <content>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0">
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
          <top>
             <VBox alignment="TOP_CENTER" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
@@ -62,12 +62,12 @@
                   </Tab>
                 <Tab text="Flows Execution">
                      <content>
-                        <fx:include fx:id="executionComponent" source="../../../../Controller/src/controllers/flowexecution/Execution.fxml" />
+                        <fx:include fx:id="executionComponent" source="Execution.fxml" />
                      </content>
                 </Tab>
                   <Tab text="Flows Definition">
                      <content>
-                        <fx:include fx:id="definitionComponent" source="../../../Controller/src/controllers/flowdefinition/Definition.fxml" HBox.hgrow="ALWAYS" />
+                        <fx:include fx:id="definitionComponent" source="Definition.fxml" HBox.hgrow="ALWAYS" />
                      </content>
                   </Tab>
               </tabs>
