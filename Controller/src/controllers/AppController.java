@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.flowdefinition.DefinitionController;
+import controllers.flowexecution.ExecutionController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +18,14 @@ public class AppController {
 
     @FXML
     private DefinitionController definitionComponentController;
+
+
+    @FXML
+    private StackPane executionComponent;
+
+    @FXML
+    private ExecutionController executionComponentController;
+
     @FXML
     private Button loadXML;
 

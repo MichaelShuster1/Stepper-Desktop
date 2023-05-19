@@ -61,9 +61,9 @@
                      </content>
                   </Tab>
                 <Tab text="Flows Execution">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
+                     <content>
+                        <fx:include fx:id="executionComponent" source="../../../../Controller/src/controllers/flowexecution/Execution.fxml" />
+                     </content>
                 </Tab>
                   <Tab text="Flows Definition">
                      <content>
