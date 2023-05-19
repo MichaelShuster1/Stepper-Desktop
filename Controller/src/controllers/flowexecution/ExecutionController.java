@@ -2,9 +2,7 @@ package controllers.flowexecution;
 
 
 import controllers.AppController;
-import dto.InputData;
-import dto.InputsDTO;
-import dto.ResultDTO;
+import dto.*;
 import enginemanager.EngineApi;
 import flow.Flow;
 import javafx.event.ActionEvent;
@@ -24,6 +22,9 @@ public class ExecutionController {
 
     @FXML
     private FlowPane inputsView;
+
+    @FXML
+    private Button executeButton;
 
     private AppController appController;
 
@@ -70,7 +71,7 @@ public class ExecutionController {
 
         TextInputDialog inputDialog = new TextInputDialog();
 
-        inputDialog.setTitle("Submit input");
+        inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
         inputDialog.setContentText("please enter the input here:");
@@ -81,16 +82,51 @@ public class ExecutionController {
             System.out.println(result.get());
             ResultDTO resultDTO=engine.processInput(button.getId(),result.get());
             if(resultDTO.getStatus())
+            {
                 button.setStyle("-fx-background-color: #40ff00; ");
+                if(engine.isFlowReady())
+                    executeButton.setDisable(false);
+            }
             else
             {
                 Alert alert =new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setContentText(resultDTO.getMessage());
+                alert.showAndWait();
             }
         }
     }
 
+
+
+    @FXML
+    void executeFlow(ActionEvent event)
+    {
+        System.out.println("execute click");
+        System.out.println(getFlowExecutionStrData(engine.runFlow()));
+    }
+
+
+    public String getFlowExecutionStrData(FlowResultDTO flowResult) {
+        String res = "Flows unique ID: " + flowResult.getId() + "\n";
+        res += "Flow name: " + flowResult.getName() + "\n";
+        res += "Flow's final state : " + flowResult.getState() + "\n";
+        List<OutputExecutionDTO> formalOutputs = flowResult.getFormalOutputs();
+        if (formalOutputs.size() > 0) {
+            res += "FLOW'S FORMAL OUTPUTS:\n";
+            for (OutputExecutionDTO output: formalOutputs) {
+                res += output.getType() + "\n";
+                if (output.getData() != null)
+                    res += output.getData() + "\n";
+                else
+                    res += "Not created due to failure in flow\n";
+
+            }
+        } else {
+            res += "THE FLOW HAVE NO OUTPUTS\n";
+        }
+        return res;
+    }
 
 
 

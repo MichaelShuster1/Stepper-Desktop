@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -14,7 +15,7 @@
 
 <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.flowexecution.ExecutionController">
    <children>
-      <GridPane style="-fx-background-color: #FFD580;">
+      <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,23 +27,35 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Continue to Flow" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="296.0" prefWidth="300.0" style="-fx-background-color: #89CFF0; -fx-border-color: #FFFF00; -fx-border-width: 5;" GridPane.rowIndex="2" GridPane.rowSpan="2" />
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #808080; -fx-border-color: #FFFF00; -fx-border-width: 5;" text="Details per selected execution element" textFill="#000000cc" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="144.0" style="-fx-background-color: #89CFF0; -fx-border-color: #FFFF00; -fx-border-width: 5;" GridPane.columnSpan="2" GridPane.rowSpan="3">
+            <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="144.0" style="-fx-border-color: #FFFF00; -fx-border-width: 5;" GridPane.columnSpan="2" GridPane.rowSpan="2">
                <center>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #89CFF0;" BorderPane.alignment="CENTER">
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <content>
                         <FlowPane fx:id="inputsView" />
                      </content>
                   </ScrollPane>
                </center>
                <bottom>
-                  <Button mnemonicParsing="false" text="Execute !" BorderPane.alignment="BOTTOM_RIGHT" />
+                  <Button fx:id="executeButton" disable="true" mnemonicParsing="false" onAction="#executeFlow" style="-fx-background-color: #00ff00;" text="Execute !" BorderPane.alignment="BOTTOM_RIGHT" />
+               </bottom>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFD580;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <bottom>
+                  <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="BOTTOM_RIGHT">
+                     <children>
+                        <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" style="-fx-background-color: #00ff00;" text="Continue to Flow">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                </bottom>
             </BorderPane>
          </children>
