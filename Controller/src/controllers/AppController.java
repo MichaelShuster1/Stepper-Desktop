@@ -4,6 +4,7 @@ import controllers.flowdefinition.DefinitionController;
 import enginemanager.Manager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import controllers.flowexecution.ExecutionController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -32,6 +33,14 @@ public class AppController {
 
     @FXML
     private DefinitionController definitionComponentController;
+
+
+    @FXML
+    private StackPane executionComponent;
+
+    @FXML
+    private ExecutionController executionComponentController;
+
     @FXML
     private Button loadXML;
 
