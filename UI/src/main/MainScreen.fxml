@@ -31,7 +31,7 @@
                   <HBox spacing="15.0" VBox.vgrow="NEVER">
                      <children>
                         <Button fx:id="loadXML" mnemonicParsing="false" onAction="#loadXMLFile" text="Load XML File" />
-                        <Label fx:id="loadedXML" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No XML file currently loaded" HBox.hgrow="ALWAYS">
+                        <Label fx:id="loadedXML" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: beige;" text="No XML file currently loaded" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -48,7 +48,7 @@
             </VBox>
          </top>
          <center>
-            <TabPane nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                   <Tab text="Statistics">
                      <content>
@@ -67,11 +67,7 @@
                 </Tab>
                   <Tab text="Flows Definition">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <fx:include fx:id="definitionComponent" source="../../../../Controller/src/controllers/flowdefinition/Definition.fxml" />
-                           </children>
-                        </AnchorPane>
+                        <fx:include fx:id="definitionComponent" source="../../../Controller/src/controllers/flowdefinition/Definition.fxml" HBox.hgrow="ALWAYS" />
                      </content>
                   </Tab>
               </tabs>

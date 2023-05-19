@@ -1,6 +1,7 @@
 package main;
 
 import controllers.AppController;
+import enginemanager.Manager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,8 @@ public class test2 extends Application {
         loader.setLocation(resource);
         Parent root = loader.load(resource.openStream());
         AppController controller = loader.getController();
+        controller.setModel(new Manager());
+        controller.setPrimaryStage(primaryStage);
 
         Scene scene = new Scene(root,850,600);
         primaryStage.setTitle("Stepper");
