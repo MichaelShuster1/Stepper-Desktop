@@ -62,12 +62,12 @@
                   </Tab>
                 <Tab text="Flows Execution">
                      <content>
-                        <fx:include fx:id="executionComponent" source="../../../../Controller/src/controllers/flowexecution/Execution.fxml" />
+                        <fx:include fx:id="executionComponent" source="Execution.fxml" />
                      </content>
                 </Tab>
                   <Tab text="Flows Definition">
                      <content>
-                        <fx:include fx:id="definitionComponent" source="../../../Controller/src/controllers/flowdefinition/Definition.fxml" HBox.hgrow="ALWAYS" />
+                        <fx:include fx:id="definitionComponent" source="Definition.fxml" HBox.hgrow="ALWAYS" />
                      </content>
                   </Tab>
               </tabs>

@@ -1,31 +1,28 @@
 package controllers;
 
 import controllers.flowdefinition.DefinitionController;
+import dto.InputsDTO;
+import enginemanager.EngineApi;
 import enginemanager.Manager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import controllers.flowexecution.ExecutionController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.List;
 
 public class AppController {
 
 
-    Manager engine;
+    EngineApi engine;
 
     Stage primaryStage;
     @FXML
@@ -48,13 +45,31 @@ public class AppController {
     private Label loadedXML;
 
 
+
+
+
+
+    @FXML
+    public void initialize() {
+        executionComponentController.setAppController(this);
+    }
+
+
     public void setModel(Manager engine) {
         this.engine = engine;
+        executionComponentController.setEngine(engine);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
+
+    public InputsDTO getFlowInputs()
+    {
+        return engine.getFlowInputs(1);
+    }
+
 
     @FXML
     private void loadXMLFile(ActionEvent event) {
@@ -90,8 +105,7 @@ public class AppController {
             // Play the timeline
             timeline.play();
         }
-
-
+        executionComponentController.setInputsView(getFlowInputs());
     }
 
     private File openFileChooserAndGetFile() {
@@ -107,6 +121,8 @@ public class AppController {
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         return  selectedFile;
     }
+
+
 
 
 }

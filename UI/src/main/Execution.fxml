@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.flowexecution.ExecutionController">
    <children>
       <GridPane style="-fx-background-color: #FFD580;">
         <columnConstraints>
@@ -37,7 +37,7 @@
                <center>
                   <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #89CFF0;" BorderPane.alignment="CENTER">
                      <content>
-                        <FlowPane />
+                        <FlowPane fx:id="inputsView" />
                      </content>
                   </ScrollPane>
                </center>
