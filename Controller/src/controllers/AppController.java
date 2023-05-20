@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.flowdefinition.DefinitionController;
 import controllers.statistics.StatisticsController;
+import controllers.history.HistoryController;
+import dto.FlowExecutionDTO;
 import dto.InputsDTO;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
@@ -38,6 +40,12 @@ public class AppController {
     private ExecutionController executionComponentController;
 
     @FXML
+    private StackPane historyComponent;
+
+    @FXML
+    private HistoryController historyComponentController;
+
+    @FXML
     private StackPane statisticsComponent;
     @FXML
     private StatisticsController statisticsComponentController;
@@ -62,6 +70,8 @@ public class AppController {
     public void initialize() {
         executionComponentController.setAppController(this);
         definitionComponentController.setAppController(this);
+        historyComponentController.setAppController(this);
+        tabPaneView.getSelectionModel().select(3);
         statisticsComponentController.setAppController(this);
     }
 
@@ -71,6 +81,7 @@ public class AppController {
         executionComponentController.setEngine(engine);
         definitionComponentController.setEngine(engine);
         statisticsComponentController.setEngine(engine);
+        historyComponentController.setEngine(engine);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -146,6 +157,11 @@ public class AppController {
         statisticsComponentController.fillTablesData();
     }
 
+
+    public void addRowInHistoryTable(FlowExecutionDTO flowExecutionDTO)
+    {
+        historyComponentController.addRow(flowExecutionDTO);
+    }
 }
 
 
