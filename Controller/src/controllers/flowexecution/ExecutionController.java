@@ -150,6 +150,7 @@ public class ExecutionController {
         FlowExecutionDTO flowExecutionDTO =engine.getFullHistoryData(0);
         flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
         appController.addRowInHistoryTable(flowExecutionDTO);
+        appController.updateStatistics();
 
         observableList.addAll(flowExecutionDTO.getSteps());
         stepsTableView.setOnMouseClicked(e->rowClick(new ActionEvent()));
