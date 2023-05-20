@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -22,15 +23,12 @@ import java.io.File;
 public class AppController {
 
 
-    EngineApi engine;
 
-    Stage primaryStage;
     @FXML
     private StackPane definitionComponent;
 
     @FXML
     private DefinitionController definitionComponentController;
-
 
     @FXML
     private StackPane executionComponent;
@@ -44,7 +42,12 @@ public class AppController {
     @FXML
     private Label loadedXML;
 
+    @FXML
+    private TabPane tabPaneView;
 
+    private EngineApi engine;
+
+    private Stage primaryStage;
 
 
 
@@ -67,9 +70,9 @@ public class AppController {
     }
 
 
-    public InputsDTO getFlowInputs()
+    public InputsDTO getFlowInputs(int index)
     {
-        return engine.getFlowInputs(1);
+        return engine.getFlowInputs(index);
     }
 
 
@@ -108,7 +111,6 @@ public class AppController {
             // Play the timeline
             timeline.play();
         }
-        executionComponentController.setInputsView(getFlowInputs());
     }
 
     private File openFileChooserAndGetFile() {
@@ -127,7 +129,8 @@ public class AppController {
 
 
     public void streamFlowFrom1To2(int index) {
-
+        executionComponentController.setTabView(getFlowInputs(index));
+        tabPaneView.getSelectionModel().select(2);
     }
 }
 

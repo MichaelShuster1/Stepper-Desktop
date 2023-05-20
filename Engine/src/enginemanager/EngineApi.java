@@ -36,4 +36,5 @@ public interface EngineApi {
     ResultDTO loadDataOfSystemFromFile(String path);
 
     int getCurrInitializedFlowsCount();
+    ContinutionMenuDTO getContinutionMenuDTO();
 }

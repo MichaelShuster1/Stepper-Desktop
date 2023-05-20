@@ -2,10 +2,8 @@ package controllers.flowexecution;
 
 
 import controllers.AppController;
-import controllers.flowdefinition.FlowData;
 import dto.*;
 import enginemanager.EngineApi;
-import flow.Flow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +36,10 @@ public class ExecutionController {
 
     @FXML
     private Text flowInfoView;
+
+    @FXML
+    private ChoiceBox<String> choiceBoxView;
+
 
 
     private TableView<StepExecutionDTO> stepsTableView;
@@ -64,6 +65,8 @@ public class ExecutionController {
 
         stepColumnView.setCellValueFactory(new PropertyValueFactory<>("name"));
         stateColumnView.setCellValueFactory(new PropertyValueFactory<>("stateAfterRun"));
+
+        stepsTableView.getColumns().addAll(stepColumnView,stateColumnView);
     }
 
 
@@ -77,8 +80,14 @@ public class ExecutionController {
         this.engine = engine;
     }
 
-    public void setInputsView(InputsDTO inputsDTO)
+    public void setTabView(InputsDTO inputsDTO)
     {
+        mandatoryInputsView.getChildren().clear();
+        optionalInputsView.getChildren().clear();
+        choiceBoxView.getItems().clear();
+        stepsTableView.getItems().clear();
+        stepDetailsView.setText(null);
+
         for(int i=0;i<inputsDTO.getNumberOfInputs();i++)
         {
             InputData inputData=inputsDTO.getFreeInput(i);
@@ -140,11 +149,18 @@ public class ExecutionController {
         System.out.println(getFlowExecutionStrData(engine.runFlow()));
         FlowExecutionDTO flowExecutionDTO =engine.getFullHistoryData(0);
         flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
+
         observableList.addAll(flowExecutionDTO.getSteps());
-        stepsTableView.getColumns().addAll(stepColumnView,stateColumnView);
         stepsTableView.setOnMouseClicked(e->rowClick(new ActionEvent()));
         stepsTableView.setItems(observableList);
         stepsTitleVIew.setContent(stepsTableView);
+
+        ContinutionMenuDTO continutionMenuDTO=engine.getContinutionMenuDTO();
+        if(continutionMenuDTO!=null)
+        {
+            List<String> targetFlows = continutionMenuDTO.getTargetFlows();
+            choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
+        }
     }
 
 
@@ -158,6 +174,12 @@ public class ExecutionController {
         details+= "STEP LOGS:\n\n";
         details += getStrLogs(stepExecutionDTO.getLogs());
         stepDetailsView.setText(details);
+    }
+
+
+    @FXML
+    void continueToFlow(ActionEvent event) {
+        System.out.println(choiceBoxView.getValue());
     }
 
     private String getFlowHistoryData(FlowExecutionDTO flowExecutionDTO) {

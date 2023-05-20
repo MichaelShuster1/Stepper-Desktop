@@ -504,5 +504,10 @@ public class Manager implements EngineApi, Serializable {
         return flows.size();
     }
 
+    @Override
+    public ContinutionMenuDTO getContinutionMenuDTO() {
+        return currentFlow.getContinutionMenuDTO();
+    }
+
 
 }

@@ -737,6 +737,19 @@ public class Flow implements Serializable {
         return continuations;
     }
 
+    public ContinutionMenuDTO getContinutionMenuDTO()
+    {
+        List<String> targetFlows=new ArrayList<>();
+
+        if(continuations!=null) {
+            for (Continuation continuation : continuations) {
+                targetFlows.add(continuation.getTargetFlow());
+            }
+            return new ContinutionMenuDTO(targetFlows);
+        }
+        return  null;
+    }
+
     public void setContinuations(List<Continuation> continuations) {
         this.continuations = continuations;
     }
