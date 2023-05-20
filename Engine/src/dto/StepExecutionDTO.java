@@ -3,6 +3,7 @@ package dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StepExecutionDTO implements Serializable {
     String name;
@@ -19,6 +20,9 @@ public class StepExecutionDTO implements Serializable {
         this.logs=new ArrayList<>();
         this.logs.addAll(logs);
     }
+
+
+
 
 
     public String getName() {
