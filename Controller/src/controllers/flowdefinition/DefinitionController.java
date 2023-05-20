@@ -131,7 +131,7 @@ public class DefinitionController {
 
     public void setTableClickFunction() {
        flowTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2 && !flowTable.getSelectionModel().isEmpty()) {
+            if (event.getClickCount() == 1 && !flowTable.getSelectionModel().isEmpty()) {
                 AvailableFlowDTO selectedRow = flowTable.getSelectionModel().getSelectedItem();
                 showFlowData(selectedRow);
             }
