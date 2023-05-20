@@ -442,7 +442,7 @@ public class Flow implements Serializable {
 
     public FlowResultDTO executeFlow() {
         Long startTime = System.currentTimeMillis();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         formatter.format(new Date());
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
@@ -523,7 +523,7 @@ public class Flow implements Serializable {
 
     public FlowExecutionDTO getFlowHistoryData()
     {
-        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId, stateAfterRun.toString(),runTime);
+        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(name,flowId, stateAfterRun.toString(),activationTime,runTime);
         List<StepExecutionDTO> steps = getStepsExecutionDTO();
         List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
         List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();

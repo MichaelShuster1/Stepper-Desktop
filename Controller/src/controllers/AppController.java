@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.flowdefinition.DefinitionController;
 import controllers.history.HistoryController;
+import dto.FlowExecutionDTO;
 import dto.InputsDTO;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
@@ -141,6 +142,11 @@ public class AppController {
     public void streamFlowFrom1To2(int index) {
         executionComponentController.setTabView(getFlowInputs(index));
         tabPaneView.getSelectionModel().select(2);
+    }
+
+    public void addRowInHistoryTable(FlowExecutionDTO flowExecutionDTO)
+    {
+        historyComponentController.addRow(flowExecutionDTO);
     }
 }
 
