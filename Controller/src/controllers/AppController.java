@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.flowdefinition.DefinitionController;
+import controllers.statistics.StatisticsController;
 import dto.InputsDTO;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
@@ -37,6 +38,11 @@ public class AppController {
     private ExecutionController executionComponentController;
 
     @FXML
+    private StackPane statisticsComponent;
+    @FXML
+    private StatisticsController statisticsComponentController;
+
+    @FXML
     private Button loadXML;
 
     @FXML
@@ -56,6 +62,7 @@ public class AppController {
     public void initialize() {
         executionComponentController.setAppController(this);
         definitionComponentController.setAppController(this);
+        statisticsComponentController.setAppController(this);
     }
 
 
@@ -63,6 +70,7 @@ public class AppController {
         this.engine = engine;
         executionComponentController.setEngine(engine);
         definitionComponentController.setEngine(engine);
+        statisticsComponentController.setEngine(engine);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -86,6 +94,7 @@ public class AppController {
             engine.loadXmlFile(selectedFile.getAbsolutePath());
             loadedXML.setText("Currently loaded file: " + selectedFile.getAbsolutePath());
             definitionComponentController.addTable();
+            statisticsComponentController.createStatisticsTables();
         }
         catch (Exception ex)
         {
@@ -132,6 +141,11 @@ public class AppController {
         executionComponentController.setTabView(getFlowInputs(index));
         tabPaneView.getSelectionModel().select(2);
     }
+
+    public void updateStatistics() {
+        statisticsComponentController.fillTablesData();
+    }
+
 }
 
 

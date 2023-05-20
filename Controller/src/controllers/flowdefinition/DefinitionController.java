@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
@@ -88,8 +90,10 @@ public class DefinitionController {
     private void fillTableObservableListWithData() {
 
         List<AvailableFlowDTO> availableFlows = engine.getAvailableFlows();
-        if(availableFlows!=null)
+        if(availableFlows!=null) {
             tvObservableList.addAll(availableFlows);
+            flowTable.setItems(tvObservableList);
+        }
     }
 
     private void addButtonToTable() {
@@ -162,7 +166,6 @@ public class DefinitionController {
         data += getStrOutPuts(flowDefinition.getOutputs());
         data += "------------------------------\n";
 
-        Accordion accordion = new Accordion();
         Text flowDefinitionText = new Text(data);
         //flowDefinitionText.setWrapText(true);
         //flowDefinitionText.setPrefWidth(definition.getPrefWidth());
@@ -176,6 +179,8 @@ public class DefinitionController {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         selectedFlowDetails.getChildren().clear();
         selectedFlowDetails.getChildren().addAll(scrollPane,executeBtn);
+        selectedFlowDetails.setAlignment(executeBtn, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(executeBtn,new Insets(0,20,10,0));
     }
 
     private void streamFlowToTab2(int index) {
