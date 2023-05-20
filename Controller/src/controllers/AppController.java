@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.flowdefinition.DefinitionController;
+import controllers.history.HistoryController;
 import dto.InputsDTO;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
@@ -37,6 +38,12 @@ public class AppController {
     private ExecutionController executionComponentController;
 
     @FXML
+    private StackPane historyComponent;
+
+    @FXML
+    private HistoryController historyComponentController;
+
+    @FXML
     private Button loadXML;
 
     @FXML
@@ -56,6 +63,8 @@ public class AppController {
     public void initialize() {
         executionComponentController.setAppController(this);
         definitionComponentController.setAppController(this);
+        historyComponentController.setAppController(this);
+        tabPaneView.getSelectionModel().select(3);
     }
 
 
@@ -63,6 +72,7 @@ public class AppController {
         this.engine = engine;
         executionComponentController.setEngine(engine);
         definitionComponentController.setEngine(engine);
+        historyComponentController.setEngine(engine);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
