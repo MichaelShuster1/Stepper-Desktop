@@ -91,6 +91,7 @@ public class HistoryController {
         stateFilterView.setValue("NONE");
         stateFilterView.setOnAction(event -> filterTable());
         tableData = FXCollections.observableArrayList();
+        historyTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         historyTableView.setItems(tableData);
     }
 
