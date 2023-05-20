@@ -11,6 +11,7 @@ public interface EngineApi {
     List<String> getFlowsNames();
 
     List<AvailableFlowDTO> getAvailableFlows();
+
     int getFlowIndexByName(String name);
 
     FlowDefinitionDTO getFlowDefinition(int flowIndex);
@@ -36,5 +37,8 @@ public interface EngineApi {
     ResultDTO loadDataOfSystemFromFile(String path);
 
     int getCurrInitializedFlowsCount();
+
     ContinutionMenuDTO getContinutionMenuDTO();
+
+    void reUseInputsData(FlowExecutionDTO flowExecutionDTO);
 }

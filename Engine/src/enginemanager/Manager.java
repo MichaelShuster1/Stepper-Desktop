@@ -509,5 +509,19 @@ public class Manager implements EngineApi, Serializable {
         return currentFlow.getContinutionMenuDTO();
     }
 
+    @Override
+    public void reUseInputsData(FlowExecutionDTO flowExecutionDTO)
+    {
+        String flowName = flowExecutionDTO.getName();
+        int flowIndex = flowNames2Index.get(flowName);
+        Flow flow = flows.get(flowIndex);
+        List<FreeInputExecutionDTO> inputs = flowExecutionDTO.getFreeInputs();
+        for(FreeInputExecutionDTO currInput : inputs) {
+            if(currInput.getData() != null)
+                flow.processInput(currInput.getName(), currInput.getData());
+        }
+    }
+
+
 
 }
