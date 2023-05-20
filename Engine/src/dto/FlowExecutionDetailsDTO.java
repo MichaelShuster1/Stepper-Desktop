@@ -9,12 +9,12 @@ public class FlowExecutionDetailsDTO implements Serializable {
     private final String activationTime;
     private final long runTime;
 
-    public FlowExecutionDetailsDTO(String name, String id, String stateAfterRun,String activationTime, long runTime) {
+    public FlowExecutionDetailsDTO(String name, String id, String stateAfterRun, String activationTime, long runTime) {
         this.name = name;
         this.id = id;
         this.stateAfterRun = stateAfterRun;
         this.runTime = runTime;
-        this.activationTime=activationTime;
+        this.activationTime = activationTime;
     }
 
     public FlowExecutionDetailsDTO(FlowExecutionDetailsDTO other)
@@ -23,7 +23,7 @@ public class FlowExecutionDetailsDTO implements Serializable {
         this.id = other.id;
         this.stateAfterRun = other.stateAfterRun;
         this.runTime = other.runTime;
-        this.activationTime=other.activationTime;
+        this.activationTime =other.activationTime;
     }
 
 
