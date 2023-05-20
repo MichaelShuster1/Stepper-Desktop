@@ -1,8 +1,12 @@
 package dto;
 
+import java.util.Map;
+
 public class OutputDefintionDTO extends DataDefintionDTO
 {
     private final String stepName;
+
+    private Map<String,String> connections;
 
     public OutputDefintionDTO(DataDefintionDTO dataDefintionDTO, String stepName) {
         super(dataDefintionDTO);

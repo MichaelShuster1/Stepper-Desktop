@@ -5,6 +5,8 @@ public class StepDefinitionDTO {
     private final String defaultName;
     private final boolean readOnly;
 
+    private StepConnectionsDTO connections;
+
     public StepDefinitionDTO(String name,String defaultName, boolean readOnly) {
         this.name = name;
         this.readOnly = readOnly;

@@ -384,6 +384,32 @@ public class Flow implements Serializable {
         return  outputsList;
     }
 
+    private void getOutputsDefinitionDTO1() {
+        Map<String, Map<String,Map<String,String>>> stepsOutputs = new HashMap<>();
+        List<Output> list;
+        for (int i = 0 ;i<steps.size();i++) {
+            Map<String,Map<String,String>> outputs = new HashMap<>();
+            Step step = steps.get(i);
+            list = step.getOutputs();
+            for (int j = 0; j<list.size();j++) {
+                Output output = list.get(j);
+                List<Pair<Integer,Integer>> currConnections = connections.get(i).get(j);
+                Map<String,String> currOutputConnections = new HashMap<>();
+                for(Pair<Integer,Integer> currPair : currConnections)
+                {
+                    String inputName = steps.get(currPair.getKey()).getInput(currPair.getValue()).getName();
+                    String stepName = steps.get(currPair.getKey()).getName();
+                    currOutputConnections.put(stepName,inputName);
+                }
+                outputs.put(step.getName(),currOutputConnections);
+                DataDefintionDTO dataDefintionDTO= new DataDefintionDTO(output.getName(), output.getType());
+                OutputDefintionDTO outputDefintionDTO=new OutputDefintionDTO(dataDefintionDTO,step.getName());
+               // outputsList.add(outputDefintionDTO);
+            }
+        }
+        //return  outputsList;
+    }
+
     private List<StepDefinitionDTO> getStepsDefinitionDTO()
     {
         List<StepDefinitionDTO> stepsList = new ArrayList<>();
@@ -670,6 +696,24 @@ public class Flow implements Serializable {
 
     public State getStateAfterRun() {
         return stateAfterRun;
+    }
+
+    public int getNumberOfInputs() {
+        int count = 0;
+        if(flowFreeInputs == null)
+            return count;
+        for(String input: flowFreeInputs.keySet()) {
+            count = count + flowFreeInputs.get(input).size();
+        }
+
+        return count;
+    }
+
+    public int getNumberOfContinuations() {
+        if(continuations == null)
+            return 0;
+        else
+            return continuations.size();
     }
 
     public void setInitialValues(Map<String, String> initialValues) {

@@ -10,7 +10,12 @@ public interface EngineApi {
 
     List<String> getFlowsNames();
 
+    List<AvailableFlowDTO> getAvailableFlows();
+    int getFlowIndexByName(String name);
+
     FlowDefinitionDTO getFlowDefinition(int flowIndex);
+
+    FlowDefinitionDTO getFlowDefinition(String flowName);
 
     InputsDTO getFlowInputs(int flowIndex);
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -40,8 +44,65 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <StackPane fx:id="tableStack" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2" />
-            <StackPane fx:id="selectedFlowDetails" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <StackPane fx:id="tableStack" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No loaded flows" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children></StackPane>
+            <StackPane fx:id="selectedFlowDetails" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <Accordion minHeight="400.0" minWidth="200.0">
+                          <panes>
+                            <TitledPane animated="false" text="untitled 1">
+                                 <content>
+                                    <Accordion>
+                                      <panes>
+                                        <TitledPane animated="false" text="untitled 1">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                          </content>
+                                        </TitledPane>
+                                        <TitledPane animated="false" text="untitled 2">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                          </content>
+                                        </TitledPane>
+                                        <TitledPane animated="false" text="untitled 3">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                          </content>
+                                        </TitledPane>
+                                      </panes>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </Accordion>
+                                 </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 2">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 3">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </StackPane>
          </children>
       </GridPane>
    </children>

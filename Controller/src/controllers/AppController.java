@@ -52,6 +52,7 @@ public class AppController {
     @FXML
     public void initialize() {
         executionComponentController.setAppController(this);
+        definitionComponentController.setAppController(this);
     }
 
 
@@ -125,8 +126,9 @@ public class AppController {
     }
 
 
+    public void streamFlowFrom1To2(int index) {
 
-
+    }
 }
 
 

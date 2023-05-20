@@ -319,9 +319,26 @@ public class Manager implements EngineApi, Serializable {
             currentFlow.addFormalOutput(output);
     }
 
+    @Override
+    public List<AvailableFlowDTO> getAvailableFlows() {
+        List<AvailableFlowDTO> availableFlows = new ArrayList<>();
+        for(Flow flow : flows) {
+            AvailableFlowDTO currFlow = new AvailableFlowDTO(flow.getName(),flow.getDescription(),
+                    flow.getNumberOfInputs(),flow.getNumberOfSteps(),flow.getNumberOfContinuations());
+            availableFlows.add(currFlow);
+        }
+
+        return availableFlows;
+    }
 
     @Override
     public FlowDefinitionDTO getFlowDefinition(int flowIndex) {
+        return flows.get(flowIndex).getFlowDefinition();
+    }
+
+    @Override
+    public FlowDefinitionDTO getFlowDefinition(String flowName) {
+        int flowIndex = flowNames2Index.get(flowName);
         return flows.get(flowIndex).getFlowDefinition();
     }
 
@@ -332,6 +349,10 @@ public class Manager implements EngineApi, Serializable {
         return currentFlow.getInputList();
     }
 
+    @Override
+    public int getFlowIndexByName(String name) {
+        return flowNames2Index.get(name);
+    }
 
     @Override
     public ResultDTO processInput(String inputName, String data) {
