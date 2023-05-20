@@ -34,4 +34,11 @@ public class StepsTableView {
     {
         stepsTableView.setItems(list);
     }
+
+    public TableView<StepExecutionDTO> getStepsTableView()
+    {
+        return stepsTableView;
+    }
+
+
 }

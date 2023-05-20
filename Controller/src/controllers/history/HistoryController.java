@@ -87,12 +87,12 @@ public class HistoryController {
 
         stepsTableView.setOnMouseClicked(e->stepTableRowClick(new ActionEvent()));
         stepsTableView.getColumns().addAll(stepColumnView,stateColumnView);
+        tableData = FXCollections.observableArrayList();
+        historyTableView.setItems(tableData);
+
         stateFilterView.getItems().addAll("NONE", "SUCCESS", "WARNING", "FAILURE");
         stateFilterView.setValue("NONE");
         stateFilterView.setOnAction(event -> filterTable());
-        tableData = FXCollections.observableArrayList();
-        historyTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        historyTableView.setItems(tableData);
     }
 
 
@@ -112,22 +112,27 @@ public class HistoryController {
 
     @FXML
     private void HistoryTableRowClick(ActionEvent event) {
-        FlowExecutionDTO flowExecutionDTO= historyTableView.getSelectionModel().getSelectedItem();
-        flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
-        stepsTableView.setItems(FXCollections.observableArrayList(flowExecutionDTO.getSteps()));
-        stepsPaneView.setContent(stepsTableView);
+
+        if(!historyTableView.getSelectionModel().isEmpty()) {
+            FlowExecutionDTO flowExecutionDTO = historyTableView.getSelectionModel().getSelectedItem();
+            flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
+            stepsTableView.setItems(FXCollections.observableArrayList(flowExecutionDTO.getSteps()));
+            stepsPaneView.setContent(stepsTableView);
+        }
     }
 
     @FXML
     private void stepTableRowClick(ActionEvent event)
     {
-        StepExecutionDTO stepExecutionDTO=stepsTableView.getSelectionModel().getSelectedItem();
-        String details = "Name: " + stepExecutionDTO.getName() + "\n";
-        details += "Run time: " + stepExecutionDTO.getRunTime() + " ms\n";
-        details += "Finish state: " + stepExecutionDTO.getStateAfterRun() + "\n";
-        details+= "STEP LOGS:\n\n";
-        details += getStrLogs(stepExecutionDTO.getLogs());
-        stepDetailsView.setText(details);
+        if(!stepsTableView.getSelectionModel().isEmpty()) {
+            StepExecutionDTO stepExecutionDTO = stepsTableView.getSelectionModel().getSelectedItem();
+            String details = "Name: " + stepExecutionDTO.getName() + "\n";
+            details += "Run time: " + stepExecutionDTO.getRunTime() + " ms\n";
+            details += "Finish state: " + stepExecutionDTO.getStateAfterRun() + "\n";
+            details += "STEP LOGS:\n\n";
+            details += getStrLogs(stepExecutionDTO.getLogs());
+            stepDetailsView.setText(details);
+        }
     }
 
 
