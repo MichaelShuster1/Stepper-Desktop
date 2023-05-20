@@ -1,5 +1,6 @@
 package controllers.flowdefinition;
 
+import enginemanager.EngineApi;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class DefinitionController {
+
+    EngineApi engine;
     @FXML
     private StackPane selectedFlowDetails;
     @FXML
@@ -18,7 +21,9 @@ public class DefinitionController {
     private final TableView<FlowData> flowTable = new TableView<>();
     private final ObservableList<FlowData> tvObservableList = FXCollections.observableArrayList();
 
-
+    public void setEngine(EngineApi engine) {
+        this.engine = engine;
+    }
 
     @FXML
     void changeButtonName(ActionEvent event) {

@@ -58,6 +58,7 @@ public class AppController {
     public void setModel(Manager engine) {
         this.engine = engine;
         executionComponentController.setEngine(engine);
+        definitionComponentController.setEngine(engine);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
