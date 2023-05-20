@@ -21,7 +21,10 @@ import java.util.Optional;
 public class ExecutionController {
 
     @FXML
-    private FlowPane inputsView;
+    private FlowPane mandatoryInputsView;
+
+    @FXML
+    private FlowPane optionalInputsView;
 
     @FXML
     private Button executeButton;
@@ -48,20 +51,23 @@ public class ExecutionController {
 
     public void setInputsView(InputsDTO inputsDTO)
     {
-        List<Button> buttons=new ArrayList<>();
         for(int i=0;i<inputsDTO.getNumberOfInputs();i++)
         {
             InputData inputData=inputsDTO.getFreeInput(i);
             Button button=new Button();
             button.setId(inputData.getSystemName());
             FlowPane.setMargin(button,new Insets(0,10,10,0));
+
             if(inputData.getNecessity())
+            {
                 button.setStyle("-fx-background-color: #ff0000; ");
+                mandatoryInputsView.getChildren().add(button);
+            }
+            else
+                optionalInputsView.getChildren().add(button);
             button.setOnAction(e->inputClick(button,new ActionEvent()));
             button.setText(inputData.getUserString());
-            buttons.add(button);
         }
-        inputsView.getChildren().addAll(buttons);
     }
 
     @FXML
