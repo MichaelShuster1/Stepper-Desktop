@@ -514,32 +514,6 @@ public class Flow implements Serializable {
         return new FlowResultDTO(flowId,name, stateAfterRun.toString(),formalOutputs);
     }
 
-
-
-    public String getFlowExecutionStrData() {
-        String res = getFlowNameIDAndState();
-
-        if (formalOutputs.size() > 0) {
-            res += "FLOW'S FORMAL OUTPUTS:\n";
-            for (String currOutput : formalOutputs.keySet()) {
-                Step step = steps.get(formalOutputs.get(currOutput));
-                int outPutIndex = step.getNameToOutputIndex().get(currOutput);
-                res += step.getOutput(outPutIndex).getUserString() + "\n";
-                if (step.getOutput(outPutIndex).getData() != null)
-                    res += step.getOutput(outPutIndex).getData().toString() + "\n";
-                else
-                    res += "Not created due to failure in flow\n";
-
-            }
-        } else {
-            res += "THE FLOW HAVE NO OUTPUTS\n";
-        }
-
-        return res;
-
-    }
-
-
     public String getFlowNameIDAndState() {
         String res = "Flows unique ID: " + flowId + "\n";
         res += "Flow name: " + name + "\n";
