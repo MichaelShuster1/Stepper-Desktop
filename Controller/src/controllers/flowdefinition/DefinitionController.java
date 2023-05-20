@@ -4,21 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class DefinitionController {
     @FXML
-    private Button button123;
-
+    private StackPane selectedFlowDetails;
     @FXML
     private StackPane tableStack;
-    private final TableView<FlowData> table = new TableView<>();
+    private final TableView<FlowData> flowTable = new TableView<>();
     private final ObservableList<FlowData> tvObservableList = FXCollections.observableArrayList();
 
 
@@ -32,13 +29,22 @@ public class DefinitionController {
         setTableappearance();
 
         fillTableObservableListWithData();
-        table.setItems(tvObservableList);
+        flowTable.setItems(tvObservableList);
 
         TableColumn<FlowData, String> colname = new TableColumn<>("Name");
         colname.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<FlowData, String> coldesc = new TableColumn<>("Description");
         coldesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        coldesc.setCellFactory(tc -> {
+            TableCell<FlowData, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(coldesc.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell ;
+        });
 
         TableColumn<FlowData, Integer> colsteps = new TableColumn<>("Number of steps");
         colsteps.setCellValueFactory(new PropertyValueFactory<>("numberOfSteps"));
@@ -49,19 +55,20 @@ public class DefinitionController {
         TableColumn<FlowData, Integer> colcontinuations = new TableColumn<>("Number of Continuations");
         colcontinuations.setCellValueFactory(new PropertyValueFactory<>("numberOfContinuations"));
 
-        table.getColumns().addAll(colname,coldesc,colinputs,colsteps,colcontinuations);
+        flowTable.getColumns().addAll(colname,coldesc,colinputs,colsteps,colcontinuations);
 
         addButtonToTable();
-        table.getColumns().forEach(column -> column.setMinWidth(100));
-        tableStack.getChildren().add(table);
+        flowTable.getColumns().forEach(column -> column.setMinWidth(100));
+
+        tableStack.getChildren().add(flowTable);
     }
 
 
 
     private void setTableappearance() {
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.setPrefWidth(700);
-        table.setPrefHeight(600);
+        flowTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        flowTable.setPrefWidth(700);
+        flowTable.setPrefHeight(600);
     }
 
     private void fillTableObservableListWithData() {
@@ -127,8 +134,24 @@ public class DefinitionController {
 
         colBtn.setCellFactory(cellFactory);
 
-        table.getColumns().add(colBtn);
+        flowTable.getColumns().add(colBtn);
 
     }
+
+    public void setTableClickFunction() {
+       flowTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1 && !flowTable.getSelectionModel().isEmpty()) {
+                FlowData selectedRow = flowTable.getSelectionModel().getSelectedItem();
+                showFlowData(selectedRow);
+            }
+        });
+    }
+
+    private void showFlowData(FlowData selectedRow) {
+        String flowName = selectedRow.getName();
+
+    }
+
+
 }
 

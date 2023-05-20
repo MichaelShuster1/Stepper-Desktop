@@ -41,6 +41,7 @@
                </font>
             </Label>
             <StackPane fx:id="tableStack" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <StackPane fx:id="selectedFlowDetails" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
          </children>
       </GridPane>
    </children>
