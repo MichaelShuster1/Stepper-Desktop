@@ -107,6 +107,12 @@ public class HistoryController {
 
     @FXML
     void reRunFlow(ActionEvent event) {
+        if(!historyTableView.getSelectionModel().isEmpty()) {
+            FlowExecutionDTO flowExecutionDTO = historyTableView.getSelectionModel().getSelectedItem();
+            engine.reUseInputsData(flowExecutionDTO);
+            int index=engine.getFlowIndexByName(flowExecutionDTO.getName());
+            appController.streamFlow(index);
+        }
 
     }
 
