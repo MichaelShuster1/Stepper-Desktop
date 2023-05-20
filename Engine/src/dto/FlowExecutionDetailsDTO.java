@@ -42,4 +42,8 @@ public class FlowExecutionDetailsDTO implements Serializable {
     public long getRunTime() {
         return runTime;
     }
+
+    public String getActivationTime() {
+        return activationTime;
+    }
 }

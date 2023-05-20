@@ -58,10 +58,11 @@ public class StatisticsController {
 
         TableColumn<StatisticsUnitDTO, String> colRunTime = new TableColumn<>("Average run time");
         colRunTime.setCellValueFactory(new PropertyValueFactory<>("averageRunTime"));
+
         List<TableColumn<StatisticsUnitDTO, String>> columns = new ArrayList<>();
-        columns.add(colRunTime);
-        columns.add(colCount);
         columns.add(colName);
+        columns.add(colCount);
+        columns.add(colRunTime);
 
         return columns;
     }
