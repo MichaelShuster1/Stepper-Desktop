@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -184,7 +183,7 @@ public class DefinitionController {
     }
 
     private void streamFlowToTab2(int index) {
-        appController.streamFlowFrom1To2(index);
+        appController.streamFlow(index);
     }
 
     private String getStrFormalOutputs(Set<String> formal_outputs) {

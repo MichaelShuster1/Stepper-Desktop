@@ -71,7 +71,7 @@ public class AppController {
         executionComponentController.setAppController(this);
         definitionComponentController.setAppController(this);
         historyComponentController.setAppController(this);
-        tabPaneView.getSelectionModel().select(3);
+        setTab(3);
         statisticsComponentController.setAppController(this);
     }
 
@@ -148,10 +148,18 @@ public class AppController {
     }
 
 
-    public void streamFlowFrom1To2(int index) {
+    public void streamFlow(int index) {
         executionComponentController.setTabView(getFlowInputs(index));
-        tabPaneView.getSelectionModel().select(2);
+        setTab(2);
     }
+
+
+
+    public void setTab(int index)
+    {
+        tabPaneView.getSelectionModel().select(index);
+    }
+
 
     public void updateStatistics() {
         statisticsComponentController.fillTablesData();

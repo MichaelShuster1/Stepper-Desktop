@@ -227,10 +227,11 @@ public class Flow implements Serializable {
         for (String inputName : flowFreeInputs.keySet()) {
             Step step = steps.get(flowInputs.get(inputName).get(0));
             Integer inputIndex = step.getNameToInputIndex().get(inputName);
-            String user_string = step.getInput(inputIndex).getUserString();
+            Input input=step.getInput(inputIndex);
+            String user_string = input.getUserString();
+            boolean inserted= input.getData() != null;
             Boolean necessity = freeInputsIsReq.get(inputName);
-
-            inputMenu.add(new InputData(inputName, user_string, necessity));
+            inputMenu.add(new InputData(inputName, user_string, necessity,inserted));
         }
         return new InputsDTO(inputMenu, getName());
     }

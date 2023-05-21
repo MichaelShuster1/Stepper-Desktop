@@ -82,17 +82,15 @@ public class ExecutionController {
 
     public void setTabView(InputsDTO inputsDTO)
     {
-        mandatoryInputsView.getChildren().clear();
-        optionalInputsView.getChildren().clear();
-        choiceBoxView.getItems().clear();
-        stepsTableView.getItems().clear();
-        stepDetailsView.setText(null);
+        clearTab();
 
         for(int i=0;i<inputsDTO.getNumberOfInputs();i++)
         {
             InputData inputData=inputsDTO.getFreeInput(i);
             Button button=new Button();
             button.setId(inputData.getSystemName());
+            button.setOnAction(e->inputClick(button,new ActionEvent()));
+            button.setText(inputData.getUserString());
             FlowPane.setMargin(button,new Insets(0,10,10,0));
 
             if(inputData.getNecessity())
@@ -102,10 +100,21 @@ public class ExecutionController {
             }
             else
                 optionalInputsView.getChildren().add(button);
-            button.setOnAction(e->inputClick(button,new ActionEvent()));
-            button.setText(inputData.getUserString());
+
+            if (inputData.IsInserted())
+                button.setStyle("-fx-background-color: #40ff00; ");
         }
     }
+
+    private void clearTab() {
+        mandatoryInputsView.getChildren().clear();
+        optionalInputsView.getChildren().clear();
+        choiceBoxView.getItems().clear();
+        stepsTableView.getItems().clear();
+        stepDetailsView.setText(null);
+        flowInfoView.setText(null);
+    }
+
 
     @FXML
     public void inputClick(Button button,ActionEvent event)
