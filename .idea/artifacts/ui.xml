@@ -2,7 +2,7 @@
   <artifact type="jar" name="ui">
     <output-path>$PROJECT_DIR$/out/artifacts/ui</output-path>
     <root id="archive" name="ui.jar">
-      <element id="module-output" name="UI" />
+      <element id="module-output" name="ConsoleUI" />
     </root>
   </artifact>
 </component>

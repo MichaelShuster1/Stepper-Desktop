@@ -7,7 +7,6 @@ import dto.OutputExecutionDTO;
 import dto.StepExecutionDTO;
 import enginemanager.EngineApi;
 import javafx.collections.FXCollections;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;

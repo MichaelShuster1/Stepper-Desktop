@@ -361,7 +361,7 @@ public class Manager implements EngineApi, Serializable {
 
     @Override
     public FlowResultDTO runFlow() {
-        FlowExecution flowExecution = new FlowExecution(currentFlow);
+        FlowExecution flowExecution = new FlowExecution(currentFlow,this);
         threadPool.execute(flowExecution);
         //ProgressTracker trackExecution = new ProgressTracker(flowExecution,flowsHistory,flowsStatistics,stepsStatistics);
         //trackExecution.start();
@@ -449,10 +449,25 @@ public class Manager implements EngineApi, Serializable {
         return new ResultDTO(false, "The file in the given path doesn't exist");
     }
 
-    private void addFlowHistory(FlowExecution currentFlow) {
+    public void addFlowHistory(FlowExecution currentFlow) {
         FlowHistory flowHistory = new FlowHistory(currentFlow.getName(),
                 currentFlow.getFlowId(), currentFlow.getActivationTime(), currentFlow.getFlowHistoryData());
         flowsHistory.add(0, flowHistory);
+    }
+
+    public void addStatistics(FlowExecution currentFlow) {
+        Integer size = currentFlow.getNumberOfSteps();
+        Statistics statistics = flowsStatistics.get(currentFlow.getName());
+        statistics.addRunTime(currentFlow.getRunTime());
+        boolean flowStopped = false;
+
+        for (int i = 0; i < size && !flowStopped; i++) {
+            Step step = currentFlow.getStep(i);
+            statistics = stepsStatistics.get(step.getDefaultName());
+            statistics.addRunTime(step.getRunTime());
+            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
+                flowStopped = true;
+        }
     }
 
     @Override
@@ -476,21 +491,6 @@ public class Manager implements EngineApi, Serializable {
     }
 
 
-
-    private void addStatistics(FlowExecution currentFlow) {
-        Integer size = currentFlow.getNumberOfSteps();
-        Statistics statistics = flowsStatistics.get(currentFlow.getName());
-        statistics.addRunTime(currentFlow.getRunTime());
-        boolean flowStopped = false;
-
-        for (int i = 0; i < size && !flowStopped; i++) {
-            Step step = currentFlow.getStep(i);
-            statistics = stepsStatistics.get(step.getDefaultName());
-            statistics.addRunTime(step.getRunTime());
-            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
-                flowStopped = true;
-        }
-    }
 
     private File checkXMLPathAndGetFile(String path) {
         File file = new File(path);
