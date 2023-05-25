@@ -24,11 +24,13 @@ public interface EngineApi {
 
     boolean isFlowReady();
 
-    FlowResultDTO runFlow(); //getFlowInputs
+    String runFlow(); //getFlowInputs
 
     List<String> getInitialHistoryList();
 
     FlowExecutionDTO getFullHistoryData(int flowIndex);
+
+    FlowExecutionDTO getHistoryDataOfFlow(String id);
 
     StatisticsDTO getStatistics();
 

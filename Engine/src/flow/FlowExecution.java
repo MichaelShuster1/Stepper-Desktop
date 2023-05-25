@@ -7,12 +7,13 @@ import enginemanager.Manager;
 import hardcodeddata.HCSteps;
 import javafx.concurrent.Task;
 import javafx.util.Pair;
+import step.State;
 import step.Step;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class FlowExecution extends Task<Boolean> {
+public class FlowExecution implements  Runnable {
     private String flowId;
     private step.State stateAfterRun;
     private Long runTime;
@@ -22,11 +23,12 @@ public class FlowExecution extends Task<Boolean> {
     private boolean finished;
     private FlowExecutionDTO executionData;
     private final Manager manager;
-
+    private int index;
 
     public FlowExecution(Flow flowDefinition,Manager manager) {
         this.flowDefinition = flowDefinition;
         this.manager=manager;
+        flowId = generateFlowId();
         initSteps();
         finished = false;
     }
@@ -49,36 +51,40 @@ public class FlowExecution extends Task<Boolean> {
 
 
     @Override
-    protected Boolean call() throws Exception
+    public void run()
     {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
-        stateAfterRun = step.State.SUCCESS;
+        stateAfterRun = State.SUCCESS;
 
-        for (int i = 0; i < steps.size() && continueExecution; i++) {
-            Step currStep = steps.get(i);
+        synchronized (manager)
+        {
+            manager.addFlowHistory(this);
+        }
+
+        for (index = 0; index < steps.size() && continueExecution; index++) {
+            Step currStep = steps.get(index);
             currStep.run();
 
-            if (currStep.getStateAfterRun() == step.State.FAILURE) {
+            if (currStep.getStateAfterRun() == State.FAILURE) {
                 if (!currStep.isContinueIfFailing()) {
-                    stateAfterRun = step.State.FAILURE;
+                    stateAfterRun = State.FAILURE;
                     continueExecution = false;
                 }
                 else
-                    stateAfterRun =step.State.WARNING;
+                    stateAfterRun = State.WARNING;
             }
 
             if (continueExecution) {
-                if (currStep.getStateAfterRun() == step.State.WARNING)
-                    stateAfterRun = step.State.WARNING;
-                streamStepOutputsToInputs(i, currStep);
+                if (currStep.getStateAfterRun() == State.WARNING)
+                    stateAfterRun = State.WARNING;
+                streamStepOutputsToInputs(index, currStep);
             }
         }
 
-        flowId = generateFlowId();
         runTime = System.currentTimeMillis() - startTime;
         executionData = getFlowHistoryData();
         finished = true;
@@ -86,11 +92,8 @@ public class FlowExecution extends Task<Boolean> {
 
         synchronized (manager)
         {
-            manager.addFlowHistory(this);
             manager.addStatistics(this);
         }
-
-        return true;
     }
 
     public boolean isFinished() {
@@ -144,7 +147,11 @@ public class FlowExecution extends Task<Boolean> {
 
     public FlowExecutionDTO getFlowHistoryData()
     {
-        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(flowDefinition.getName(),flowId, stateAfterRun.toString(),activationTime,runTime);
+        FlowExecutionDetailsDTO executionDetails;
+        if(finished)
+            executionDetails = new FlowExecutionDetailsDTO(flowDefinition.getName(),flowId, stateAfterRun.toString(),activationTime,runTime);
+        else
+            executionDetails = new FlowExecutionDetailsDTO(flowDefinition.getName(),flowId,activationTime);
         List<StepExecutionDTO> steps = getStepsExecutionDTO();
         List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
         List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
@@ -154,7 +161,7 @@ public class FlowExecution extends Task<Boolean> {
 
     private List<OutputExecutionDTO> getOutputsExecutionDTO() {
         List<OutputExecutionDTO> outputsList = new ArrayList<>();
-        for (int i = 0; i < steps.size(); i++) {
+        for (int i = 0; i < index; i++) {
             Step step = steps.get(i);
             List<Output> outputs = step.getOutputs();
             for (Output output : outputs) {
@@ -191,7 +198,7 @@ public class FlowExecution extends Task<Boolean> {
     private List<StepExecutionDTO> getStepsExecutionDTO() {
         List<StepExecutionDTO> stepsList = new ArrayList<>();
         boolean flowStopped = false;
-        for (int i = 0; i < steps.size() && !flowStopped; i++) {
+        for (int i = 0; i < index && !flowStopped; i++) {
             Step currStep = steps.get(i);
             stepsList.add(currStep.getStepExecutionData());
             if (currStep.getStateAfterRun() == step.State.FAILURE && !currStep.isContinueIfFailing())
@@ -227,6 +234,8 @@ public class FlowExecution extends Task<Boolean> {
     public Step getStep(int i){
         return steps.get(i);
     }
+
+
 
 
 }

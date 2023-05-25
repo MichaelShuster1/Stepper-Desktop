@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Manager implements EngineApi, Serializable {
     private List<Flow> flows;
-    private List<FlowExecution> flowExecutions;
+    private Map<String,FlowExecution> flowExecutions;
     private List<FlowHistory> flowsHistory;
     private Map<String, Statistics> flowsStatistics;
     private Map<String, Statistics> stepsStatistics;
@@ -45,9 +45,9 @@ public class Manager implements EngineApi, Serializable {
         flowsStatistics = new LinkedHashMap<>();
         stepsStatistics = new LinkedHashMap<>();
         currentFlows = new ArrayList<>();
-        flowExecutions=new ArrayList<>();
-        taskManager = new Thread(new TaskManager(currentFlows, flowExecutions, flowsHistory));
-        taskManager.start();
+        flowExecutions=new HashMap<>();
+        //taskManager = new Thread(new TaskManager(currentFlows, flowExecutions, flowsHistory));
+        //taskManager.start();
     }
 
 
@@ -360,9 +360,13 @@ public class Manager implements EngineApi, Serializable {
 
 
     @Override
-    public FlowResultDTO runFlow() {
+    public String runFlow() {
         FlowExecution flowExecution = new FlowExecution(currentFlow,this);
+        String flowID=flowExecution.getFlowId();
+        flowExecutions.put(flowID,flowExecution);
         threadPool.execute(flowExecution);
+
+
         //ProgressTracker trackExecution = new ProgressTracker(flowExecution,flowsHistory,flowsStatistics,stepsStatistics);
         //trackExecution.start();
 
@@ -375,8 +379,10 @@ public class Manager implements EngineApi, Serializable {
         //FlowResultDTO res=flowExecution.getFlowExecutionResultData();
         //addFlowHistory(flowExecution);
         //addStatistics(flowExecution);
+
+
         currentFlow.resetFlow();
-        return null;
+        return flowID;
     }
 
 
@@ -394,6 +400,11 @@ public class Manager implements EngineApi, Serializable {
     @Override
     public FlowExecutionDTO getFullHistoryData(int flowIndex) {
         return flowsHistory.get(flowIndex).getFullData();
+    }
+
+    public FlowExecutionDTO getHistoryDataOfFlow(String id)
+    {
+        return flowExecutions.get(id).getFlowHistoryData();
     }
 
 
