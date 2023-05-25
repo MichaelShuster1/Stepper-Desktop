@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class test2 extends Application {
+public class main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
