@@ -1,22 +1,15 @@
 package main;
 
 import api.UIapi;
-import datadefinition.Relation;
 import enginemanager.Manager;
-import step.CommandLine;
-import step.Zipper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 public class Main {
     public static void main(String[] args) {
-
 
         /*
         Zipper zipper =new Zipper("Zipper",false);
@@ -28,7 +21,8 @@ public class Main {
 
         System.out.println(zipper.getOutput(0).getData());
         */
-/*
+
+        /*
         CommandLine commandLine= new CommandLine("CommandLine",false);
 
         commandLine.getInput(0).setData("dir");
@@ -42,7 +36,7 @@ public class Main {
         System.out.println(commandLine.getStateAfterRun());
         System.out.println("-------------------------");
         System.out.println(commandLine.getRunTime());
-*/
+        */
 
         UIapi main = new UIapi(new Manager());
         main.runSystem();

@@ -3,6 +3,7 @@ package enginemanager;
 import dto.*;
 import flow.Continuation;
 import flow.Flow;
+import flow.FlowExecution;
 import flow.FlowHistory;
 import generated.*;
 import hardcodeddata.HCSteps;
@@ -15,14 +16,25 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class Manager implements EngineApi, Serializable {
     private List<Flow> flows;
+    private List<FlowExecution> flowExecutions;
     private List<FlowHistory> flowsHistory;
     private Map<String, Statistics> flowsStatistics;
     private Map<String, Statistics> stepsStatistics;
     private Flow currentFlow;
+    private ExecutorService threadPool;
+
+    private Thread taskManager;
+
+    List<Future> currentFlows;
+
     private Map<String,Integer> flowNames2Index;
 
 
@@ -32,6 +44,10 @@ public class Manager implements EngineApi, Serializable {
         flowsHistory = new ArrayList<>();
         flowsStatistics = new LinkedHashMap<>();
         stepsStatistics = new LinkedHashMap<>();
+        currentFlows = new ArrayList<>();
+        flowExecutions=new ArrayList<>();
+        taskManager = new Thread(new TaskManager(currentFlows, flowExecutions, flowsHistory));
+        taskManager.start();
     }
 
 
@@ -53,9 +69,15 @@ public class Manager implements EngineApi, Serializable {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             stepper = (STStepper) jaxbUnmarshaller.unmarshal(file);
             createFlows(stepper);
+            createThreadPool(stepper);
         } catch (JAXBException e) {
             throw e;
         }
+    }
+
+    private void createThreadPool(STStepper stepper)
+    {
+        threadPool= Executors.newFixedThreadPool(stepper.getSTThreadPool());
     }
 
     private void createFlows(STStepper stepper) {
@@ -273,41 +295,12 @@ public class Manager implements EngineApi, Serializable {
         if (step.isContinueIfFailing() != null)
             continueIfFailing = true;
 
-        switch (name) {
-            case "Spend Some Time":
-                newStep = new SpendSomeTime(finalName, continueIfFailing);
-                break;
-            case "Collect Files In Folder":
-                newStep = new CollectFiles(finalName, continueIfFailing);
-                break;
-            case "Files Renamer":
-                newStep = new FilesRenamer(finalName, continueIfFailing);
-                break;
-            case "Files Content Extractor":
-                newStep = new FilesContentExtractor(finalName, continueIfFailing);
-                break;
-            case "CSV Exporter":
-                newStep = new CSVExporter(finalName, continueIfFailing);
-                break;
-            case "Properties Exporter":
-                newStep = new PropertiesExporter(finalName, continueIfFailing);
-                break;
-            case "File Dumper":
-                newStep = new FileDumper(finalName, continueIfFailing);
-                break;
-            case "Files Deleter":
-                newStep = new FilesDeleter(finalName, continueIfFailing);
-                break;
-            case "Zipper":
-                newStep = new Zipper(finalName, continueIfFailing);
-                break;
-            case "Command Line":
-                newStep = new CommandLine(finalName, continueIfFailing);
-                break;
-            default:
-                throw new StepNameNotExistException("In the flow named: " + currentFlow.getName()
-                        + "\nthere is an attempt to define a step by the name: "
-                        + step.getName() + " that does not exist");
+        newStep=HCSteps.CreateStep(name,finalName,continueIfFailing);
+
+        if(newStep==null) {
+            throw new StepNameNotExistException("In the flow named: " + currentFlow.getName()
+                    + "\nthere is an attempt to define a step by the name: "
+                    + step.getName() + " that does not exist");
         }
         return newStep;
     }
@@ -368,11 +361,22 @@ public class Manager implements EngineApi, Serializable {
 
     @Override
     public FlowResultDTO runFlow() {
-        FlowResultDTO res = currentFlow.executeFlow();
-        addFlowHistory();
-        addStatistics();
+        FlowExecution flowExecution = new FlowExecution(currentFlow);
+        threadPool.execute(flowExecution);
+        //ProgressTracker trackExecution = new ProgressTracker(flowExecution,flowsHistory,flowsStatistics,stepsStatistics);
+        //trackExecution.start();
+
+
+        // Future<?> future = threadPool.submit(flowExecution);
+        // synchronized (currentFlows) {
+         //   flowExecutions.add(flowExecution);
+         //   currentFlows.add(future);
+        //}
+        //FlowResultDTO res=flowExecution.getFlowExecutionResultData();
+        //addFlowHistory(flowExecution);
+        //addStatistics(flowExecution);
         currentFlow.resetFlow();
-        return res;
+        return null;
     }
 
 
@@ -445,7 +449,7 @@ public class Manager implements EngineApi, Serializable {
         return new ResultDTO(false, "The file in the given path doesn't exist");
     }
 
-    private void addFlowHistory() {
+    private void addFlowHistory(FlowExecution currentFlow) {
         FlowHistory flowHistory = new FlowHistory(currentFlow.getName(),
                 currentFlow.getFlowId(), currentFlow.getActivationTime(), currentFlow.getFlowHistoryData());
         flowsHistory.add(0, flowHistory);
@@ -473,7 +477,7 @@ public class Manager implements EngineApi, Serializable {
 
 
 
-    private void addStatistics() {
+    private void addStatistics(FlowExecution currentFlow) {
         Integer size = currentFlow.getNumberOfSteps();
         Statistics statistics = flowsStatistics.get(currentFlow.getName());
         statistics.addRunTime(currentFlow.getRunTime());
