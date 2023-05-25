@@ -88,6 +88,7 @@ public class AppController {
         historyComponentController.setEngine(engine);
         progressTracker=new ProgressTracker(this,engine);
         Thread thread=new Thread(progressTracker);
+        thread.setDaemon(true);
         thread.start();
     }
 
