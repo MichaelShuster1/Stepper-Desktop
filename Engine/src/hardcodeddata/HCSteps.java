@@ -66,6 +66,13 @@ public enum HCSteps {
             case "Files Deleter":
                 newStep = new FilesDeleter(finalName, continueIfFailing);
                 break;
+            case "Zipper":
+                newStep = new Zipper(finalName, continueIfFailing);
+                break;
+            case "Command Line":
+                newStep = new CommandLine(finalName, continueIfFailing);
+                break;
+
         }
         return newStep;
     }

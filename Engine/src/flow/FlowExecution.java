@@ -132,7 +132,7 @@ public class FlowExecution implements Runnable{
 
     public FlowExecutionDTO getFlowHistoryData()
     {
-        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(flowDefinition.getName(),flowId, stateAfterRun.toString(),runTime);
+        FlowExecutionDetailsDTO executionDetails = new FlowExecutionDetailsDTO(flowDefinition.getName(),flowId, stateAfterRun.toString(),activationTime,runTime);
         List<StepExecutionDTO> steps = getStepsExecutionDTO();
         List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
         List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
