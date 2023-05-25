@@ -166,6 +166,11 @@ public class AppController {
         setTab(2);
     }
 
+    public void updateProgressFlow(FlowExecutionDTO flowExecutionDTO)
+    {
+        executionComponentController.updateProgressFlow(flowExecutionDTO);
+    }
+
 
 
     public void setTab(int index)

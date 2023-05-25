@@ -9,13 +9,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ExecutionController {
@@ -41,6 +49,9 @@ public class ExecutionController {
     @FXML
     private ChoiceBox<String> choiceBoxView;
 
+    @FXML
+    private VBox elementDetailsView;
+
 
 
     private TableView<StepExecutionDTO> stepsTableView;
@@ -60,6 +71,7 @@ public class ExecutionController {
 
     private List<Button> optionalInputButtons;
 
+
     @FXML
     public void initialize() {
 
@@ -71,6 +83,7 @@ public class ExecutionController {
         stateColumnView.setCellValueFactory(new PropertyValueFactory<>("stateAfterRun"));
 
         stepsTableView.getColumns().addAll(stepColumnView,stateColumnView);
+        stepsTableView.setOnMouseClicked(e->rowClick(new ActionEvent()));
     }
 
 
@@ -162,6 +175,7 @@ public class ExecutionController {
 
 
 
+
     @FXML
     private void executeFlow(ActionEvent event)
     {
@@ -179,11 +193,8 @@ public class ExecutionController {
         /*
         FlowExecutionDTO flowExecutionDTO =engine.getFullHistoryData(0);
         flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
-        appController.addRowInHistoryTable(flowExecutionDTO);
-        appController.updateStatistics();
 
         observableList.addAll(flowExecutionDTO.getSteps());
-        stepsTableView.setOnMouseClicked(e->rowClick(new ActionEvent()));
         stepsTableView.setItems(observableList);
         stepsTitleVIew.setContent(stepsTableView);
 
@@ -196,19 +207,105 @@ public class ExecutionController {
         */
     }
 
+    public void updateProgressFlow(FlowExecutionDTO flowExecutionDTO)
+    {
+        flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
+        observableList.clear();
+        observableList.addAll(flowExecutionDTO.getSteps());
+        stepsTableView.setItems(observableList);
+        stepsTitleVIew.setContent(stepsTableView);
+
+        if(flowExecutionDTO.getStateAfterRun()!=null)
+        {
+            ContinutionMenuDTO continutionMenuDTO=engine.getContinutionMenuDTO();
+            if(continutionMenuDTO!=null)
+            {
+                List<String> targetFlows = continutionMenuDTO.getTargetFlows();
+                choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
+            }
+        }
+    }
+
+
+
+
 
     @FXML
     private void rowClick(ActionEvent event)
     {
-        StepExecutionDTO stepExecutionDTO=stepsTableView.getSelectionModel().getSelectedItem();
-        String details = "Name: " + stepExecutionDTO.getName() + "\n";
-        details += "Run time: " + stepExecutionDTO.getRunTime() + " ms\n";
-        details += "Finish state: " + stepExecutionDTO.getStateAfterRun() + "\n";
-        details+= "STEP LOGS:\n\n";
-        details += getStrLogs(stepExecutionDTO.getLogs());
-        stepDetailsView.setText(details);
+        if(!stepsTableView.getSelectionModel().isEmpty()) {
+            StepExecutionDTO stepExecutionDTO=stepsTableView.getSelectionModel().getSelectedItem();
+            StepExtensionDTO stepExtensionDTO =stepExecutionDTO.getStepExtensionDTO();
+
+
+            addLine("Name",stepExecutionDTO.getName());
+            addLine("Run Tine",stepExecutionDTO.getRunTime()+ "ms");
+            addLine("Finish state",stepExecutionDTO.getStateAfterRun());
+            addLine("Step's Input Data","");
+            addStepInputsOrOutputsData(stepExtensionDTO.getInputs());
+            addLine("Step's Outputs Data","");
+            addStepInputsOrOutputsData(stepExtensionDTO.getOutputs());
+            addLine("STEP LOGS","");
+            addStepLogs(stepExtensionDTO.getLogs());
+
+
+            /*
+            String details = "Name: " + stepExecutionDTO.getName() + "\n";
+            details += "Run time: " + stepExecutionDTO.getRunTime() + " ms\n";
+            details += "Finish state: " + stepExecutionDTO.getStateAfterRun() + "\n";
+            details += "Step's Inputs Data:\n";
+            details += addStepInputsOrOutputsData(stepExtensionDTO.getInputs());
+            details += "\n\nStep's Outputs Data:\n";
+            details += addStepInputsOrOutputsData(stepExtensionDTO.getOutputs());
+            details+= "STEP LOGS:\n\n";
+            details += getStrLogs(stepExtensionDTO.getLogs());
+            stepDetailsView.setText(details);
+            */
+        }
     }
 
+
+    private void addLine(String name,String value)
+    {
+        HBox hBox =new HBox();
+        hBox.setAlignment(Pos.BASELINE_LEFT);
+        hBox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        hBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+        Label label =new Label(name+": ");
+        label.setFont(Font.font("System",FontWeight.BOLD,12));
+
+        Text text =new Text(value);
+
+        hBox.getChildren().add(label);
+        hBox.getChildren().add(text);
+
+        elementDetailsView.getChildren().add(hBox);
+    }
+
+    private void addStepInputsOrOutputsData(Map<String,Object> io)
+    {
+        String value="";
+        for(String name:io.keySet())
+        {
+            Object data=io.get(name);
+            if(data!=null)
+                value=data.toString();
+            else
+                value="No Data Received";
+            addLine(name,value);
+        }
+    }
+
+    private void addStepLogs(List<String> logs) {
+        if (logs.size() == 0)
+            addLine( "The step had no logs","");
+        else {
+            for (String currLog : logs) {
+                addLine( currLog,"");
+            }
+        }
+    }
 
     @FXML
     void continueToFlow(ActionEvent event) {
@@ -219,8 +316,10 @@ public class ExecutionController {
         String res = getFlowNameIDAndState(flowExecutionDTO);
         String temp;
 
-        res += "Flow total run time: " + flowExecutionDTO.getRunTime() + " ms\n\n";
-        res += "------------------------------\n";
+        if(flowExecutionDTO.getStateAfterRun()!=null) {
+            res += "Flow total run time: " + flowExecutionDTO.getRunTime() + " ms\n\n";
+            res += "------------------------------\n";
+        }
         res += "FREE INPUTS THAT RECEIVED DATA:\n\n";
         temp = getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),true);
         temp += getFreeInputsHistoryData(flowExecutionDTO.getFreeInputs(),false);
@@ -247,7 +346,8 @@ public class ExecutionController {
         String res = "FLOW EXECUTION DATA:\n";
         res += "Flows unique ID: " + flowExecutionDTO.getId() + "\n";
         res += "Flow name: " + flowExecutionDTO.getName() + "\n";
-        res += "Flow's final state : " + flowExecutionDTO.getStateAfterRun() + "\n";
+        if(flowExecutionDTO.getStateAfterRun()!=null)
+            res += "Flow's final state : " + flowExecutionDTO.getStateAfterRun() + "\n";
         return res;
     }
 
@@ -307,7 +407,7 @@ public class ExecutionController {
             res += "Finish state: " + step.getStateAfterRun() + "\n";
             res += "Step summary:" + step.getSummaryLine()+ "\n";
             res += "STEP LOGS:\n\n";
-            res += getStrLogs(step.getLogs());
+            res += getStrLogs(step.getStepExtensionDTO().getLogs());
             res += "------------------------------\n";
         }
         return res;

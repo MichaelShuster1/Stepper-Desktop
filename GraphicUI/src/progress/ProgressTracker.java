@@ -15,6 +15,8 @@ public class ProgressTracker extends Task<Boolean> {
 
     List<String> flowsId;
 
+    String currentFlowId;
+
     AppController appController;
 
     EngineApi engine;
@@ -38,15 +40,22 @@ public class ProgressTracker extends Task<Boolean> {
         while (appController!=null)
         {
             synchronized (flowsId) {
+                //System.out.println("entering loop");
                 for (int i = 0;i<flowsId.size();i++) {
+                    //System.out.println("list size: "+flowsId.size());
                     String flowId = flowsId.get(i);
                     FlowExecutionDTO flowExecutionDTO=engine.getHistoryDataOfFlow(flowId);
+
+                    if(flowId.equals(currentFlowId)) {
+                        Platform.runLater(()->appController.updateProgressFlow(flowExecutionDTO));
+                    }
 
 
                     if(flowExecutionDTO.getStateAfterRun() != null) {
                         Platform.runLater(() -> appController.updateStatistics());
                         Platform.runLater(()->appController.addRowInHistoryTable(flowExecutionDTO));
                         flowsId.remove(i);
+                        //System.out.println("removing id");
                     }
                 }
             }

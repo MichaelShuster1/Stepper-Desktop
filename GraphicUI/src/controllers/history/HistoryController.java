@@ -135,7 +135,7 @@ public class HistoryController {
             details += "Run time: " + stepExecutionDTO.getRunTime() + " ms\n";
             details += "Finish state: " + stepExecutionDTO.getStateAfterRun() + "\n";
             details += "STEP LOGS:\n\n";
-            details += getStrLogs(stepExecutionDTO.getLogs());
+            details += getStrLogs(stepExecutionDTO.getStepExtensionDTO().getLogs());
             stepDetailsView.setText(details);
         }
     }
@@ -270,7 +270,7 @@ public class HistoryController {
             res += "Finish state: " + step.getStateAfterRun() + "\n";
             res += "Step summary:" + step.getSummaryLine()+ "\n";
             res += "STEP LOGS:\n\n";
-            res += getStrLogs(step.getLogs());
+            res += getStrLogs(step.getStepExtensionDTO().getLogs());
             res += "------------------------------\n";
         }
         return res;

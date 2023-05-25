@@ -37,7 +37,6 @@ public class DataList<T> extends DataDefinition<List<T>> {
         this.data = data;
     }
 
-
     @Override
     public List<T> getData() {
         return data;

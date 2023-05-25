@@ -10,18 +10,15 @@ public class StepExecutionDTO implements Serializable {
     long runTime;
     String stateAfterRun;
     String summaryLine;
-    List<String> logs;
+    StepExtensionDTO stepExtensionDTO;
 
-    public StepExecutionDTO(String name, long runTime, String stateAfterRun, String summaryLine, List<String> logs) {
+    public StepExecutionDTO(String name, long runTime, String stateAfterRun, String summaryLine,StepExtensionDTO stepExtensionDTO) {
         this.name = name;
         this.runTime = runTime;
         this.stateAfterRun = stateAfterRun;
         this.summaryLine = summaryLine;
-        this.logs=new ArrayList<>();
-        this.logs.addAll(logs);
+        this.stepExtensionDTO=stepExtensionDTO;
     }
-
-
 
 
 
@@ -41,7 +38,7 @@ public class StepExecutionDTO implements Serializable {
         return summaryLine;
     }
 
-    public List<String> getLogs() {
-        return logs;
+    public StepExtensionDTO getStepExtensionDTO() {
+        return stepExtensionDTO;
     }
 }
