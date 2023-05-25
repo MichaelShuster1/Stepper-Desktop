@@ -3,11 +3,10 @@ package flow;
 import datadefinition.Input;
 import datadefinition.Output;
 import dto.*;
+import enginemanager.Manager;
 import hardcodeddata.HCSteps;
 import javafx.concurrent.Task;
 import javafx.util.Pair;
-import step.CollectFiles;
-import step.State;
 import step.Step;
 
 import java.text.SimpleDateFormat;
@@ -15,18 +14,19 @@ import java.util.*;
 
 public class FlowExecution extends Task<Boolean> {
     private String flowId;
-    private State stateAfterRun;
+    private step.State stateAfterRun;
     private Long runTime;
     private String activationTime;
     private List<Step> steps;
-
     private final Flow flowDefinition;
-
     private boolean finished;
     private FlowExecutionDTO executionData;
+    private final Manager manager;
 
-    public FlowExecution(Flow flowDefinition) {
+
+    public FlowExecution(Flow flowDefinition,Manager manager) {
         this.flowDefinition = flowDefinition;
+        this.manager=manager;
         initSteps();
         finished = false;
     }
@@ -47,31 +47,33 @@ public class FlowExecution extends Task<Boolean> {
         }
     }
 
+
     @Override
-    public Boolean call() {
+    protected Boolean call() throws Exception
+    {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
         activationTime = formatter.format(new Date());
         boolean continueExecution = true;
-        stateAfterRun = State.SUCCESS;
+        stateAfterRun = step.State.SUCCESS;
 
         for (int i = 0; i < steps.size() && continueExecution; i++) {
             Step currStep = steps.get(i);
             currStep.run();
 
-            if (currStep.getStateAfterRun() == State.FAILURE) {
+            if (currStep.getStateAfterRun() == step.State.FAILURE) {
                 if (!currStep.isContinueIfFailing()) {
-                    stateAfterRun = State.FAILURE;
+                    stateAfterRun = step.State.FAILURE;
                     continueExecution = false;
                 }
                 else
-                    stateAfterRun =State.WARNING;
+                    stateAfterRun =step.State.WARNING;
             }
 
             if (continueExecution) {
-                if (currStep.getStateAfterRun() == State.WARNING)
-                    stateAfterRun = State.WARNING;
+                if (currStep.getStateAfterRun() == step.State.WARNING)
+                    stateAfterRun = step.State.WARNING;
                 streamStepOutputsToInputs(i, currStep);
             }
         }
@@ -80,6 +82,15 @@ public class FlowExecution extends Task<Boolean> {
         runTime = System.currentTimeMillis() - startTime;
         executionData = getFlowHistoryData();
         finished = true;
+
+
+        synchronized (manager)
+        {
+            manager.addFlowHistory(this);
+            manager.addStatistics(this);
+        }
+
+        return true;
     }
 
     public boolean isFinished() {
@@ -181,9 +192,9 @@ public class FlowExecution extends Task<Boolean> {
         List<StepExecutionDTO> stepsList = new ArrayList<>();
         boolean flowStopped = false;
         for (int i = 0; i < steps.size() && !flowStopped; i++) {
-            Step step = steps.get(i);
-            stepsList.add(step.getStepExecutionData());
-            if (step.getStateAfterRun() == State.FAILURE && !step.isContinueIfFailing())
+            Step currStep = steps.get(i);
+            stepsList.add(currStep.getStepExecutionData());
+            if (currStep.getStateAfterRun() == step.State.FAILURE && !currStep.isContinueIfFailing())
                 flowStopped = true;
         }
         return stepsList;
@@ -193,7 +204,7 @@ public class FlowExecution extends Task<Boolean> {
         return flowId;
     }
 
-    public State getStateAfterRun() {
+    public step.State getStateAfterRun() {
         return stateAfterRun;
     }
 
@@ -216,5 +227,6 @@ public class FlowExecution extends Task<Boolean> {
     public Step getStep(int i){
         return steps.get(i);
     }
+
 
 }
