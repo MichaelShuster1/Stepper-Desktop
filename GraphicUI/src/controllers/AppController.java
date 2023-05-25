@@ -10,6 +10,7 @@ import enginemanager.Manager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import controllers.flowexecution.ExecutionController;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import progress.ProgressTracker;
 
 import java.io.File;
 
@@ -61,6 +63,8 @@ public class AppController {
 
     private EngineApi engine;
 
+    private ProgressTracker progressTracker;
+
     private Stage primaryStage;
 
 
@@ -71,8 +75,8 @@ public class AppController {
         executionComponentController.setAppController(this);
         definitionComponentController.setAppController(this);
         historyComponentController.setAppController(this);
-        setTab(3);
         statisticsComponentController.setAppController(this);
+        setTab(3);
     }
 
 
@@ -82,6 +86,14 @@ public class AppController {
         definitionComponentController.setEngine(engine);
         statisticsComponentController.setEngine(engine);
         historyComponentController.setEngine(engine);
+        progressTracker=new ProgressTracker(this,engine);
+        Thread thread=new Thread(progressTracker);
+        thread.start();
+    }
+
+    public void addFlowId(String id)
+    {
+        progressTracker.addFlowId(id);
     }
 
     public void setPrimaryStage(Stage primaryStage) {

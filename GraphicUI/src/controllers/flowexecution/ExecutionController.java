@@ -155,7 +155,9 @@ public class ExecutionController {
     private void executeFlow(ActionEvent event)
     {
         System.out.println("execute click");
-        System.out.println(getFlowExecutionStrData(engine.runFlow()));
+        String flowId=engine.runFlow();
+        appController.addFlowId(flowId);
+        /*
         FlowExecutionDTO flowExecutionDTO =engine.getFullHistoryData(0);
         flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
         appController.addRowInHistoryTable(flowExecutionDTO);
@@ -172,6 +174,7 @@ public class ExecutionController {
             List<String> targetFlows = continutionMenuDTO.getTargetFlows();
             choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
         }
+        */
     }
 
 
