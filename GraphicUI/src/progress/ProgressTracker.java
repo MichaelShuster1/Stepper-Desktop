@@ -6,6 +6,7 @@ import enginemanager.EngineApi;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ public class ProgressTracker extends Task<Boolean> {
 
     public ProgressTracker(AppController appController,EngineApi engine)
     {
-        flowsId=new HashSet<>();
+        flowsId=new ArrayList<>();
         this.appController=appController;
         this.engine=engine;
     }
