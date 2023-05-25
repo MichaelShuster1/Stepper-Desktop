@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class ProgressTracker extends Task<Boolean> {
 
-    Set<String> flowsId;
+    List<String> flowsId;
 
     AppController appController;
 
@@ -37,16 +37,16 @@ public class ProgressTracker extends Task<Boolean> {
         while (appController!=null)
         {
             synchronized (flowsId) {
-                for (String flowId : flowsId) {
+                for (int i = 0;i<flowsId.size();i++) {
+                    String flowId = flowsId.get(i);
                     FlowExecutionDTO flowExecutionDTO=engine.getHistoryDataOfFlow(flowId);
 
 
                     if(flowExecutionDTO.getStateAfterRun() != null) {
                         Platform.runLater(() -> appController.updateStatistics());
                         Platform.runLater(()->appController.addRowInHistoryTable(flowExecutionDTO));
-                        flowsId.remove(flowId);
+                        flowsId.remove(i);
                     }
-
                 }
             }
             try {
