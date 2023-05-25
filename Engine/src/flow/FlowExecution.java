@@ -12,7 +12,7 @@ import step.Step;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class FlowExecution extends Task<Boolean> {
+public class FlowExecution implements Runnable {
     private String flowId;
     private step.State stateAfterRun;
     private Long runTime;
@@ -21,12 +21,10 @@ public class FlowExecution extends Task<Boolean> {
     private final Flow flowDefinition;
     private boolean finished;
     private FlowExecutionDTO executionData;
-    private final Manager manager;
 
 
-    public FlowExecution(Flow flowDefinition,Manager manager) {
+    public FlowExecution(Flow flowDefinition) {
         this.flowDefinition = flowDefinition;
-        this.manager=manager;
         initSteps();
         finished = false;
     }
@@ -49,7 +47,7 @@ public class FlowExecution extends Task<Boolean> {
 
 
     @Override
-    protected Boolean call() throws Exception
+    public void run()
     {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -83,14 +81,6 @@ public class FlowExecution extends Task<Boolean> {
         executionData = getFlowHistoryData();
         finished = true;
 
-
-        synchronized (manager)
-        {
-            manager.addFlowHistory(this);
-            manager.addStatistics(this);
-        }
-
-        return true;
     }
 
     public boolean isFinished() {
