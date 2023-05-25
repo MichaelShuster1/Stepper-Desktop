@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,9 @@ public class ExecutionController {
 
     private ObservableList<StepExecutionDTO> observableList= FXCollections.observableArrayList();
 
+    private List<Button> mandatoryInputButtons;
+
+    private List<Button> optionalInputButtons;
 
     @FXML
     public void initialize() {
@@ -84,6 +88,9 @@ public class ExecutionController {
     {
         clearTab();
 
+        mandatoryInputButtons=new ArrayList<>();
+        optionalInputButtons=new ArrayList<>();
+
         for(int i=0;i<inputsDTO.getNumberOfInputs();i++)
         {
             InputData inputData=inputsDTO.getFreeInput(i);
@@ -97,12 +104,16 @@ public class ExecutionController {
             {
                 button.setStyle("-fx-background-color: #ff0000; ");
                 mandatoryInputsView.getChildren().add(button);
+                mandatoryInputButtons.add(button);
             }
-            else
+            else {
                 optionalInputsView.getChildren().add(button);
+                optionalInputButtons.add(button);
+            }
 
             if (inputData.IsInserted())
                 button.setStyle("-fx-background-color: #40ff00; ");
+
         }
     }
 
@@ -157,6 +168,14 @@ public class ExecutionController {
         System.out.println("execute click");
         String flowId=engine.runFlow();
         appController.addFlowId(flowId);
+        executeButton.setDisable(true);
+
+        for(Button button:mandatoryInputButtons)
+            button.setStyle("-fx-background-color: #ff0000; ");
+        for (Button button:optionalInputButtons)
+            button.setStyle("");
+
+
         /*
         FlowExecutionDTO flowExecutionDTO =engine.getFullHistoryData(0);
         flowInfoView.setText(getFlowHistoryData(flowExecutionDTO));
