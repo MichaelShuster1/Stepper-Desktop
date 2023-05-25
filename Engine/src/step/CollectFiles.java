@@ -36,6 +36,10 @@ public class CollectFiles extends Step {
     public void run() {
         Long startTime = System.currentTimeMillis();
         int count = 0;
+        if (!checkGotInputs(1)) {
+            runTime = System.currentTimeMillis() - startTime;
+            return;
+        }
         String directoryPath = (String) inputs.get(0).getData();
         String filter = (String) inputs.get(1).getData();
         List<File> fileList = new ArrayList<>();
@@ -43,10 +47,6 @@ public class CollectFiles extends Step {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
 
-        if (!checkGotInputs(1)) {
-            runTime = System.currentTimeMillis() - startTime;
-            return;
-        }
 
 
         String log = "Reading folder " + directory.getAbsolutePath() + " content with filter: ";

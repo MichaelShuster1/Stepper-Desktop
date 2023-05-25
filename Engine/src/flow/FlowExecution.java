@@ -4,6 +4,7 @@ import datadefinition.Input;
 import datadefinition.Output;
 import dto.*;
 import hardcodeddata.HCSteps;
+import javafx.concurrent.Task;
 import javafx.util.Pair;
 import step.CollectFiles;
 import step.State;
@@ -12,7 +13,7 @@ import step.Step;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class FlowExecution implements Runnable{
+public class FlowExecution extends Task<Boolean> {
     private String flowId;
     private State stateAfterRun;
     private Long runTime;
@@ -47,7 +48,7 @@ public class FlowExecution implements Runnable{
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         Long startTime = System.currentTimeMillis();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.format(new Date());
