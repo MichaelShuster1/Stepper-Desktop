@@ -15,6 +15,9 @@ public class FlowExecutionDTO extends FlowExecutionDetailsDTO{
         this.outputs = outputs;
     }
 
+
+
+
     public List<StepExecutionDTO> getSteps() {
         return steps;
     }
