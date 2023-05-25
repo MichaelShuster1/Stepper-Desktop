@@ -32,6 +32,7 @@ public class ProgressTracker extends Task<Boolean> {
     {
         synchronized (flowsId) {
             flowsId.add(id);
+            currentFlowId = id;
         }
     }
 
