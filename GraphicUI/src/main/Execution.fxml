@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.flowexecution.ExecutionController">
    <children>
@@ -52,11 +52,11 @@
                   <ChoiceBox fx:id="choiceBoxView" prefWidth="150.0" BorderPane.alignment="CENTER" />
                </center>
                <top>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="continuation:" BorderPane.alignment="CENTER">
+                  <Label text="continuation:" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
-                  </Text>
+                  </Label>
                </top>
             </BorderPane>
             <GridPane GridPane.columnSpan="2" GridPane.rowSpan="2">
@@ -85,7 +85,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="mandatory inputs:" />
+                              <Label text="mandatory inputs:" />
                            </children>
                         </HBox>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
@@ -99,7 +99,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="optional inputs:" />
+                              <Label text="optional inputs:" />
                            </children>
                         </HBox>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">

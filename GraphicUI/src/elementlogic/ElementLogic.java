@@ -114,10 +114,10 @@ public class ElementLogic {
         Label label =new Label(name);
         label.setFont(Font.font("System", FontWeight.BOLD,12));
 
-        Text text =new Text(value);
+        Label label1 =new Label(value);
 
         hBox.getChildren().add(label);
-        hBox.getChildren().add(text);
+        hBox.getChildren().add(label1);
 
         elementDetailsView.getChildren().add(hBox);
     }
