@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -30,37 +26,15 @@
             <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="18.0" prefHeight="30.0" vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="3">
+            <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <content>
-                  <VBox fx:id="elementDetailsView">
-                     <children>
-                        <Label fx:id="stepDetailsView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Details per selected execution element:" textFill="#000000cc">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <HBox alignment="BASELINE_LEFT">
-                           <children>
-                              <Label text="Name:">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Text>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
+                  <VBox fx:id="elementDetailsView" />
                </content>
             </ScrollPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFD580;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <BorderPane style="-fx-background-color: #FFD580;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <bottom>
                   <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="BOTTOM_RIGHT">
                      <children>
@@ -133,20 +107,11 @@
             </GridPane>
             <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.rowIndex="2" GridPane.rowSpan="3">
                <content>
-                  <Accordion>
-                    <panes>
-                      <TitledPane animated="false" text="flow info">
-                           <content>
-                              <StackPane alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0">
-                                 <children>
-                                    <Text fx:id="flowInfoView" strokeType="OUTSIDE" strokeWidth="0.0" />
-                                 </children>
-                              </StackPane>
-                           </content>
-                      </TitledPane>
-                      <TitledPane fx:id="stepsTitleVIew" animated="false" text="steps" />
-                    </panes>
-                  </Accordion>
+                  <VBox fx:id="elementChoiceView">
+                     <children>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="flow info" />
+                     </children>
+                  </VBox>
                </content>
             </ScrollPane>
          </children>

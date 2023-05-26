@@ -2,6 +2,7 @@ package step;
 
 import datadefinition.Input;
 import datadefinition.Output;
+import dto.DataDefintionDTO;
 import dto.StepExecutionDTO;
 import dto.StepExtensionDTO;
 
@@ -69,14 +70,16 @@ public abstract class Step implements Serializable {
     }
 
     public StepExecutionDTO getStepExecutionData() {
-        Map<String,Object> inputsData=new HashMap<>();
-        Map<String,Object> outPutsData=new HashMap<>();
+        Map<DataDefintionDTO,Object> inputsData=new HashMap<>();
+        Map<DataDefintionDTO,Object> outPutsData=new HashMap<>();
 
         for(Input input:inputs) {
-            inputsData.put(input.getName(), input.getData());
+            DataDefintionDTO inputDefinitionDTO=new DataDefintionDTO(input.getName(),input.getType());
+            inputsData.put(inputDefinitionDTO, input.getData());
         }
         for (Output output:outputs) {
-            outPutsData.put(output.getName(), output.getDataDefinition().getData());
+            DataDefintionDTO outPutDefinitionDTO=new DataDefintionDTO(output.getName(),output.getType());
+            outPutsData.put(outPutDefinitionDTO, output.getData());
         }
 
         StepExtensionDTO stepExtensionDTO =new StepExtensionDTO(log,inputsData,outPutsData);
