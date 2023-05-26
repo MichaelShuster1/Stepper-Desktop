@@ -250,10 +250,8 @@ public class ElementLogic {
     public void updateFlowInfoView()
     {
         elementDetailsView.getChildren().clear();
-        if(flowExecutionDTO==null) {
-            addTitleLine("The flow was not executed yet");
+        if(flowExecutionDTO==null)
             return;
-        }
 
         updateFlowNameIDAndState();
         if(flowExecutionDTO.getStateAfterRun()!=null)
