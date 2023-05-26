@@ -7,11 +7,23 @@ public class StepDefinitionDTO {
 
     private StepConnectionsDTO connections;
 
-    public StepDefinitionDTO(String name,String defaultName, boolean readOnly) {
+    public StepDefinitionDTO(String name, String defaultName, boolean readOnly, StepConnectionsDTO connections) {
+        this.name = name;
+        this.defaultName = defaultName;
+        this.readOnly = readOnly;
+        this.connections = connections;
+    }
+
+    public StepDefinitionDTO(String name, String defaultName, boolean readOnly) {
         this.name = name;
         this.readOnly = readOnly;
         this.defaultName = defaultName;
 
+
+    }
+
+    public StepConnectionsDTO getConnections() {
+        return connections;
     }
 
     public String getName() {

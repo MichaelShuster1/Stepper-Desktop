@@ -1,5 +1,6 @@
 package controllers.flowdefinition;
 
+import com.sun.deploy.security.SelectableSecurityManager;
 import controllers.AppController;
 import dto.*;
 import enginemanager.EngineApi;
@@ -16,8 +17,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
+import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DefinitionController {
@@ -58,7 +62,7 @@ public class DefinitionController {
             cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
             text.wrappingWidthProperty().bind(coldesc.widthProperty());
             text.textProperty().bind(cell.itemProperty());
-            return cell ;
+            return cell;
         });
 
         TableColumn<AvailableFlowDTO, Integer> colsteps = new TableColumn<>("Number of steps");
@@ -70,14 +74,13 @@ public class DefinitionController {
         TableColumn<AvailableFlowDTO, Integer> colcontinuations = new TableColumn<>("Number of Continuations");
         colcontinuations.setCellValueFactory(new PropertyValueFactory<>("numberOfContinuations"));
 
-        flowTable.getColumns().addAll(colname,coldesc,colinputs,colsteps,colcontinuations);
+        flowTable.getColumns().addAll(colname, coldesc, colinputs, colsteps, colcontinuations);
 
         //addButtonToTable();
         flowTable.getColumns().forEach(column -> column.setMinWidth(100));
         setTableClickFunction();
         tableStack.getChildren().add(flowTable);
     }
-
 
 
     private void setTableappearance() {
@@ -89,7 +92,7 @@ public class DefinitionController {
     private void fillTableObservableListWithData() {
 
         List<AvailableFlowDTO> availableFlows = engine.getAvailableFlows();
-        if(availableFlows!=null) {
+        if (availableFlows != null) {
             tvObservableList.addAll(availableFlows);
             flowTable.setItems(tvObservableList);
         }
@@ -133,7 +136,7 @@ public class DefinitionController {
     }
 
     public void setTableClickFunction() {
-       flowTable.setOnMouseClicked(event -> {
+        flowTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1 && !flowTable.getSelectionModel().isEmpty()) {
                 AvailableFlowDTO selectedRow = flowTable.getSelectionModel().getSelectedItem();
                 showFlowData(selectedRow);
@@ -147,9 +150,7 @@ public class DefinitionController {
     }
 
 
-
-    private void showFlowDefinition(String name)
-    {
+    private void showFlowDefinition(String name) {
         FlowDefinitionDTO flowDefinition = engine.getFlowDefinition(name);
         String data;
         data = "SELECTED FLOW DATA:\n\n";
@@ -164,6 +165,7 @@ public class DefinitionController {
         data += "------------------------------\n";
         data += getStrOutPuts(flowDefinition.getOutputs());
         data += "------------------------------\n";
+        data += getStrConnections(flowDefinition.getSteps());
 
         Text flowDefinitionText = new Text(data);
         //flowDefinitionText.setWrapText(true);
@@ -177,9 +179,9 @@ public class DefinitionController {
         scrollPane.setPrefWidth(selectedFlowDetails.getPrefWidth());
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         selectedFlowDetails.getChildren().clear();
-        selectedFlowDetails.getChildren().addAll(scrollPane,executeBtn);
+        selectedFlowDetails.getChildren().addAll(scrollPane, executeBtn);
         selectedFlowDetails.setAlignment(executeBtn, Pos.BOTTOM_RIGHT);
-        StackPane.setMargin(executeBtn,new Insets(0,20,10,0));
+        StackPane.setMargin(executeBtn, new Insets(0, 20, 10, 0));
     }
 
     private void streamFlowToTab2(int index) {
@@ -269,5 +271,53 @@ public class DefinitionController {
     }
 
 
+    public List<String> getStrConnections(List<StepDefinitionDTO> steps) {
+        List<String> test = new ArrayList<>();
+        for (StepDefinitionDTO step : steps) {
+            String res = "";
+            StepConnectionsDTO connections = step.getConnections();
+            Map<String, Map<String, String>> outputsConnections = connections.getOutputsConnections();
+            Map<String, Pair<String, String>> inputsConnections = connections.getInputsConnections();
+            Map<String, Boolean> isMandatory = connections.getIsMandatory();
+            res = step.getName() + " Connections: \n";
+            if (outputsConnections != null) {
+                for (String name : outputsConnections.keySet()) {
+                    res += "Output name: " + name + "\n";
+                    if (!outputsConnections.get(name).isEmpty()) {
+                        res += "connected to:\n";
+                        for (String stepName : outputsConnections.get(name).keySet()) {
+                            res += outputsConnections.get(name).get(stepName) + "from step: " + stepName + "\n";
+                        }
+                    } else
+                        res += name + " have no connections" + "\n";
+
+                }
+            }
+            for (String input: isMandatory.keySet()) {
+                res += "input name: " + input + "\n";
+                res += "the input is mandatory: ";
+                if(isMandatory.get(input))
+                    res+= "yes\n";
+                else
+                    res+= "no\n";
+                if(inputsConnections != null && inputsConnections.containsKey(input)) {
+                        Pair<String,String> connection = inputsConnections.get(input);
+                        res += "This input is connected to the output" + connection.getValue() + " from the step: " + connection.getKey();
+                    }
+                else {
+                    res+= "no connections\n";
+                }
+                }
+            test.add(res);
+            }
+        return test;
+        }
+
 }
+
+
+
+
+
+
 

@@ -361,6 +361,7 @@ public class Manager implements EngineApi, Serializable {
 
     @Override
     public String runFlow() {
+
         FlowExecution flowExecution = new FlowExecution(currentFlow,this);
         String flowID=flowExecution.getFlowId();
         flowExecutions.put(flowID,flowExecution);

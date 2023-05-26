@@ -378,38 +378,65 @@ public class Flow implements Serializable {
         return  outputsList;
     }
 
-    private void getOutputsDefinitionDTO1() {
-        Map<String, Map<String,Map<String,String>>> stepsOutputs = new HashMap<>();
+    private Map<String,StepConnectionsDTO> getStepsConnectionsDTO() {
+        Map<String, Map<String,Map<String,String>>> outputsConnections = new LinkedHashMap<>();
+        Map<String, Map<String,Pair<String,String>>> inputsConnections = new LinkedHashMap<>();
         List<Output> list;
         for (int i = 0 ;i<steps.size();i++) {
-            Map<String,Map<String,String>> outputs = new HashMap<>();
+            Map<String,Map<String,String>> outputs = new LinkedHashMap<>();
             Step step = steps.get(i);
             list = step.getOutputs();
             for (int j = 0; j<list.size();j++) {
                 Output output = list.get(j);
                 List<Pair<Integer,Integer>> currConnections = connections.get(i).get(j);
-                Map<String,String> currOutputConnections = new HashMap<>();
+                Map<String,String> currOutputConnections = new LinkedHashMap<>();
                 for(Pair<Integer,Integer> currPair : currConnections)
                 {
                     String inputName = steps.get(currPair.getKey()).getInput(currPair.getValue()).getName();
                     String stepName = steps.get(currPair.getKey()).getName();
                     currOutputConnections.put(stepName,inputName);
+                    Pair<String,String> currInput = new Pair<>(step.getName(),output.getName());
+                    if(inputsConnections.containsKey(stepName))
+                        inputsConnections.get(stepName).put(inputName, currInput);
+                    else {
+                        Map<String,Pair<String,String>> inputConnection = new LinkedHashMap<>();
+                        inputConnection.put(inputName, currInput);
+                        inputsConnections.put(stepName, inputConnection);
+                    }
                 }
-                outputs.put(step.getName(),currOutputConnections);
-                DataDefintionDTO dataDefintionDTO= new DataDefintionDTO(output.getName(), output.getType());
-                OutputDefintionDTO outputDefintionDTO=new OutputDefintionDTO(dataDefintionDTO,step.getName());
-               // outputsList.add(outputDefintionDTO);
+                outputs.put(output.getName(),currOutputConnections);
             }
+            outputsConnections.put(step.getName(),outputs);
         }
-        //return  outputsList;
+        return createConnectionsDTO(outputsConnections,inputsConnections);
     }
+
+    private Map<String,StepConnectionsDTO> createConnectionsDTO(Map<String, Map<String, Map<String, String>>> outputsConnections, Map<String, Map<String, Pair<String, String>>> inputsConnections) {
+        Map<String,StepConnectionsDTO> connections = new LinkedHashMap<>();
+        for (Step step : steps) {
+            Map<String, Map<String, String>> currOConnections = outputsConnections.get(step.getName());
+            Map<String, Pair<String, String>> currIConnections = inputsConnections.get(step.getName());
+            Map<String, Boolean> isMandatory = new LinkedHashMap<>();
+            for (Input input :step.getInputs()) {
+                isMandatory.put(input.getName(), input.isMandatory());
+            }
+            StepConnectionsDTO stepConnectionsDTO = new StepConnectionsDTO(currOConnections,currIConnections,isMandatory);
+            connections.put(step.getName(), stepConnectionsDTO);
+        }
+
+        return connections;
+    }
+
+
+
 
     private List<StepDefinitionDTO> getStepsDefinitionDTO()
     {
+        Map<String,StepConnectionsDTO> connections= getStepsConnectionsDTO();
         List<StepDefinitionDTO> stepsList = new ArrayList<>();
         for(Step step: steps)
         {
-            stepsList.add(new StepDefinitionDTO(step.getName(),step.getDefaultName(),step.isRead_only()));
+            stepsList.add(new StepDefinitionDTO(step.getName(),step.getDefaultName(),step.isRead_only(),connections.get(step.getName())));
         }
         return stepsList;
     }
