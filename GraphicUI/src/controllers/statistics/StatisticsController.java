@@ -26,8 +26,8 @@ public class StatisticsController {
     @FXML
     private StackPane stepsStatisticsPane;
 
-    private final TableView<StatisticsUnitDTO> stepsTable = new TableView<>();
-    private final TableView<StatisticsUnitDTO> flowsTable = new TableView<>();
+    private  TableView<StatisticsUnitDTO> stepsTable;
+    private  TableView<StatisticsUnitDTO> flowsTable;
 
     private final ObservableList<StatisticsUnitDTO> flowsObservableList = FXCollections.observableArrayList();
     private final ObservableList<StatisticsUnitDTO> stepsObservableList = FXCollections.observableArrayList();
@@ -68,12 +68,14 @@ public class StatisticsController {
     }
 
     private void createFlowsTable() {
+        flowsTable = new TableView<>();
         flowsTable.getColumns().addAll(createTableColumns());
         setTableAppearance(flowsTable);
         flowsStatisticsPane.getChildren().add(flowsTable);
     }
 
     private void createStepsTable() {
+        stepsTable = new TableView<>();
         stepsTable.getColumns().addAll(createTableColumns());
         setTableAppearance(stepsTable);
         stepsStatisticsPane.getChildren().add(stepsTable);

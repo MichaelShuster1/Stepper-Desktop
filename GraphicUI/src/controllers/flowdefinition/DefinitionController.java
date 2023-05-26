@@ -40,7 +40,7 @@ public class DefinitionController {
     private StackPane selectedFlowDetails;
     @FXML
     private StackPane tableStack;
-    private final TableView<AvailableFlowDTO> flowTable = new TableView<>();
+    private TableView<AvailableFlowDTO> flowTable;
     private final ObservableList<AvailableFlowDTO> tvObservableList = FXCollections.observableArrayList();
 
     private Popup popup;
@@ -55,6 +55,7 @@ public class DefinitionController {
     }
 
     public void addTable() {
+        flowTable = new TableView<>();
         setTableappearance();
 
         fillTableObservableListWithData();
