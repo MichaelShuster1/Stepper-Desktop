@@ -27,8 +27,6 @@ import java.io.File;
 
 public class AppController {
 
-
-
     @FXML
     private StackPane definitionComponent;
 
@@ -146,6 +144,7 @@ public class AppController {
             timeline.play();
         }
     }
+
 
     private File openFileChooserAndGetFile() {
         FileChooser fileChooser = new FileChooser();

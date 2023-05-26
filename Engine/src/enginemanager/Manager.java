@@ -31,10 +31,6 @@ public class Manager implements EngineApi, Serializable {
     private Flow currentFlow;
     private ExecutorService threadPool;
 
-    private Thread taskManager;
-
-    List<Future> currentFlows;
-
     private Map<String,Integer> flowNames2Index;
 
 
@@ -44,10 +40,7 @@ public class Manager implements EngineApi, Serializable {
         flowsHistory = new ArrayList<>();
         flowsStatistics = new LinkedHashMap<>();
         stepsStatistics = new LinkedHashMap<>();
-        currentFlows = new ArrayList<>();
         flowExecutions=new HashMap<>();
-        //taskManager = new Thread(new TaskManager(currentFlows, flowExecutions, flowsHistory));
-        //taskManager.start();
     }
 
 

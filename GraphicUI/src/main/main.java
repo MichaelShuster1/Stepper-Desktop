@@ -25,7 +25,7 @@ public class main extends Application {
         controller.setModel(new Manager());
         controller.setPrimaryStage(primaryStage);
 
-        Scene scene = new Scene(root,850,600);
+        Scene scene = new Scene(root,1200,800);
         primaryStage.setTitle("Stepper");
         primaryStage.setScene(scene);
         primaryStage.show();
