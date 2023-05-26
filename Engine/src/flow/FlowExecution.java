@@ -155,7 +155,7 @@ public class FlowExecution implements  Runnable {
         List<StepExecutionDTO> steps = getStepsExecutionDTO();
         List<FreeInputExecutionDTO> freeInputs = getFreeInputsExecutionDTO();
         List<OutputExecutionDTO> outputs = getOutputsExecutionDTO();
-        return new FlowExecutionDTO(executionDetails,steps,freeInputs,outputs);
+        return new FlowExecutionDTO(executionDetails,steps,freeInputs,outputs,((double)index)/this.steps.size());
     }
 
 
