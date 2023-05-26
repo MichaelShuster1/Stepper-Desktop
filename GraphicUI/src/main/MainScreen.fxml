@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppController">
    <content>
@@ -20,11 +19,11 @@
                <children>
                   <HBox alignment="TOP_CENTER" VBox.vgrow="NEVER">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stepper" textAlignment="CENTER">
+                        <Label text="Stepper">
                            <font>
-                              <Font size="20.0" />
+                              <Font name="System Bold" size="22.0" />
                            </font>
-                        </Text>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox spacing="15.0" VBox.vgrow="NEVER">

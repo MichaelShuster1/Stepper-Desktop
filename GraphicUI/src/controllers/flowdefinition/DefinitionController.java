@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -212,7 +213,7 @@ public class DefinitionController {
         VBox vbox = new VBox();
         List<HBox> addToVBox = new ArrayList<>();
         addToVBox.add(createHBoxForData("Flow name: ",flowDefinition.getName() + "\n"));
-        addToVBox.add(createHBoxForData("Flow description: ",flowDefinition.getDescription() + "\n"));
+        addToVBox.add(createHBoxForData("Flow description: ",flowDefinition.getDescription() + "\n\n"));
         addToVBox.addAll(getStrFormalOutputs1(flowDefinition.getFormal_outputs()));
         addToVBox.add(getStrReadOnlyStatus1(flowDefinition.isReadOnly()));
         addToVBox.addAll(getStrStepsData1(flowDefinition.getSteps()));
@@ -243,6 +244,8 @@ public class DefinitionController {
        Label titleLabel = new Label(title);
        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
        Label dataText = new Label(data);
+       dataText.setAlignment(Pos.TOP_LEFT);
+       dataText.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
        dataText.setStyle("-fx-font-size: 14px");
        hbox.getChildren().add(titleLabel);
        hbox.getChildren().add(dataText);
@@ -413,10 +416,11 @@ public class DefinitionController {
         String title = "";
         String data = "";
         if (formal_outputs.size() > 0) {
-            title = "THE FORMAL OUTPUTS OF THE FLOW\n";
+            title = "THE FORMAL OUTPUTS OF THE FLOW\n\n";
             for (String currOutput : formal_outputs) {
                 data = data + currOutput + "\n";
             }
+            data += "\n";
             res.add(createHBoxForTitle(title));
             res.add(createHBoxForNoSep(data));
         } else
@@ -447,7 +451,7 @@ public class DefinitionController {
             else
                 res.add(createHBoxForData("This step is Read-Only: ", "No"));
             Hyperlink link = new Hyperlink("Full " + step.getName() +" Inputs\\Outputs details\n\n");
-            link.setStyle("-fx-font-size: 14px; -fx-text-fill:black");
+            link.setStyle("-fx-font-size: 14px");
             link.setOnAction(e -> setStepConnectionPopUp(step.getName(),step.getConnections(),link));
 //            link.setOnMouseExited(event -> {
 //                hidePopup();

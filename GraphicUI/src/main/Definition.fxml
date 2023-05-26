@@ -40,15 +40,8 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <StackPane fx:id="tableStack" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No loaded flows" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children></StackPane>
-            <StackPane fx:id="selectedFlowDetails" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <StackPane fx:id="tableStack" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <StackPane fx:id="selectedFlowDetails" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
          </children>
       </GridPane>
    </children>

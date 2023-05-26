@@ -58,6 +58,7 @@ public class HistoryController {
     public void initialize() {
 
         historyTableView=new TableView<>();
+        historyTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         flowNameColumnView=new TableColumn<>("flow name");
         activationTimeColumnView=new TableColumn<>("activation time");
         flowStateColumnView =new TableColumn<>("state after run");
