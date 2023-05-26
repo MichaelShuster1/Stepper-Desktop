@@ -114,7 +114,7 @@ public class ExecutionController {
         }
     }
 
-    private void clearTab() {
+    public void clearTab() {
         mandatoryInputsView.getChildren().clear();
         optionalInputsView.getChildren().clear();
         choiceBoxView.getItems().clear();

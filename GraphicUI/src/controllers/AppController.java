@@ -116,6 +116,7 @@ public class AppController {
 
         try {
             engine.loadXmlFile(selectedFile.getAbsolutePath());
+            clearTabs();
             loadedXML.setText("Currently loaded file: " + selectedFile.getAbsolutePath());
             definitionComponentController.addTable();
             statisticsComponentController.createStatisticsTables();
@@ -191,6 +192,13 @@ public class AppController {
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    public void clearTabs() {
+        definitionComponentController.clearTab();
+        executionComponentController.clearTab();
+        historyComponentController.clearTab();
+        statisticsComponentController.clearTab();
     }
 }
 
