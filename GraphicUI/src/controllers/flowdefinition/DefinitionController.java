@@ -80,6 +80,7 @@ public class DefinitionController {
         coldesc.setCellFactory(tc -> {
             TableCell<AvailableFlowDTO, String> cell = new TableCell<>();
             Text text = new Text();
+            text.setFill(Color.WHITE);
             cell.setGraphic(text);
             cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
             text.wrappingWidthProperty().bind(coldesc.widthProperty());
@@ -623,7 +624,7 @@ public class DefinitionController {
 
     public void clearTab() {
         selectedFlowDetails.getChildren().clear();
-        tableStack.getChildren().clear();
+        flowTable.getItems().clear();
         tvObservableList.clear();
     }
 
