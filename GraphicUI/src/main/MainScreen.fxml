@@ -30,7 +30,7 @@
                   <HBox spacing="15.0" VBox.vgrow="NEVER">
                      <children>
                         <Button fx:id="loadXML" mnemonicParsing="false" onAction="#loadXMLFile" text="Load XML File" />
-                        <Label fx:id="loadedXML" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: beige;" text="No XML file currently loaded" HBox.hgrow="ALWAYS">
+                        <Label fx:id="loadedXML" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No XML file currently loaded" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="14.0" />
                            </font>

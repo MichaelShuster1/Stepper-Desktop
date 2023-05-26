@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -57,7 +58,6 @@ public class DefinitionController {
     @FXML
     public void initialize() {
         addTable();
-        selectedFlowDetails.setStyle("-fx-background-color: white");
         selectedFlowDetails.getChildren().add(new Label("No data"));
     }
 
@@ -241,7 +241,7 @@ public class DefinitionController {
        HBox hbox = new HBox();
        Label titleLabel = new Label(title);
        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-       Text dataText = new Text(data);
+       Label dataText = new Label(data);
        dataText.setStyle("-fx-font-size: 14px");
        hbox.getChildren().add(titleLabel);
        hbox.getChildren().add(dataText);
@@ -260,7 +260,7 @@ public class DefinitionController {
     public HBox createHBoxForNoSep(String data)
     {
         HBox hbox = new HBox();
-        Text dataText = new Text(data);
+        Label dataText = new Label(data);
         dataText.setStyle("-fx-font-size: 14px");
         hbox.getChildren().add(dataText);
         return hbox;

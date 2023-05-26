@@ -36,7 +36,7 @@
                   <VBox fx:id="elementDetailsView" />
                </content>
             </ScrollPane>
-            <BorderPane style="-fx-background-color: #FFD580;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                <bottom>
                   <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="BOTTOM_RIGHT">
                      <children>
