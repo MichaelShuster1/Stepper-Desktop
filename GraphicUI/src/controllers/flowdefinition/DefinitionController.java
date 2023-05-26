@@ -609,6 +609,13 @@ public class DefinitionController {
         popupStage.show();
     }
 
+    public void clearTab() {
+        selectedFlowDetails.getChildren().clear();
+        tableStack.getChildren().clear();
+        tvObservableList.clear();
+    }
+
+
 
 }
 

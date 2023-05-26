@@ -101,6 +101,14 @@ public class StatisticsController {
     }
 
 
+    public void clearTab() {
+        flowsStatisticsPane.getChildren().clear();
+        stepsStatisticsPane.getChildren().clear();
+        flowsObservableList.clear();
+        stepsObservableList.clear();
+    }
+
+
 
 
 
