@@ -183,6 +183,10 @@ public class AppController {
     {
         historyComponentController.addRow(flowExecutionDTO);
     }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 }
 
 
