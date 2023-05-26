@@ -176,7 +176,6 @@ public class ExecutionController {
     public void updateProgressFlow(FlowExecutionDTO flowExecutionDTO)
     {
         elementLogic.setElementDetailsView(flowExecutionDTO);
-        System.out.println(flowExecutionDTO.getProgress());
         progressBarView.setProgress(flowExecutionDTO.getProgress());
         if(flowExecutionDTO.getStateAfterRun()!=null)
         {

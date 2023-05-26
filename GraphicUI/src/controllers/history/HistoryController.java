@@ -148,6 +148,14 @@ public class HistoryController {
         historyTableView.refresh();
     }
 
+    public void clearTab()
+    {
+        elementLogic.clear();
+        tableData.clear();
+        historyTableView.getItems().clear();
+        stateFilterView.setValue("NONE");
+    }
+
 
     @FXML
     void showFlowInfo(MouseEvent event) {
