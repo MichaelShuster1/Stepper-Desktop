@@ -32,6 +32,12 @@ public class StatisticsController {
     private final ObservableList<StatisticsUnitDTO> flowsObservableList = FXCollections.observableArrayList();
     private final ObservableList<StatisticsUnitDTO> stepsObservableList = FXCollections.observableArrayList();
 
+    @FXML
+    public void initialize() {
+        createFlowsTable();
+        createStepsTable();
+    }
+
     public void setEngine(EngineApi engine) {
         this.engine = engine;
     }

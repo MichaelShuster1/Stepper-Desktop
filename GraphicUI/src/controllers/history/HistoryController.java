@@ -71,8 +71,8 @@ public class HistoryController {
         historyTableView.setOnMouseClicked(e-> HistoryTableRowClick(new ActionEvent()));
         stackTableView.getChildren().add(historyTableView);
 
-        stateFilterView.getItems().addAll("NONE", "SUCCESS", "WARNING", "FAILURE");
-        stateFilterView.setValue("NONE");
+        stateFilterView.getItems().addAll("ALL", "SUCCESS", "WARNING", "FAILURE");
+        stateFilterView.setValue("ALL");
         stateFilterView.setOnAction(event -> filterTable());
 
         tableData = FXCollections.observableArrayList();
@@ -122,7 +122,7 @@ public class HistoryController {
         String choice = stateFilterView.getValue();
         FilteredList<FlowExecutionDTO> filteredData = new FilteredList<>(tableData);
         switch(choice) {
-            case "NONE":
+            case "ALL":
                 historyTableView.setItems(tableData);
                 break;
             case "SUCCESS":
@@ -153,7 +153,7 @@ public class HistoryController {
         elementLogic.clear();
         tableData.clear();
         historyTableView.getItems().clear();
-        stateFilterView.setValue("NONE");
+        stateFilterView.setValue("ALL");
     }
 
 

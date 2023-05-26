@@ -116,7 +116,7 @@ public class AppController {
             engine.loadXmlFile(selectedFile.getAbsolutePath());
             clearTabs();
             loadedXML.setText("Currently loaded file: " + selectedFile.getAbsolutePath());
-            definitionComponentController.addTable();
+            definitionComponentController.fillTableData();
             statisticsComponentController.createStatisticsTables();
         }
         catch (Exception ex)

@@ -54,12 +54,23 @@ public class DefinitionController {
         this.appController = appController;
     }
 
+    @FXML
+    public void initialize() {
+        addTable();
+        selectedFlowDetails.setStyle("-fx-background-color: white");
+        selectedFlowDetails.getChildren().add(new Label("No data"));
+    }
+
+    public void fillTableData()
+    {
+        fillTableObservableListWithData();
+        flowTable.setItems(tvObservableList);
+    }
+
+
     public void addTable() {
         flowTable = new TableView<>();
         setTableappearance();
-
-        fillTableObservableListWithData();
-        flowTable.setItems(tvObservableList);
 
         TableColumn<AvailableFlowDTO, String> colname = new TableColumn<>("Name");
         colname.setCellValueFactory(new PropertyValueFactory<>("name"));
