@@ -117,7 +117,8 @@ public class ExecutionController {
 
             if (inputData.IsInserted()) {
                 button.setStyle("-fx-background-color: #40ff00; ");
-                numberOfInsertedMandatoryInputs++;
+                if(inputData.getNecessity())
+                    numberOfInsertedMandatoryInputs++;
             }
         }
         executeButton.setDisable(numberOfInsertedMandatoryInputs != numberOfMandatoryInputs);
