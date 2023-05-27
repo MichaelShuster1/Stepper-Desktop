@@ -17,7 +17,7 @@
          <top>
             <VBox alignment="TOP_CENTER" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="TOP_CENTER" VBox.vgrow="NEVER">
+                  <HBox fx:id="logo" alignment="TOP_CENTER" VBox.vgrow="NEVER">
                      <children>
                         <Label text="Stepper">
                            <font>
