@@ -67,7 +67,6 @@ public class ExecutionController {
 
     @FXML
     public void initialize() {
-        elementLogic=new ElementLogic(elementChoiceView,elementDetailsView);
     }
 
 
@@ -77,6 +76,11 @@ public class ExecutionController {
         this.appController=appController;
     }
 
+    public void setStage(Stage stage)
+    {
+        elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
+    }
+
     public void setEngine(EngineApi engine) {
         this.engine = engine;
     }
@@ -84,6 +88,8 @@ public class ExecutionController {
     public void setTabView(InputsDTO inputsDTO)
     {
         clearTab();
+        int numberOfMandatoryInputs=0;
+        int numberOfInsertedMandatoryInputs=0;
 
         mandatoryInputButtons=new ArrayList<>();
         optionalInputButtons=new ArrayList<>();
@@ -102,16 +108,19 @@ public class ExecutionController {
                 button.setStyle("-fx-background-color: #ff0000; ");
                 mandatoryInputsView.getChildren().add(button);
                 mandatoryInputButtons.add(button);
+                numberOfMandatoryInputs++;
             }
             else {
                 optionalInputsView.getChildren().add(button);
                 optionalInputButtons.add(button);
             }
 
-            if (inputData.IsInserted())
+            if (inputData.IsInserted()) {
                 button.setStyle("-fx-background-color: #40ff00; ");
-
+                numberOfInsertedMandatoryInputs++;
+            }
         }
+        executeButton.setDisable(numberOfInsertedMandatoryInputs != numberOfMandatoryInputs);
     }
 
     public void clearTab() {
@@ -128,6 +137,7 @@ public class ExecutionController {
     {
 
         TextInputDialog inputDialog = new TextInputDialog();
+
 
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);

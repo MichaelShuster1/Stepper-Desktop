@@ -36,6 +36,13 @@ public class ProgressTracker extends Task<Boolean> {
         }
     }
 
+    public void resetCurrentFlowId()
+    {
+        synchronized (flowsId) {
+            currentFlowId = null;
+        }
+    }
+
     @Override
     protected Boolean call()  {
         while (appController!=null)

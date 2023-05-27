@@ -414,7 +414,7 @@ public class UIapi {
             res += "Finish state: " + step.getStateAfterRun() + "\n";
             res += "Step summary:" + step.getSummaryLine()+ "\n";
             res += "STEP LOGS:\n\n";
-            res += getStrLogs(step.getLogs());
+            res += getStrLogs(step.getStepExtensionDTO().getLogs());
             res += "------------------------------\n";
         }
         return res;

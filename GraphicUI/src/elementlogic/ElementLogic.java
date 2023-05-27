@@ -13,13 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -29,7 +25,7 @@ import java.util.Map;
 public class ElementLogic {
     private VBox elementChoiceView;
     private VBox elementDetailsView;
-
+    private Stage primaryStage;
     private FlowExecutionDTO flowExecutionDTO;
 
     private TableView<StepExecutionDTO> stepsTableView;
@@ -38,9 +34,10 @@ public class ElementLogic {
 
     private TableColumn<StepExecutionDTO,String> stateColumnView;
 
-    public ElementLogic(VBox elementChoiceView,VBox elementDetailsView) {
+    public ElementLogic(VBox elementChoiceView,VBox elementDetailsView,Stage primaryStage) {
         this.elementChoiceView = elementChoiceView;
         this.elementDetailsView = elementDetailsView;
+        this.primaryStage=primaryStage;
 
         stepsTableView=new TableView<>();
         stepColumnView=new TableColumn<>("step");
@@ -111,13 +108,14 @@ public class ElementLogic {
     {
         HBox hBox = getNewHbox();
 
-        Label label =new Label(name);
-        label.setFont(Font.font("System", FontWeight.BOLD,12));
+        Label key =new Label(name);
+        key.setFont(Font.font("System", FontWeight.BOLD,12));
 
-        Label label1 =new Label(value);
+        Label data =new Label(value);
+        data.setAlignment(Pos.TOP_LEFT);
 
-        hBox.getChildren().add(label);
-        hBox.getChildren().add(label1);
+        hBox.getChildren().add(key);
+        hBox.getChildren().add(data);
 
         elementDetailsView.getChildren().add(hBox);
     }
@@ -184,8 +182,11 @@ public class ElementLogic {
     private void showNewPopUp(Parent root)
     {
         final Stage stage = new Stage();
+        stage.initOwner(primaryStage);
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root, 400, 300);
+        if(primaryStage.getScene().getStylesheets().size()!=0)
+            scene.getStylesheets().add(primaryStage.getScene().getStylesheets().get(0));
         stage.setScene(scene);
         stage.show();
     }
@@ -217,7 +218,16 @@ public class ElementLogic {
 
     private void listPopUp(List<Object> data)
     {
-        showNewPopUp(createListView(data));
+        if(data.size()==0) {
+            Label label =new Label("empty list");
+            label.setAlignment(Pos.CENTER);
+            label.setFont(Font.font("System", FontWeight.BOLD,15));
+            BorderPane borderPane =new BorderPane();
+            borderPane.setCenter(label);
+            showNewPopUp(borderPane);
+        }
+        else
+            showNewPopUp(createListView(data));
     }
 
 
@@ -238,10 +248,10 @@ public class ElementLogic {
 
     private void addStepLogs(List<String> logs) {
         if (logs.size() == 0)
-            addKeyValueLine( "The step had no logs","");
+            addKeyValueLine( "","The step had no logs\n\n");
         else {
             for (String currLog : logs) {
-                addKeyValueLine( currLog,"");
+                addKeyValueLine( "",currLog+"\n\n");
             }
         }
     }
@@ -265,12 +275,12 @@ public class ElementLogic {
         }
         else
             addKeyValueLine("","NO FREE INPUTS HAVE RECEIVED DATA");
-        addTitleLine("\n\nDATA PRODUCED (OUTPUTS):\n");
+        addTitleLine("\nDATA PRODUCED (OUTPUTS):\n");
         if(flowExecutionDTO.getOutputs().size()!=0)
             updateOutputsHistoryData(flowExecutionDTO.getOutputs());
         else
             addKeyValueLine("","NO DATA WAS PRODUCED");
-        addTitleLine("\n\nFLOW STEPS DATA:\n");
+        addTitleLine("\nFLOW STEPS DATA:\n");
         updateStepsHistoryData(flowExecutionDTO.getSteps());
 
     }
@@ -290,18 +300,17 @@ public class ElementLogic {
     {
         for (FreeInputExecutionDTO freeInput : flowFreeInputs) {
             if (freeInput.getData() != null) {
-                addKeyValueLine("Name: " , freeInput.getName());
-                addKeyValueLine("Type: " , freeInput.getType());
-                if(freeInput.getType().equals("List") || freeInput.getType().equals("Relation") || freeInput.getType().equals("Mapping")) {
-                    addKeyValueLine("Input data:","");
-                    addKeyValueLine("",freeInput.getData());
+                if(freeInput.isMandatory()==mandatoryOrNot) {
+
+                    addKeyValueLine("Name: ", freeInput.getName());
+                    addKeyValueLine("Type: ", freeInput.getType());
+                    addKeyValueLine("Input data: ", freeInput.getData());
+
+                    if (mandatoryOrNot)
+                        addKeyValueLine("This input is mandatory: ", "Yes\n\n");
+                    else
+                        addKeyValueLine("This input is mandatory: ", "No\n\n");
                 }
-                else
-                    addKeyValueLine("Input data: " , freeInput.getData());
-                if (freeInput.isMandatory()&&mandatoryOrNot)
-                    addKeyValueLine("This input is mandatory: ", "Yes");
-                else
-                    addKeyValueLine("This input is mandatory: ", "No");
             }
         }
 
@@ -312,22 +321,22 @@ public class ElementLogic {
             addKeyValueLine("Name: " , output.getName());
             addKeyValueLine("Type: " , output.getType());
             if (output.getData() != null) {
-                if(output.getType().equals("List") || output.getType().equals("Relation") || output.getType().equals("Mapping")) {
-                    addKeyValueLine("Data: " ,"");
-                    addKeyValueLine("",output.getData());
+                if(output.getType().equals("List") || output.getType().equals("Relation")) {
+                    addKeyHyperLinkValueLine("Data",output.getType(),output.getData());
+                    addKeyValueLine("" ,"\n");
                 }
                 else
-                    addKeyValueLine("Data: " ,output.getData());
+                    addKeyValueLine("Data: " ,output.getData().toString()+"\n\n");
 
             }
             else
-                addKeyValueLine("Data: " ,"Not created due to failure in flow");
+                addKeyValueLine("Data: " ,"Not created due to failure in flow\n\n");
         }
     }
 
     private void updateStepsHistoryData(List<StepExecutionDTO> steps) {
         for (StepExecutionDTO step: steps) {
-            addKeyValueLine("Name: " , step.getName());
+            addKeyValueLine("Step Name: " , step.getName());
             addKeyValueLine("Run time: " , step.getRunTime() + " ms");
             addKeyValueLine("Finish state: " , step.getStateAfterRun());
             addKeyValueLine("Step summary:" , step.getSummaryLine());

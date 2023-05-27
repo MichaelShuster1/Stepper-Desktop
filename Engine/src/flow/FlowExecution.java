@@ -167,7 +167,7 @@ public class FlowExecution implements  Runnable {
             for (Output output : outputs) {
                 DataDefintionDTO outputDetails = new DataDefintionDTO(output.getName(),output.getType());
                 if (output.getData() != null)
-                    outputsList.add(new OutputExecutionDTO(outputDetails,output.getDataDefinition().toString()));
+                    outputsList.add(new OutputExecutionDTO(outputDetails,output.getData()));
                 else
                     outputsList.add(new OutputExecutionDTO(outputDetails,null));
             }
