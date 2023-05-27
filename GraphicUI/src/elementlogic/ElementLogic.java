@@ -120,6 +120,7 @@ public class ElementLogic {
         elementDetailsView.getChildren().add(hBox);
     }
 
+
     private void addKeyHyperLinkValueLine(String name, String value, Object data)
     {
         HBox hBox = getNewHbox();

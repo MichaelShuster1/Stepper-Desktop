@@ -6,6 +6,8 @@ import datadefinition.Relation;
 import dto.*;
 import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
+import javafx.animation.FillTransition;
+import javafx.animation.PathTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,11 +22,17 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +76,8 @@ public class ExecutionController {
     private ElementLogic elementLogic;
 
 
+
+
     @FXML
     public void initialize() {
         continuationButton.setDisable(true);
@@ -108,6 +118,7 @@ public class ExecutionController {
             button.setOnAction(e->inputClick(button,new ActionEvent()));
             button.setText(inputData.getUserString());
             FlowPane.setMargin(button,new Insets(0,10,10,0));
+
 
             if(inputData.getNecessity())
             {

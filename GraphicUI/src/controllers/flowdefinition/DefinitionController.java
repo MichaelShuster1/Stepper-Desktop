@@ -97,6 +97,8 @@ public class DefinitionController {
         TableColumn<AvailableFlowDTO, Integer> colcontinuations = new TableColumn<>("Number of Continuations");
         colcontinuations.setCellValueFactory(new PropertyValueFactory<>("numberOfContinuations"));
 
+
+
         flowTable.getColumns().addAll(colname, coldesc, colinputs, colsteps, colcontinuations);
 
         //addButtonToTable();

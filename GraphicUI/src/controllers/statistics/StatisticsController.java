@@ -282,6 +282,8 @@ public class StatisticsController {
         final Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(root, 1200, 300);
+        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+            scene.getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
         stage.setScene(scene);
         stage.show();
     }

@@ -44,6 +44,11 @@ public class FlowExecution implements  Runnable {
             List<Input> currStepInputs =  currStep.getInputs();
             for(int j = 0; j< currStepInputs.size(); j++) {
                 newStep.getInput(j).setData((currStepInputs.get(j)).getData());
+                newStep.getInput(j).setName((currStepInputs.get(j).getName()));
+            }
+            List<Output> currStepOutputs =  currStep.getOutputs();
+            for(int j = 0; j< currStepOutputs.size(); j++) {
+                newStep.getOutput(j).setName((currStepOutputs.get(j)).getName());
             }
             steps.add(newStep);
         }
