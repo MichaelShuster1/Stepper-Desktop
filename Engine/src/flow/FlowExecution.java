@@ -235,7 +235,5 @@ public class FlowExecution implements  Runnable {
         return steps.get(i);
     }
 
-
-
-
+    public List<Step> getSteps() {return steps;}
 }

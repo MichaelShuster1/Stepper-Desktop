@@ -61,8 +61,10 @@ public class Input implements Serializable {
     }
 
     public void resetInput() {
-        setData(null);
-        isConnected = false;
+        if(!haveInitialValue) {
+            setData(null);
+            isConnected = false;
+        }
     }
 
     public boolean haveInitialValue() {

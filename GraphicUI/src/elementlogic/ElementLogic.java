@@ -344,4 +344,8 @@ public class ElementLogic {
             addStepLogs(step.getStepExtensionDTO().getLogs());
         }
     }
+
+    public String getID() {
+        return flowExecutionDTO.getId();
+    }
 }

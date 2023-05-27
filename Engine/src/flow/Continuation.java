@@ -31,6 +31,14 @@ public class Continuation {
         }
     }
 
+    public Map<Pair<Integer, String>, List<Pair<Integer, String>>> getContinuationMapping() {
+        return continuationMapping;
+    }
+
+    public Map<Pair<Integer, String>, List<Pair<Integer, String>>> getContinuationForcedMapping() {
+        return continuationForcedMapping;
+    }
+
     public String getTargetFlow() {
         return targetFlow;
     }

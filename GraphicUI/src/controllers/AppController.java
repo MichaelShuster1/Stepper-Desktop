@@ -227,6 +227,7 @@ public class AppController {
         historyComponentController.clearTab();
         statisticsComponentController.clearTab();
     }
+
 }
 
 

@@ -1,6 +1,7 @@
 package enginemanager;
 
 import dto.*;
+import flow.FlowExecution;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
@@ -43,4 +44,8 @@ public interface EngineApi {
     ContinutionMenuDTO getContinutionMenuDTO();
 
     void reUseInputsData(FlowExecutionDTO flowExecutionDTO);
+
+    void doContinuation(FlowExecution flowExecution, String targetName);
+
+    FlowExecution getFlowExecution(String ID);
 }

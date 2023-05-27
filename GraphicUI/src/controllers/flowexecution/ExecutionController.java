@@ -54,6 +54,9 @@ public class ExecutionController {
     @FXML
     private ProgressBar progressBarView;
 
+    @FXML
+    private Button continuationButton;
+
     private AppController appController;
 
     private EngineApi engine;
@@ -67,6 +70,9 @@ public class ExecutionController {
 
     @FXML
     public void initialize() {
+        continuationButton.setDisable(true);
+        continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
+        choiceBoxView.setDisable(true);
     }
 
 
@@ -129,6 +135,7 @@ public class ExecutionController {
         choiceBoxView.getItems().clear();
         elementLogic.clear();
         progressBarView.setProgress(0);
+        choiceBoxView.setDisable(true);
     }
 
 
@@ -194,6 +201,7 @@ public class ExecutionController {
             {
                 List<String> targetFlows = continutionMenuDTO.getTargetFlows();
                 choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
+                choiceBoxView.setDisable(false);
             }
             progressBarView.setProgress(1);
         }
@@ -209,7 +217,10 @@ public class ExecutionController {
 
     @FXML
     void continueToFlow(ActionEvent event) {
-        System.out.println(choiceBoxView.getValue());
+        String targetName = choiceBoxView.getValue();
+        engine.doContinuation(engine.getFlowExecution(elementLogic.getID()),targetName);
+        int index=engine.getFlowIndexByName(targetName);
+        appController.streamFlow(index);
     }
 
 }

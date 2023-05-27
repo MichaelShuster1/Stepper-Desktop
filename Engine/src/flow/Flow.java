@@ -31,7 +31,7 @@ public class Flow implements Serializable {
 
     private Map<String,Integer> flowOutputs;
 
-    private List<Continuation> continuations;
+    private Map<String, Continuation> continuations;
 
     public Flow(String name, String description) {
         this.name = name;
@@ -609,7 +609,7 @@ public class Flow implements Serializable {
         return flowFreeInputs;
     }
 
-    public List<Continuation> getContinuations() {
+    public Map<String, Continuation> getContinuations() {
         return continuations;
     }
 
@@ -618,8 +618,8 @@ public class Flow implements Serializable {
         List<String> targetFlows=new ArrayList<>();
 
         if(continuations!=null) {
-            for (Continuation continuation : continuations) {
-                targetFlows.add(continuation.getTargetFlow());
+            for (String targetFlow : continuations.keySet()) {
+                targetFlows.add(targetFlow);
             }
             return new ContinutionMenuDTO(targetFlows);
         }
@@ -627,6 +627,44 @@ public class Flow implements Serializable {
     }
 
     public void setContinuations(List<Continuation> continuations) {
-        this.continuations = continuations;
+        this.continuations = new LinkedHashMap<>();
+        for(Continuation continuation : continuations)
+        {
+            this.continuations.put(continuation.getTargetFlow(),continuation);
+        }
+    }
+
+    public Continuation getContinuation(String targetName) {
+        return continuations.get(targetName);
+    }
+
+    public void applyContinuation(FlowExecution flowExecution, Continuation continuation) {
+        Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationMapping = continuation.getContinuationMapping();
+        Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationForcedMapping = continuation.getContinuationForcedMapping();
+        List<Step> sourceSteps = flowExecution.getSteps();
+
+        setContinuationData(continuationMapping, sourceSteps);
+        setContinuationData(continuationForcedMapping, sourceSteps);
+    }
+
+    private void setContinuationData(Map<Pair<Integer, String>, List<Pair<Integer, String>>> continuationMapping, List<Step> sourceSteps) {
+        for(Pair<Integer,String> currData : continuationMapping.keySet()) {
+            List<Pair<Integer,String>> currTargets = continuationMapping.get(currData);
+            Object data;
+            Input input;
+            try {
+                input = sourceSteps.get(currData.getKey()).getInputByName(currData.getValue());
+                data = input.getData();
+            }
+            catch (Exception ignored) {
+                data =  sourceSteps.get(currData.getKey()).getOutputByName(currData.getValue()).getData();
+            }
+
+            for(Pair<Integer,String> currTarget : currTargets)
+            {
+                if(!steps.get(currTarget.getKey()).getInputByName(currTarget.getValue()).haveInitialValue())
+                    steps.get(currTarget.getKey()).getInputByName(currTarget.getValue()).setData(data);
+            }
+        }
     }
 }
