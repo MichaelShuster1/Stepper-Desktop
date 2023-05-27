@@ -81,7 +81,6 @@ public class DefinitionController {
         coldesc.setCellFactory(tc -> {
             TableCell<AvailableFlowDTO, String> cell = new TableCell<>();
             Text text = new Text();
-            text.setFill(Color.WHITE);
             cell.setGraphic(text);
             cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
             text.wrappingWidthProperty().bind(coldesc.widthProperty());
@@ -608,7 +607,7 @@ public class DefinitionController {
         popupStage.setResizable(true);
         popupStage.initStyle(StageStyle.UTILITY);
 
-        vbox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        //vbox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
         vbox.setAlignment(Pos.CENTER);
         vbox.setFillWidth(true);
 
@@ -622,6 +621,7 @@ public class DefinitionController {
 //        popup.getContent().add(scroll);
 //        popup.show(openLink, openLink.localToScreen(0, 0).getX(), openLink.localToScreen(0, 0).getY() + openLink.getHeight());
         Scene popupScene = new Scene(scroll);
+        popupScene.getStylesheets().add(ownerStage.getScene().getStylesheets().get(0));
         popupStage.setScene(popupScene);
         popupStage.show();
     }

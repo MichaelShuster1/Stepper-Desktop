@@ -69,4 +69,18 @@
     -fx-table-cell-border-color:transparent;
 }
 
+Text {
+    -fx-fill: white;
+}
+
+.hyperlink {
+    -fx-text-fill: #000000;
+    -fx-underline: false;
+    -fx-border-color: transparent;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+}
+
 

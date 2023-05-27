@@ -198,6 +198,11 @@
     -fx-text-fill: #f7d727;
 }
 
+.table-row-cell:selected Text {
+    -fx-fill: #f7d727;
+}
+
+
 .tree-table-view, .table-view {
     -fx-background-color: -swatch-dark-gray;
 }
@@ -413,3 +418,18 @@
 .axis {
     -fx-tick-label-fill: white;
 }
+
+Text {
+    -fx-fill: white;
+}
+
+.hyperlink {
+    -fx-text-fill: #4e4eee;
+    -fx-underline: false;
+    -fx-border-color: transparent;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+}
+
