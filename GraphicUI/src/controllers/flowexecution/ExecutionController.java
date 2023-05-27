@@ -123,7 +123,8 @@ public class ExecutionController {
 
             if (inputData.IsInserted()) {
                 button.setStyle("-fx-background-color: #40ff00; ");
-                numberOfInsertedMandatoryInputs++;
+                if(inputData.getNecessity())
+                    numberOfInsertedMandatoryInputs++;
             }
         }
         executeButton.setDisable(numberOfInsertedMandatoryInputs != numberOfMandatoryInputs);
@@ -145,11 +146,15 @@ public class ExecutionController {
 
         TextInputDialog inputDialog = new TextInputDialog();
 
-
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
         inputDialog.setContentText("please enter the input here:");
+        inputDialog.getDialogPane().setPrefWidth(400);
+        Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
+        submitButton.setText("submit");
+        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+            inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
         Optional<String> result =inputDialog.showAndWait();
         if(result.isPresent())

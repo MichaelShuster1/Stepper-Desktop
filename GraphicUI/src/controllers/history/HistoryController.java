@@ -71,6 +71,7 @@ public class HistoryController {
         historyTableView.getColumns().addAll(flowNameColumnView,activationTimeColumnView, flowStateColumnView);
         historyTableView.getColumns().forEach(column -> column.setMinWidth(200));
         historyTableView.setOnMouseClicked(e-> HistoryTableRowClick(new ActionEvent()));
+        historyTableView.setEditable(false);
         stackTableView.getChildren().add(historyTableView);
 
         stateFilterView.getItems().addAll("ALL", "SUCCESS", "WARNING", "FAILURE");

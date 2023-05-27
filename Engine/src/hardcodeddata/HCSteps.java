@@ -4,7 +4,9 @@ import enginemanager.Statistics;
 import exception.StepNameNotExistException;
 import step.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum HCSteps {
@@ -27,6 +29,15 @@ public enum HCSteps {
 
     public String getStepName() {
         return stepName;
+    }
+
+    public static List<String> getAllStepsName() {
+        List<String> names=new ArrayList<>();
+        for(HCSteps step: HCSteps.values())
+        {
+            names.add(step.getStepName());
+        }
+        return names;
     }
 
 

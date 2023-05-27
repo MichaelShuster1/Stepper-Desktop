@@ -86,15 +86,15 @@
  * Text field, text area                                                       *
  *                                                                             *
  ******************************************************************************/
+
 .text-field, .text-area {
-    -fx-text-fill: -fx-text-base-color;
+    -fx-text-fill: white;
     -underline-color: -swatch-gray;
-    -fx-border-color: -swatch-light-gray;
+    -fx-background-color: #A7A7F7;
 }
 
-.text-field:focused, .text-area:focused {
-    -fx-border-color: -swatch-200;
-}
+
+
 
 /*******************************************************************************
  *                                                                             *

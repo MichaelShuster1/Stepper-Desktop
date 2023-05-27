@@ -85,7 +85,10 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label text="mandatory inputs:" />
+                              <Label text="mandatory inputs:">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Label>
                            </children>
                         </HBox>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
@@ -99,7 +102,10 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label text="optional inputs:" />
+                              <Label text="optional inputs:">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Label>
                            </children>
                         </HBox>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">

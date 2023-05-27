@@ -208,6 +208,7 @@ public class ElementLogic {
         items.addAll(data.getRows());
         tableView.setItems(items);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setEditable(false);
         return  tableView;
     }
 
