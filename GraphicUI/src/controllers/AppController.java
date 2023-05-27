@@ -14,6 +14,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
@@ -24,6 +25,8 @@ import javafx.util.Duration;
 import progress.ProgressTracker;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppController {
 
@@ -58,6 +61,8 @@ public class AppController {
 
     @FXML
     private TabPane tabPaneView;
+    @FXML
+    private ChoiceBox<String> styleChoiceView;
 
     private EngineApi engine;
 
@@ -74,7 +79,27 @@ public class AppController {
         definitionComponentController.setAppController(this);
         historyComponentController.setAppController(this);
         statisticsComponentController.setAppController(this);
+        styleChoiceView.getItems().addAll("DEFAULT","DARK","MIDNIGHT");
+        styleChoiceView.setValue("DEFAULT");
+        styleChoiceView.setOnAction(e->setStyle());
         setTab(3);
+    }
+
+    private void setStyle() {
+        String choice= styleChoiceView.getValue();
+        primaryStage.getScene().getStylesheets().clear();
+        switch (choice)
+        {
+            case "DARK":
+                primaryStage.getScene().getStylesheets().add(
+                        getClass().getResource("../main/Dark.css").toExternalForm());
+                break;
+            case "MIDNIGHT":
+                primaryStage.getScene().getStylesheets().add(
+                        getClass().getResource("../main/Midnight.css").toExternalForm());
+            case "DEFAULT":
+                break;
+        }
     }
 
 
@@ -97,6 +122,8 @@ public class AppController {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        executionComponentController.setStage(primaryStage);
+        historyComponentController.setStage(primaryStage);
     }
 
 
@@ -162,6 +189,7 @@ public class AppController {
 
 
     public void streamFlow(int index) {
+        progressTracker.resetCurrentFlowId();
         executionComponentController.setTabView(getFlowInputs(index));
         setTab(2);
     }

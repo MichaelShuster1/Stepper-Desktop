@@ -1,14 +1,14 @@
 package dto;
 
 public class OutputExecutionDTO extends DataDefintionDTO {
-    private String data;
+    private Object data;
 
-    public OutputExecutionDTO(DataDefintionDTO other, String data) {
+    public OutputExecutionDTO(DataDefintionDTO other, Object data) {
         super(other);
         this.data = data;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 }

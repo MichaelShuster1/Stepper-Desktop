@@ -617,11 +617,12 @@ public class DefinitionController {
         scroll.setMinHeight(300);
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
-//        popup = new Popup();
-//        popup.getContent().add(scroll);
-//        popup.show(openLink, openLink.localToScreen(0, 0).getX(), openLink.localToScreen(0, 0).getY() + openLink.getHeight());
+        //popup = new Popup();
+        //popup.getContent().add(scroll);
+        //popup.show(openLink, openLink.localToScreen(0, 0).getX(), openLink.localToScreen(0, 0).getY() + openLink.getHeight());
         Scene popupScene = new Scene(scroll);
-        popupScene.getStylesheets().add(ownerStage.getScene().getStylesheets().get(0));
+        if(ownerStage.getScene().getStylesheets().size()!=0)
+            popupScene.getStylesheets().add(ownerStage.getScene().getStylesheets().get(0));
         popupStage.setScene(popupScene);
         popupStage.show();
     }

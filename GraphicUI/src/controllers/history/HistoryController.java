@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -79,13 +80,17 @@ public class HistoryController {
         tableData = FXCollections.observableArrayList();
         historyTableView.setItems(tableData);
 
-        elementLogic=new ElementLogic(elementChoiceView,elementDetailsView);
     }
 
 
 
     public void setAppController(AppController appController) {
         this.appController = appController;
+    }
+
+    public void setStage(Stage stage)
+    {
+        elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
     }
 
     public void setEngine(EngineApi engine) {
