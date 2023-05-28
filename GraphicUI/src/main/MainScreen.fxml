@@ -38,7 +38,7 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="style:" />
+                        <Label text="Style:" />
                         <ChoiceBox fx:id="styleChoiceView" prefWidth="150.0" />
                      </children>
                      <VBox.margin>

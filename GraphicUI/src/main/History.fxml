@@ -34,7 +34,7 @@
                <bottom>
                   <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#reRunFlow" text="Rerun flow" />
+                        <Button fx:id="reRunButton" mnemonicParsing="false" onAction="#reRunFlow" text="Rerun flow" />
                      </children>
                   </HBox>
                </bottom>

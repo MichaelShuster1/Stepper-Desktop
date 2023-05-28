@@ -35,6 +35,9 @@ public class HistoryController {
     @FXML
     private VBox elementChoiceView;
 
+    @FXML
+    private Button reRunButton;
+
     private AppController appController;
 
     private EngineApi engine;
@@ -80,6 +83,17 @@ public class HistoryController {
 
         tableData = FXCollections.observableArrayList();
         historyTableView.setItems(tableData);
+
+        reRunButton.setDisable(true);
+
+        historyTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                reRunButton.setDisable(false);
+            } else {
+                reRunButton.setDisable(true);
+            }
+        });
+
 
     }
 
