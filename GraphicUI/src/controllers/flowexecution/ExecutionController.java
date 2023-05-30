@@ -11,6 +11,7 @@ import javafx.animation.PathTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -116,7 +118,10 @@ public class ExecutionController {
             Button button=new Button();
             button.setId(inputData.getSystemName());
             button.setOnAction(e->inputClick(button,new ActionEvent()));
-            button.setText(inputData.getUserString());
+
+            String inputPresentation =inputData.getSystemName().replace("_"," ").toLowerCase();
+            inputPresentation+="\nDescription: "+inputData.getUserString();
+            button.setText(inputPresentation);
             FlowPane.setMargin(button,new Insets(0,10,10,0));
 
 
@@ -154,8 +159,8 @@ public class ExecutionController {
     @FXML
     public void inputClick(Button button,ActionEvent event)
     {
-
         TextInputDialog inputDialog = new TextInputDialog();
+
 
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
@@ -163,6 +168,12 @@ public class ExecutionController {
         inputDialog.setContentText("please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
+
+        //ButtonType customButton = new ButtonType("Clear input");
+        //inputDialog.getDialogPane().getButtonTypes().add(customButton);
+        //TextField textField=(TextField)inputDialog.getEditor();
+        //textField.setText("hello");
+
         submitButton.setText("submit");
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));

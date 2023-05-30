@@ -25,7 +25,7 @@ public class main extends Application {
         controller.setModel(new Manager());
         controller.setPrimaryStage(primaryStage);
 
-        Scene scene = new Scene(root,1200,800);
+        Scene scene = new Scene(root,1200,600);
         //scene.getStylesheets().add(getClass().getResource("Midnight.css").toExternalForm());
         primaryStage.setTitle("Stepper");
         primaryStage.setScene(scene);
