@@ -8,6 +8,8 @@
 
 .label{
     -fx-text-fill: lightgray;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 15;
 }
 
 .text-field {

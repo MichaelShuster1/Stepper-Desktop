@@ -4,10 +4,14 @@ import controllers.AppController;
 import enginemanager.Manager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URL;
 
 public class main extends Application {
@@ -25,7 +29,17 @@ public class main extends Application {
         controller.setModel(new Manager());
         controller.setPrimaryStage(primaryStage);
 
-        Scene scene = new Scene(root,1200,600);
+
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        double widthFraction = 0.8;
+        double heightFraction = 0.8;
+        double desiredWidth = screenBounds.getWidth() * widthFraction;
+        double desiredHeight = screenBounds.getHeight() * heightFraction;
+
+        Scene scene = new Scene(root,desiredWidth,desiredHeight);
+        //scene.getStylesheets().add(getClass().getResource("Midnight.css").toExternalForm());
+        Image icon = new Image(getClass().getResource("Icon.png").toExternalForm());
+        primaryStage.getIcons().add(icon);
         primaryStage.setTitle("Stepper");
         primaryStage.setScene(scene);
         primaryStage.show();

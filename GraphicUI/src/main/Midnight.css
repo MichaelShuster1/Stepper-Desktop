@@ -430,6 +430,7 @@ Text {
     -fx-fill: white;
 }
 
+
 .hyperlink {
     -fx-text-fill: #4e4eee;
     -fx-underline: false;
@@ -439,4 +440,24 @@ Text {
 .hyperlink:hover {
     -fx-underline: true;
 }
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-color: -swatch-100;
+}
+
+.choice-box:hover {
+    -fx-color: -swatch-100;
+}
+.choice-box:showing {
+    -fx-color: -swatch-500;
+}
+
+
+.label {
+    -fx-font-family: "JetBrains Mono Thin";
+    -fx-font-size: 14;
+}
+
+
+
 

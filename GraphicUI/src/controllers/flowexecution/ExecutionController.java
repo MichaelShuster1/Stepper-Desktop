@@ -167,16 +167,11 @@ public class ExecutionController {
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
-        inputDialog.setContentText("please enter the input here:");
+        inputDialog.setContentText("Please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
 
-        //ButtonType customButton = new ButtonType("Clear input");
-        //inputDialog.getDialogPane().getButtonTypes().add(customButton);
-        //TextField textField=(TextField)inputDialog.getEditor();
-        //textField.setText("hello");
-
-        submitButton.setText("submit");
+        submitButton.setText("Submit");
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 

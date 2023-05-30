@@ -7,6 +7,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -20,11 +22,11 @@
                <children>
                   <HBox fx:id="logo" alignment="TOP_CENTER" VBox.vgrow="NEVER">
                      <children>
-                        <Label text="Stepper">
-                           <font>
-                              <Font name="System Bold" size="22.0" />
-                           </font>
-                        </Label>
+                        <ImageView fx:id="stepperLogo" fitHeight="150.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@blackLogo.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </HBox>
                   <HBox alignment="BASELINE_LEFT" spacing="15.0" VBox.vgrow="NEVER">

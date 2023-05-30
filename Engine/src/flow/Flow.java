@@ -662,8 +662,10 @@ public class Flow implements Serializable {
 
             for(Pair<Integer,String> currTarget : currTargets)
             {
-                if(!steps.get(currTarget.getKey()).getInputByName(currTarget.getValue()).haveInitialValue())
+                if(!steps.get(currTarget.getKey()).getInputByName(currTarget.getValue()).haveInitialValue()) {
                     steps.get(currTarget.getKey()).getInputByName(currTarget.getValue()).setData(data);
+                    freeMandatoryInputs.remove(currTarget.getValue());
+                }
             }
         }
     }

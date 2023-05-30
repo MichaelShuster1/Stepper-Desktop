@@ -48,7 +48,7 @@
             </BorderPane>
             <VBox alignment="CENTER" GridPane.rowSpan="2">
                <children>
-                  <Label text="filter:" />
+                  <Label text="Filter:" />
                   <ChoiceBox fx:id="stateFilterView" prefWidth="150.0" />
                </children>
             </VBox>
@@ -56,7 +56,7 @@
                <content>
                   <VBox fx:id="elementChoiceView" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="flow info" />
+                        <Button maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="Flow info" />
                      </children>
                   </VBox>
                </content>
