@@ -52,7 +52,7 @@
                   <ChoiceBox fx:id="choiceBoxView" prefWidth="150.0" BorderPane.alignment="CENTER" />
                </center>
                <top>
-                  <Label text="continuation:" BorderPane.alignment="CENTER">
+                  <Label text="Continuation:" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -85,7 +85,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label text="mandatory inputs:">
+                              <Label text="Mandatory inputs:">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font></Label>
@@ -102,7 +102,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label text="optional inputs:">
+                              <Label text="Optional inputs:">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font></Label>
@@ -121,7 +121,7 @@
                <content>
                   <VBox fx:id="elementChoiceView">
                      <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="flow info" />
+                        <Button maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="Flow info" />
                      </children>
                   </VBox>
                </content>

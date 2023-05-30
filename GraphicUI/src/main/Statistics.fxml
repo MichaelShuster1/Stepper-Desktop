@@ -42,12 +42,12 @@
             <StackPane fx:id="stepsStatisticsPane" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <children>
-                  <Button mnemonicParsing="false" onAction="#showStepsAvgRunTimeGraph" text="show avarage run time graph">
+                  <Button mnemonicParsing="false" onAction="#showStepsAvgRunTimeGraph" text="Show avarage run time graph">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showStepsActivatedTimesGraph" text="show activated times graph">
+                  <Button mnemonicParsing="false" onAction="#showStepsActivatedTimesGraph" text="Show activated times graph">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -56,12 +56,12 @@
             </VBox>
             <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Button mnemonicParsing="false" onAction="#showFlowsAvgRunTimeGraph" text="show avarage run time graph">
+                  <Button mnemonicParsing="false" onAction="#showFlowsAvgRunTimeGraph" text="Show avarage run time graph">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showFlowsActivatedTimesGraph" text="show activated times graph">
+                  <Button mnemonicParsing="false" onAction="#showFlowsActivatedTimesGraph" text="Show activated times graph">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

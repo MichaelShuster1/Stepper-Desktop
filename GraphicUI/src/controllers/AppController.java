@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -64,6 +66,9 @@ public class AppController {
     @FXML
     private ChoiceBox<String> styleChoiceView;
 
+    @FXML
+    private ImageView stepperLogo;
+
     private EngineApi engine;
 
     private ProgressTracker progressTracker;
@@ -93,11 +98,15 @@ public class AppController {
             case "DARK":
                 primaryStage.getScene().getStylesheets().add(
                         getClass().getResource("../main/Dark.css").toExternalForm());
+                stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
                 break;
             case "MIDNIGHT":
                 primaryStage.getScene().getStylesheets().add(
                         getClass().getResource("../main/Midnight.css").toExternalForm());
+                stepperLogo.setImage(new Image(getClass().getResource("../main/purpleLogo.png").toExternalForm()));
+                break;
             case "DEFAULT":
+                stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
                 break;
         }
     }

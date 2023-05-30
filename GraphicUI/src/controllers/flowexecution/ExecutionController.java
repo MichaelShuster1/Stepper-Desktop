@@ -154,16 +154,16 @@ public class ExecutionController {
     @FXML
     public void inputClick(Button button,ActionEvent event)
     {
-
         TextInputDialog inputDialog = new TextInputDialog();
 
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
-        inputDialog.setContentText("please enter the input here:");
+        inputDialog.setContentText("Please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
-        submitButton.setText("submit");
+
+        submitButton.setText("Submit");
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
@@ -198,8 +198,10 @@ public class ExecutionController {
         appController.addFlowId(flowId);
         executeButton.setDisable(true);
 
-        for(Button button:mandatoryInputButtons)
+
+        for(Button button:mandatoryInputButtons) {
             button.setStyle("-fx-background-color: #ff0000; ");
+        }
         for (Button button:optionalInputButtons)
             button.setStyle("");
 
