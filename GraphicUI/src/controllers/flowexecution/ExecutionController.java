@@ -8,6 +8,7 @@ import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
 import javafx.animation.FillTransition;
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +33,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -209,10 +211,28 @@ public class ExecutionController {
         appController.addFlowId(flowId);
         executeButton.setDisable(true);
 
-        for(Button button:mandatoryInputButtons)
+        for(Button button:mandatoryInputButtons) {
             button.setStyle("-fx-background-color: #ff0000; ");
-        for (Button button:optionalInputButtons)
+            RotateTransition rotationY = new RotateTransition();
+            rotationY.setAxis(Rotate.Z_AXIS);
+            rotationY.setDuration(Duration.seconds(1));
+            rotationY.setByAngle(-360);
+            rotationY.setNode(button);
+            rotationY.setCycleCount(1);
+            rotationY.play();
+        }
+        for (Button button:optionalInputButtons) {
             button.setStyle("");
+            RotateTransition rotationY = new RotateTransition();
+            rotationY.setAxis(Rotate.Z_AXIS);
+            rotationY.setDuration(Duration.seconds(1));
+            rotationY.setByAngle(360);
+            rotationY.setNode(button);
+            rotationY.setCycleCount(1);
+            rotationY.play();
+        }
+
+
 
 
     }
