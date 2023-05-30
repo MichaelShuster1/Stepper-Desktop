@@ -11,6 +11,7 @@ import javafx.animation.PathTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -116,7 +118,10 @@ public class ExecutionController {
             Button button=new Button();
             button.setId(inputData.getSystemName());
             button.setOnAction(e->inputClick(button,new ActionEvent()));
-            button.setText(inputData.getUserString());
+
+            String inputPresentation =inputData.getSystemName().replace("_"," ").toLowerCase();
+            inputPresentation+="\nDescription: "+inputData.getUserString();
+            button.setText(inputPresentation);
             FlowPane.setMargin(button,new Insets(0,10,10,0));
 
 
@@ -155,6 +160,7 @@ public class ExecutionController {
     public void inputClick(Button button,ActionEvent event)
     {
         TextInputDialog inputDialog = new TextInputDialog();
+
 
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
@@ -198,10 +204,8 @@ public class ExecutionController {
         appController.addFlowId(flowId);
         executeButton.setDisable(true);
 
-
-        for(Button button:mandatoryInputButtons) {
+        for(Button button:mandatoryInputButtons)
             button.setStyle("-fx-background-color: #ff0000; ");
-        }
         for (Button button:optionalInputButtons)
             button.setStyle("");
 
