@@ -35,7 +35,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -119,7 +121,15 @@ public class ExecutionController {
             InputData inputData=inputsDTO.getFreeInput(i);
             Button button=new Button();
             button.setId(inputData.getSystemName());
-            button.setOnAction(e->inputClick(button,new ActionEvent()));
+
+
+            button.setOnMouseClicked(event -> {
+                if(event.getButton()==MouseButton.PRIMARY)
+                    inputClick(button,new ActionEvent());
+                else if (event.getButton()==MouseButton.SECONDARY) {
+                    rightInputClick(button);
+                }
+            });
 
             String inputPresentation =inputData.getSystemName().replace("_"," ").toLowerCase();
             inputPresentation+="\nDescription: "+inputData.getUserString();
@@ -163,7 +173,6 @@ public class ExecutionController {
     {
         TextInputDialog inputDialog = new TextInputDialog();
 
-
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
@@ -188,11 +197,56 @@ public class ExecutionController {
             else
             {
                 Alert alert =new Alert(Alert.AlertType.ERROR);
+
+                ObservableList<String> stylesheets = appController.getPrimaryStage().getScene().getStylesheets();
+                if(stylesheets.size()!=0)
+                    alert.getDialogPane().getStylesheets().add(stylesheets.get(0));
+
                 alert.setTitle("Error");
                 alert.setContentText(resultDTO.getMessage());
                 alert.showAndWait();
             }
         }
+    }
+
+
+    public void rightInputClick(Button button)
+    {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem item1 = new MenuItem("clear input's data");
+        MenuItem item2 = new MenuItem("show input's data");
+
+        contextMenu.getItems().addAll(item1,item2);
+
+        item1.setOnAction(event -> {
+            boolean necessity =engine.clearInputData(button.getId()).getNecessity();
+            if(necessity){
+                executeButton.setDisable(true);
+                button.setStyle("-fx-background-color: #ff0000; ");
+            }
+            else
+                button.setStyle("");
+        });
+
+        item2.setOnAction(event -> {
+            String data =engine.getInputData(button.getId()).getData();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            ObservableList<String> stylesheets = appController.getPrimaryStage().getScene().getStylesheets();
+            if(stylesheets.size()!=0)
+                alert.getDialogPane().getStylesheets().add(stylesheets.get(0));
+
+            alert.setGraphic(null);
+            alert.setTitle("input's data");
+            if(data!=null)
+                alert.setHeaderText(data);
+            else
+                alert.setHeaderText("no data");
+            alert.showAndWait();
+        });
+
+        button.setContextMenu(contextMenu);
     }
 
 

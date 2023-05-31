@@ -1,5 +1,6 @@
 package flow;
 
+import datadefinition.DataDefinition;
 import datadefinition.DataEnumerator;
 import dto.*;
 import datadefinition.Input;
@@ -252,6 +253,40 @@ public class Flow implements Serializable {
         }
         freeMandatoryInputs.remove(inputName);
         return new ResultDTO(true, "The input was processed successfully");
+    }
+
+    public InputData clearInputData(String inputName)
+    {
+        List<Integer> indexList = flowFreeInputs.get(inputName);
+        if(indexList!=null) {
+            String userString=null;
+            for(int stepIndex:indexList){
+                Step step = steps.get(stepIndex);
+                Integer inputIndex = step.getNameToInputIndex().get(inputName);
+                Input input = step.getInput(inputIndex);
+                input.setData(null);
+                userString=input.getUserString();
+            }
+            if(freeInputsIsReq.get(inputName))
+                freeMandatoryInputs.add(inputName);
+            return new InputData(inputName,userString,freeInputsIsReq.get(inputName),false);
+        }
+        return null;
+    }
+
+    public FreeInputExecutionDTO getInputData(String inputName) {
+
+        int stepIndex = flowFreeInputs.get(inputName).get(0);
+        Step step = steps.get(stepIndex);
+        int inputIndex = step.getNameToInputIndex().get(inputName);
+        Input input = step.getInput(inputIndex);
+
+        String data=null;
+        if(input.getData()!=null)
+            data=input.getData().toString();
+
+        DataDefintionDTO dataDefintionDTO = new DataDefintionDTO(input.getName(), input.getType());
+        return new FreeInputExecutionDTO(dataDefintionDTO, data, freeInputsIsReq.get(inputName));
     }
 
 
@@ -669,4 +704,5 @@ public class Flow implements Serializable {
             }
         }
     }
+
 }

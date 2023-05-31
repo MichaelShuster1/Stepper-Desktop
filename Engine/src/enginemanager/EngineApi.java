@@ -23,6 +23,10 @@ public interface EngineApi {
 
     ResultDTO processInput(String inputName, String data);
 
+    InputData clearInputData(String inputName);
+
+    FreeInputExecutionDTO getInputData(String inputName);
+
     boolean isFlowReady();
 
     String runFlow(); //getFlowInputs

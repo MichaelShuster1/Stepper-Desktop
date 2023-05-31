@@ -401,6 +401,18 @@ public class Manager implements EngineApi, Serializable {
         return flowExecutions.get(id).getFlowHistoryData();
     }
 
+    @Override
+    public InputData clearInputData(String inputName)
+    {
+        return currentFlow.clearInputData(inputName);
+    }
+
+    @Override
+    public FreeInputExecutionDTO getInputData(String inputName)
+    {
+        return currentFlow.getInputData(inputName);
+    }
+
 
 
     @Override
