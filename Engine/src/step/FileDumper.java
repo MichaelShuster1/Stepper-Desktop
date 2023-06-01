@@ -1,5 +1,6 @@
 package step;
 
+import datadefinition.DataFile;
 import datadefinition.DataString;
 import datadefinition.Input;
 import datadefinition.Output;

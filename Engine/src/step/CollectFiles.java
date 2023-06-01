@@ -16,11 +16,11 @@ public class CollectFiles extends Step {
         super(name, true, continue_if_failing);
         defaultName = "Collect Files In Folder";
 
-        DataString dataString = new DataString("FOLDER_NAME");
-        inputs.add(new Input(dataString, true, true, "Folder name to scan"));
+        DataFile dataFile=new DataFile("FOLDER_NAME");
+        inputs.add(new Input(dataFile, true, true, "Folder name to scan"));
         nameToInputIndex.put("FOLDER_NAME", 0);
 
-        dataString = new DataString("FILTER");
+        DataString dataString = new DataString("FILTER");
         inputs.add(new Input(dataString, true, false, "Filter only these files"));
         nameToInputIndex.put("FILTER", 1);
 

@@ -10,6 +10,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 public class ExecutionController {
 
@@ -178,13 +180,45 @@ public class ExecutionController {
         inputDialog.setGraphic(null);
         inputDialog.setContentText("Please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
+
+
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
 
         submitButton.setText("Submit");
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
-        Optional<String> result =inputDialog.showAndWait();
+        String inputType =engine.getInputData(button.getId()).getType();
+        Optional<String> result=Optional.empty();
+        switch (inputType)
+        {
+            case "File":
+                result = openFolderChooser();
+                break;
+            case "Enumerator":
+                break;
+            case "Number":
+                Spinner<Integer> spinner=new Spinner<>();
+
+                SpinnerValueFactory<Integer> spinnerValueFactory =
+                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE);
+                spinnerValueFactory.setValue(1);
+
+                spinner.setValueFactory(spinnerValueFactory);
+
+                spinner.setEditable(true);
+
+                TextField textField =inputDialog.getEditor();
+                inputDialog.getDialogPane().setContent(spinner);
+                result =inputDialog.showAndWait();
+                break;
+            case "String":
+                result =inputDialog.showAndWait();
+                break;
+        }
+
+
+
         if(result.isPresent())
         {
             ResultDTO resultDTO=engine.processInput(button.getId(),result.get());
