@@ -34,12 +34,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -184,7 +182,36 @@ public class ExecutionController {
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
-        Optional<String> result =inputDialog.showAndWait();
+        String inputType =engine.getInputData(button.getId()).getType();
+        Optional<String> result=Optional.of("");
+        switch (inputType)
+        {
+            case "File":
+                result = Optional.of(openFolderChooser());
+                break;
+            case "Enumerator":
+                break;
+            case "Number":
+                Spinner<Integer> spinner=new Spinner<>();
+
+                SpinnerValueFactory<Integer> spinnerValueFactory =
+                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE);
+                spinnerValueFactory.setValue(1);
+
+                spinner.setValueFactory(spinnerValueFactory);
+
+                spinner.setEditable(true);
+
+                TextField textField =inputDialog.getEditor();
+                inputDialog.getDialogPane().setContent(spinner);
+                result =inputDialog.showAndWait();
+                break;
+            case "String":
+                result =inputDialog.showAndWait();
+                break;
+        }
+
+
         if(result.isPresent())
         {
             ResultDTO resultDTO=engine.processInput(button.getId(),result.get());
@@ -209,13 +236,25 @@ public class ExecutionController {
         }
     }
 
+    public String openFolderChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Folder");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Folders", "*"));
+
+        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        if (selectedFolder != null)
+            return selectedFolder.getAbsolutePath();
+        else
+            return null;
+    }
+
 
     public void rightInputClick(Button button)
     {
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem item1 = new MenuItem("clear input's data");
-        MenuItem item2 = new MenuItem("show input's data");
+        MenuItem item1 = new MenuItem("Clear input's data");
+        MenuItem item2 = new MenuItem("Show input's data");
 
         contextMenu.getItems().addAll(item1,item2);
 

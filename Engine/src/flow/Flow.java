@@ -323,7 +323,7 @@ public class Flow implements Serializable {
                 }
                 catch (EnumerationDataException e) {
                     message = "Input processing failed due to: "
-                            + "this enumeration data expects to receive on of the following only: " + e.getMessage();
+                            + "this enumeration data expects to receive one of the following only: " + e.getMessage();
                     return new ResultDTO(false,message);
                 }
         }

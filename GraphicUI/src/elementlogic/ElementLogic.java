@@ -2,6 +2,7 @@ package elementlogic;
 
 import datadefinition.Relation;
 import dto.*;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Map;
@@ -64,6 +66,8 @@ public class ElementLogic {
         if(flowExecutionDTO.getStateAfterRun()!=null)
             updateFlowInfoView();
     }
+
+
 
     public void clear()
     {
