@@ -63,7 +63,7 @@
                         <fx:include fx:id="historyComponent" source="History.fxml" />
                      </content>
                   </Tab>
-                <Tab text="Flows Execution">
+                <Tab fx:id="executionTabView" text="Flows Execution">
                      <content>
                         <fx:include fx:id="executionComponent" source="Execution.fxml" />
                      </content>

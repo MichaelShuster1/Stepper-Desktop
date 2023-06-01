@@ -2,38 +2,21 @@ package controllers.flowexecution;
 
 
 import controllers.AppController;
-import datadefinition.Relation;
+import datadefinition.DataType;
 import dto.*;
 import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
-import javafx.animation.FillTransition;
-import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
@@ -41,9 +24,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
+
 
 public class ExecutionController {
 
@@ -80,7 +62,6 @@ public class ExecutionController {
     private List<Button> optionalInputButtons;
 
     private ElementLogic elementLogic;
-
 
 
 
@@ -159,13 +140,23 @@ public class ExecutionController {
     }
 
     public void clearTab() {
+        clearInputButtons();
+        clearExecutionUpdate();
+    }
+
+    public void clearInputButtons(){
         mandatoryInputsView.getChildren().clear();
         optionalInputsView.getChildren().clear();
+    }
+
+    public void clearExecutionUpdate()
+    {
         choiceBoxView.getItems().clear();
         elementLogic.clear();
         progressBarView.setProgress(0);
         choiceBoxView.setDisable(true);
     }
+
 
 
     @FXML
@@ -176,68 +167,71 @@ public class ExecutionController {
         inputDialog.setTitle("submit input");
         inputDialog.setHeaderText(null);
         inputDialog.setGraphic(null);
-        inputDialog.setContentText("Please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
 
-
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
-
         submitButton.setText("Submit");
+        
         if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
         String inputType =engine.getInputData(button.getId()).getType();
         Optional<String> result=Optional.empty();
-        switch (inputType)
+
+
+        switch (DataType.valueOf(inputType.toUpperCase()))
         {
-            case "File":
-                result = openFolderChooser();
-                break;
-            case "Enumerator":
-                break;
-            case "Number":
-                Spinner<Integer> spinner=new Spinner<>();
-
-                SpinnerValueFactory<Integer> spinnerValueFactory =
-                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE);
-                spinnerValueFactory.setValue(1);
-
-                spinner.setValueFactory(spinnerValueFactory);
-
-                spinner.setEditable(true);
-
-                TextField textField =inputDialog.getEditor();
-                inputDialog.getDialogPane().setContent(spinner);
+            case FILE:
+                //result = openFolderChooser();
+                inputDialog.setContentText("Please enter the folder here:");
                 result =inputDialog.showAndWait();
                 break;
-            case "String":
+            case ENUMERATOR:
+                break;
+            case NUMBER:
+                inputDialog.setContentText("Please enter the number here:");
+                TextField textField = inputDialog.getEditor();
+                textField.addEventFilter(KeyEvent.KEY_TYPED, e -> {
+                    String input = e.getCharacter();
+                    if (!input.matches("[0-9]")) {
+                        e.consume();
+                    }
+                });
+                result =inputDialog.showAndWait();
+                break;
+            case STRING:
+                inputDialog.setContentText("Please enter the input here:");
                 result =inputDialog.showAndWait();
                 break;
         }
 
 
-
         if(result.isPresent())
         {
-            ResultDTO resultDTO=engine.processInput(button.getId(),result.get());
-            if(resultDTO.getStatus())
-            {
-                button.setStyle("-fx-background-color: #40ff00; ");
-                if(engine.isFlowReady())
-                    executeButton.setDisable(false);
-            }
-            else
-            {
-                Alert alert =new Alert(Alert.AlertType.ERROR);
+            String data= result.get();
+            processInput(button, data);
+        }
+    }
 
-                ObservableList<String> stylesheets = appController.getPrimaryStage().getScene().getStylesheets();
-                if(stylesheets.size()!=0)
-                    alert.getDialogPane().getStylesheets().add(stylesheets.get(0));
+    private void processInput(Button button, String data) {
+        ResultDTO resultDTO=engine.processInput(button.getId(), data);
+        if(resultDTO.getStatus())
+        {
+            button.setStyle("-fx-background-color: #40ff00; ");
+            if(engine.isFlowReady())
+                executeButton.setDisable(false);
+        }
+        else
+        {
+            Alert alert =new Alert(Alert.AlertType.ERROR);
 
-                alert.setTitle("Error");
-                alert.setContentText(resultDTO.getMessage());
-                alert.showAndWait();
-            }
+            ObservableList<String> stylesheets = appController.getPrimaryStage().getScene().getStylesheets();
+            if(stylesheets.size()!=0)
+                alert.getDialogPane().getStylesheets().add(stylesheets.get(0));
+
+            alert.setTitle("Error");
+            alert.setContentText(resultDTO.getMessage());
+            alert.showAndWait();
         }
     }
 

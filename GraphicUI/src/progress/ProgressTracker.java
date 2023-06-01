@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class ProgressTracker extends Task<Boolean> {
 
-    List<String> flowsId;
+    final List<String> flowsId;
 
     String currentFlowId;
 
@@ -43,6 +43,13 @@ public class ProgressTracker extends Task<Boolean> {
         }
     }
 
+    public boolean finishedFollowingLastActivatedFlow()
+    {
+        synchronized (flowsId){
+            return (!flowsId.contains(currentFlowId) && currentFlowId!=null);
+        }
+    }
+
     @Override
     protected Boolean call()  {
         while (appController!=null)
@@ -65,7 +72,7 @@ public class ProgressTracker extends Task<Boolean> {
                 }
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
             }
         }

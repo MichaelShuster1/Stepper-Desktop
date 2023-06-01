@@ -1,5 +1,6 @@
 package elementlogic;
 
+import datadefinition.DataType;
 import datadefinition.Relation;
 import dto.*;
 import javafx.collections.FXCollections;
@@ -167,7 +168,7 @@ public class ElementLogic {
             Object data=io.get(dataDefintionDTO);
 
             if(data!=null) {
-                if(type.equals("Relation")||type.equals("List"))
+                if(type.equals(DataType.RELATION.toString())||type.equals(DataType.LIST.toString()))
                     addKeyHyperLinkValueLine(name,type,data);
                 else
                     addKeyValueLine(name+": ",data.toString());

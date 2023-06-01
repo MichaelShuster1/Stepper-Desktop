@@ -315,6 +315,7 @@ public class Flow implements Serializable {
                 }
                 break;
             case "DataString":
+            case "DataFile":
                 input.setData(rawData);
                 break;
             case "DataEnumerator":

@@ -10,13 +10,14 @@ import enginemanager.Manager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import controllers.flowexecution.ExecutionController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -63,6 +64,9 @@ public class AppController {
 
     @FXML
     private TabPane tabPaneView;
+
+    @FXML
+    private Tab executionTabView;
     @FXML
     private ChoiceBox<String> styleChoiceView;
 
@@ -74,6 +78,8 @@ public class AppController {
     private ProgressTracker progressTracker;
 
     private Stage primaryStage;
+
+    private boolean tabClicked;
 
 
 
@@ -88,6 +94,23 @@ public class AppController {
         styleChoiceView.setValue("DEFAULT");
         styleChoiceView.setOnAction(e->setStyle());
         setTab(3);
+
+        tabClicked=true;
+
+
+        tabPaneView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observable, Tab oldTab, Tab newTab) {
+                if (newTab != null) {
+                    String tabTitle = newTab.getText();
+                    if(tabTitle.equals("Flows Execution")&&tabClicked) {
+                        if(progressTracker.finishedFollowingLastActivatedFlow())
+                            executionComponentController.clearTab();
+                    }
+                }
+                tabClicked =true;
+            }
+        });
     }
 
     private void setStyle() {
@@ -200,8 +223,11 @@ public class AppController {
     public void streamFlow(int index) {
         progressTracker.resetCurrentFlowId();
         executionComponentController.setTabView(getFlowInputs(index));
+        tabClicked=false;
         setTab(2);
     }
+
+
 
     public void updateProgressFlow(FlowExecutionDTO flowExecutionDTO)
     {
