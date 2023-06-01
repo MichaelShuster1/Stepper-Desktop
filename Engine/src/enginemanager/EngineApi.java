@@ -52,4 +52,8 @@ public interface EngineApi {
     void doContinuation(FlowExecution flowExecution, String targetName);
 
     FlowExecution getFlowExecution(String ID);
+
+    List<String> getEnumerationAllowedValues(String inputName);
+
+    String getInputDefaultName(String inputName);
 }

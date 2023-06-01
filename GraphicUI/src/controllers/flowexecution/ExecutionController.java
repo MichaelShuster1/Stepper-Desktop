@@ -190,10 +190,19 @@ public class ExecutionController {
         Optional<String> result=Optional.empty();
         switch (inputType)
         {
-            case "File":
-                result = openFolderChooser();
-                break;
             case "Enumerator":
+                ChoiceBox<String> enumerationSetChoice = new ChoiceBox<>();
+                enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
+                enumerationSetChoice.setStyle("-fx-pref-width: 200px;");
+                inputDialog.getDialogPane().setContent(new HBox(10, new Label("Please choose an input:"), enumerationSetChoice));
+                inputDialog.setResultConverter(dialogButton -> {
+                    if (dialogButton == ButtonType.OK) {
+                        String selectedOption = enumerationSetChoice.getValue();
+                        return selectedOption;
+                    }
+                    return null;
+                });
+                result = inputDialog.showAndWait();
                 break;
             case "Number":
                 Spinner<Integer> spinner=new Spinner<>();
@@ -211,7 +220,22 @@ public class ExecutionController {
                 result =inputDialog.showAndWait();
                 break;
             case "String":
-                result =inputDialog.showAndWait();
+                String inputDefaultName = engine.getInputDefaultName(button.getId());
+                switch (inputDefaultName) {
+                    case "FOLDER_NAME":
+                        result = openFolderChooser();
+                        break;
+                    case "FILE_NAME":
+                        result = openFileChooser();
+                        break;
+                    case "SOURCE":
+
+                        result =inputDialog.showAndWait();
+                        break;
+                    default:
+                        result =inputDialog.showAndWait();
+                        break;
+                }
                 break;
         }
 
@@ -244,7 +268,6 @@ public class ExecutionController {
     public Optional<String> openFolderChooser() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder");
-
         File selectedFolder = directoryChooser.showDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());
@@ -252,6 +275,15 @@ public class ExecutionController {
             return Optional.empty();
     }
 
+    public Optional<String> openFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
+        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        if (selectedFolder != null)
+            return Optional.of(selectedFolder.getAbsolutePath());
+        else
+            return Optional.empty();
+    }
 
 
     public void rightInputClick(Button button)

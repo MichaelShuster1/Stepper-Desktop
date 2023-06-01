@@ -326,6 +326,9 @@ public class Flow implements Serializable {
                             + "this enumeration data expects to receive one of the following only: " + e.getMessage();
                     return new ResultDTO(false,message);
                 }
+            case "DataFile":
+                input.setData(rawData);
+                break;
         }
 
         return new ResultDTO(true, "The input was processed successfully");
@@ -705,4 +708,21 @@ public class Flow implements Serializable {
         }
     }
 
+    public List<String> getEnumerationAllowedValues(String inputName) {
+        int stepIndex = flowFreeInputs.get(inputName).get(0);
+        Step step = steps.get(stepIndex);
+        int inputIndex = step.getNameToInputIndex().get(inputName);
+        Input input = step.getInput(inputIndex);
+
+        return  input.getDataDefinition().getSecondaryData();
+    }
+
+    public String getInputDefaultName(String inputName) {
+        int stepIndex = flowFreeInputs.get(inputName).get(0);
+        Step step = steps.get(stepIndex);
+        int inputIndex = step.getNameToInputIndex().get(inputName);
+        Input input = step.getInput(inputIndex);
+
+        return input.getDefaultName();
+    }
 }

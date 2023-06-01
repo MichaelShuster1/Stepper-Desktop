@@ -2,6 +2,7 @@ package datadefinition;
 
 
 import java.io.File;
+import java.util.List;
 
 public class DataFile extends DataDefinition<String> {
     private String data;
@@ -21,6 +22,11 @@ public class DataFile extends DataDefinition<String> {
     @Override
     public String toString() {
         return data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }
 
