@@ -10,6 +10,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 public class ExecutionController {
 
@@ -176,6 +178,8 @@ public class ExecutionController {
         inputDialog.setGraphic(null);
         inputDialog.setContentText("Please enter the input here:");
         inputDialog.getDialogPane().setPrefWidth(400);
+
+
         Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
 
         submitButton.setText("Submit");
@@ -183,11 +187,11 @@ public class ExecutionController {
             inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
         String inputType =engine.getInputData(button.getId()).getType();
-        Optional<String> result=Optional.of("");
+        Optional<String> result=Optional.empty();
         switch (inputType)
         {
             case "File":
-                result = Optional.of(openFolderChooser());
+                result = openFolderChooser();
                 break;
             case "Enumerator":
                 break;
@@ -210,6 +214,7 @@ public class ExecutionController {
                 result =inputDialog.showAndWait();
                 break;
         }
+
 
 
         if(result.isPresent())
@@ -236,17 +241,17 @@ public class ExecutionController {
         }
     }
 
-    public String openFolderChooser() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Folder");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Folders", "*"));
+    public Optional<String> openFolderChooser() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Folder");
 
-        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        File selectedFolder = directoryChooser.showDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
-            return selectedFolder.getAbsolutePath();
+            return Optional.of(selectedFolder.getAbsolutePath());
         else
-            return null;
+            return Optional.empty();
     }
+
 
 
     public void rightInputClick(Button button)

@@ -1,9 +1,6 @@
 package step;
 
-import datadefinition.DataEnumerator;
-import datadefinition.DataString;
-import datadefinition.Input;
-import datadefinition.Output;
+import datadefinition.*;
 
 import java.io.*;
 import java.util.HashSet;
@@ -19,7 +16,7 @@ public class Zipper extends Step {
         defaultName = "Zipper";
 
 
-        DataString dataString = new DataString("SOURCE");
+        DataFile dataString = new DataFile("SOURCE");
         inputs.add(new Input(dataString, true, true, "Source"));
         nameToInputIndex.put("SOURCE", 0);
 

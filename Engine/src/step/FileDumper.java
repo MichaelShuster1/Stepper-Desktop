@@ -1,5 +1,6 @@
 package step;
 
+import datadefinition.DataFile;
 import datadefinition.DataString;
 import datadefinition.Input;
 import datadefinition.Output;
@@ -14,7 +15,7 @@ public class FileDumper extends Step {
         inputs.add(new Input(new DataString("CONTENT"), true, true, "Content"));
         nameToInputIndex.put("CONTENT", 0);
 
-        inputs.add(new Input(new DataString("FILE_NAME"), true, true, "Target file path"));
+        inputs.add(new Input(new DataFile("FILE_NAME"), true, true, "Target file path"));
         nameToInputIndex.put("FILE_NAME", 1);
 
         outputs.add(new Output(new DataString("RESULT"), "File creation result"));
