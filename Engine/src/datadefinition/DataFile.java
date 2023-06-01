@@ -10,7 +10,7 @@ public class DataFile extends DataDefinition<String> {
         super(name, "DataFile");
     }
 
-    public File getData() {
+    public String getData() {
         return data;
     }
 
@@ -20,7 +20,7 @@ public class DataFile extends DataDefinition<String> {
 
     @Override
     public String toString() {
-        return data.getAbsolutePath();
+        return data;
     }
 }
 

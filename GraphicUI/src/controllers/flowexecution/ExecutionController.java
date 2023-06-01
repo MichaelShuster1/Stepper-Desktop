@@ -35,12 +35,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -242,6 +240,18 @@ public class ExecutionController {
             }
         }
     }
+
+    public Optional<String> openFolderChooser() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Folder");
+
+        File selectedFolder = directoryChooser.showDialog(appController.getPrimaryStage());
+        if (selectedFolder != null)
+            return Optional.of(selectedFolder.getAbsolutePath());
+        else
+            return Optional.empty();
+    }
+
 
 
     public void rightInputClick(Button button)
