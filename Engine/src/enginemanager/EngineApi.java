@@ -56,4 +56,6 @@ public interface EngineApi {
     List<String> getEnumerationAllowedValues(String inputName);
 
     String getInputDefaultName(String inputName);
+
+    void endProcess();
 }

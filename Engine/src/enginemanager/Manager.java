@@ -43,6 +43,13 @@ public class Manager implements EngineApi, Serializable {
         flowExecutions=new HashMap<>();
     }
 
+    @Override
+    public void endProcess()
+    {
+        if(threadPool!=null)
+            threadPool.shutdown();
+    }
+
 
     @Override
     public List<String> getFlowsNames() {

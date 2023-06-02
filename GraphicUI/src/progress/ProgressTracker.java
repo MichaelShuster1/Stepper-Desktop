@@ -50,6 +50,13 @@ public class ProgressTracker extends Task<Boolean> {
         }
     }
 
+    public boolean areFlowsRunning()
+    {
+        synchronized (flowsId){
+            return (flowsId.size()!=0);
+        }
+    }
+
     @Override
     protected Boolean call()  {
         while (appController!=null)

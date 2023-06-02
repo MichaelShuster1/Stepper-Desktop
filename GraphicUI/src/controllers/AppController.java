@@ -114,6 +114,7 @@ public class AppController {
             }
         });
 
+
     }
 
 
@@ -163,6 +164,28 @@ public class AppController {
         this.primaryStage = primaryStage;
         executionComponentController.setStage(primaryStage);
         historyComponentController.setStage(primaryStage);
+
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume(); // Consume the event to prevent default close behavior
+
+            // Show a confirmation dialog
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+
+            if(progressTracker.areFlowsRunning())
+                alert.setHeaderText("The are still flows running in the background!\nAre you sure you want to exit?");
+            else
+                alert.setHeaderText("Are you sure you want to exit?");
+            alert.setContentText("Press OK to exit the application.\n");
+
+            // Handle the user's choice
+            alert.showAndWait().ifPresent(result -> {
+                if (result == ButtonType.OK) {
+                    primaryStage.close();
+                    engine.endProcess();
+                }
+            });
+        });
     }
 
 
