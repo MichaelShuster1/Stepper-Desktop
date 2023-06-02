@@ -8,11 +8,14 @@ import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -22,7 +25,6 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,8 @@ public class ExecutionController {
 
     private ElementLogic elementLogic;
 
+    private BooleanProperty isAnimationsOn;
+
 
 
     @FXML
@@ -86,6 +90,12 @@ public class ExecutionController {
     {
         elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
         //elementLogic.setTableOpacity(0.0);
+    }
+
+    public void bindAnimationBooleanProperty(BooleanProperty booleanProperty)
+    {
+        isAnimationsOn=new SimpleBooleanProperty();
+        isAnimationsOn.bind(booleanProperty);
     }
 
     public void setEngine(EngineApi engine) {
@@ -397,34 +407,32 @@ public class ExecutionController {
 
         for(Button button:mandatoryInputButtons) {
             button.setStyle("-fx-background-color: #ff0000; ");
-            RotateTransition rotationY = new RotateTransition();
-            rotationY.setAxis(Rotate.Z_AXIS);
-            rotationY.setDuration(Duration.seconds(1));
-            rotationY.setByAngle(-360);
-            rotationY.setNode(button);
-            rotationY.setCycleCount(1);
-            rotationY.play();
+            if(isAnimationsOn.get()) {
+                createButtonFlipAnimation(button,-360);
+            }
         }
         for (Button button:optionalInputButtons) {
             button.setStyle("");
-            RotateTransition rotationY = new RotateTransition();
-            rotationY.setAxis(Rotate.Z_AXIS);
-            rotationY.setDuration(Duration.seconds(1));
-            rotationY.setByAngle(360);
-            rotationY.setNode(button);
-            rotationY.setCycleCount(1);
-            rotationY.play();
+            if(isAnimationsOn.get()) {
+                createButtonFlipAnimation(button,360);
+            }
         }
 
-
-        //elementLogic.animateTable();
-
-
-
-
-
-
+        if(isAnimationsOn.get())
+            elementLogic.animateTable();
     }
+
+    private void createButtonFlipAnimation(Button button,int direction)
+    {
+        RotateTransition rotationY = new RotateTransition();
+        rotationY.setAxis(Rotate.Z_AXIS);
+        rotationY.setDuration(Duration.seconds(1));
+        rotationY.setByAngle(-360);
+        rotationY.setNode(button);
+        rotationY.setCycleCount(1);
+        rotationY.play();
+    }
+
 
     public void updateProgressFlow(FlowExecutionDTO flowExecutionDTO)
     {
@@ -437,15 +445,27 @@ public class ExecutionController {
             {
                 List<String> targetFlows = continutionMenuDTO.getTargetFlows();
                 choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
-                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), choiceBoxView);
-                fadeTransition.setFromValue(0.0);
-                fadeTransition.setToValue(1.0);
-                fadeTransition.play();
+                if(isAnimationsOn.get()) {
+                    createFadeAnimation(choiceBoxView);
+                }
                 choiceBoxView.setDisable(false);
             }
+            if(isAnimationsOn.get()) {
+                createFadeAnimation(elementDetailsView);
+            }
+
+
             progressBarView.setProgress(1);
         }
 
+    }
+
+    private void createFadeAnimation(Node node)
+    {
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), node);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.play();
     }
 
 

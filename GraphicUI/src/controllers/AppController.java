@@ -7,32 +7,22 @@ import dto.FlowExecutionDTO;
 import dto.InputsDTO;
 import enginemanager.EngineApi;
 import enginemanager.Manager;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import controllers.flowexecution.ExecutionController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import progress.ProgressTracker;
 import styles.Styles;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class AppController {
 
@@ -76,6 +66,9 @@ public class AppController {
     @FXML
     private ImageView stepperLogo;
 
+    @FXML
+    private RadioButton animationsRadioButtonVIew;
+
     private EngineApi engine;
 
     private ProgressTracker progressTracker;
@@ -90,6 +83,7 @@ public class AppController {
     @FXML
     public void initialize() {
         executionComponentController.setAppController(this);
+        executionComponentController.bindAnimationBooleanProperty(animationsRadioButtonVIew.selectedProperty());
         definitionComponentController.setAppController(this);
         historyComponentController.setAppController(this);
         statisticsComponentController.setAppController(this);
@@ -98,6 +92,7 @@ public class AppController {
         styleChoiceView.setOnAction(e->setStyle());
         setTab(3);
         tabClicked=true;
+
 
 
         tabPaneView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
