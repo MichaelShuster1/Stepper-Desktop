@@ -167,6 +167,26 @@ public class ElementLogic {
         elementDetailsView.getChildren().add(hBox);
     }
 
+    private void addKeyProgressIndicator(String name)
+    {
+        HBox hBox = getNewHbox();
+
+        Label key =new Label(name);
+        key.setFont(Font.font("System", FontWeight.BOLD,12));
+
+        hBox.setMaxHeight(14);
+
+        ProgressIndicator progressIndicator =new ProgressIndicator();
+        progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
+        hBox.getChildren().add(key);
+        hBox.getChildren().add(progressIndicator);
+
+        elementDetailsView.getChildren().add(hBox);
+    }
+
+
+
     private void addTitleLine(String title)
     {
         HBox hBox= getNewHbox();
@@ -289,7 +309,10 @@ public class ElementLogic {
         if(flowExecutionDTO.getStateAfterRun()!=null)
             addKeyValueLine("Flow total run time: " , flowExecutionDTO.getRunTime() + " ms");
         else
-            addKeyValueLine("Flow total run time: " ,  "flow is still running");
+            addKeyProgressIndicator("Flow total run time: ");
+            //addKeyValueLine("Flow total run time: " ,  "flow is still running");
+
+
         addTitleLine("\n\nFREE INPUTS THAT RECEIVED DATA:\n");
         if(flowExecutionDTO.getFreeInputs().size()!=0) {
             updateFlowFreeInputs(flowExecutionDTO.getFreeInputs(), true);
@@ -314,7 +337,8 @@ public class ElementLogic {
         if(flowExecutionDTO.getStateAfterRun()!=null)
             addKeyValueLine("Flow's final state : " , flowExecutionDTO.getStateAfterRun());
         else
-            addKeyValueLine("Flow's final state : " , "flow is still running");
+            addKeyProgressIndicator("Flow's final state :   ");
+            //addKeyValueLine("Flow's final state : " , "flow is still running");
 
 
     }

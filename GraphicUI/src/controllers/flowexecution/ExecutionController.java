@@ -347,7 +347,7 @@ public class ExecutionController {
     public Optional<String> openFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select File");
-        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        File selectedFolder = fileChooser.showSaveDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());
         else
@@ -453,7 +453,6 @@ public class ExecutionController {
             if(isAnimationsOn.get()) {
                 createFadeAnimation(elementDetailsView);
             }
-
 
             progressBarView.setProgress(1);
         }
