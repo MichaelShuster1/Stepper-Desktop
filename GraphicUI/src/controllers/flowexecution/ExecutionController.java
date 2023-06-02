@@ -214,53 +214,7 @@ public class ExecutionController {
                 break;
             case STRING:
                 String inputDefaultName = engine.getInputDefaultName(button.getId());
-                switch (inputDefaultName) {
-                    case "FOLDER_NAME":
-                        result = openFolderChooser();
-                        break;
-                    case "FILE_NAME":
-                        result = openFileChooser();
-                        break;
-                    case "SOURCE":
-                        Dialog<ButtonType> dialog = new Dialog<>();
-                        dialog.setTitle("Choose zipping source");
-                        dialog.setHeaderText("Please select an option:");
-                        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
-                           dialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
-
-                        RadioButton option1 = new RadioButton("Zip folder");
-                        RadioButton option2 = new RadioButton("Zip file");
-
-                        ToggleGroup toggleGroup = new ToggleGroup();
-                        option1.setToggleGroup(toggleGroup);
-                        option2.setToggleGroup(toggleGroup);
-
-                        HBox hbox = new HBox(10, option1, option2);
-                        hbox.setPadding(new Insets(10));
-
-                        dialog.getDialogPane().setContent(hbox);
-                        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-                        Optional<ButtonType> zipResult = dialog.showAndWait();
-
-                        if(zipResult.isPresent()) {
-                            ButtonType selectedButton = zipResult.get();
-                            if (selectedButton == ButtonType.OK) {
-                                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-                                if (selectedRadioButton != null) {
-                                    String selectedOption = selectedRadioButton.getText();
-                                    if (selectedOption.equals("Zip folder"))
-                                        result = openFolderChooser();
-                                    else
-                                        result = openFileChooser();
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                        inputDialog.setContentText("Please enter the input here:");
-                        result =inputDialog.showAndWait();
-                        break;
-                }
+                result = getStringInputFromUser(inputDialog, inputDefaultName);
                 break;
         }
 
@@ -272,6 +226,67 @@ public class ExecutionController {
         }
     }
 
+    private Optional<String> getStringInputFromUser(TextInputDialog inputDialog, String inputDefaultName) {
+        Optional<String> result = Optional.empty();
+        switch (inputDefaultName) {
+            case "FOLDER_NAME":
+                result = openFolderChooser();
+                break;
+            case "FILE_NAME":
+                result = openFileChooser();
+                break;
+            case "SOURCE":
+                Dialog<ButtonType> dialog = new Dialog<>();
+                ToggleGroup toggleGroup = createZipChooserDialogAndGetToggle(dialog);
+                Optional<ButtonType> zipResult = dialog.showAndWait();
+                result = processZipResult(result, toggleGroup, zipResult);
+                break;
+            default:
+                inputDialog.setContentText("Please enter the input here:");
+                result = inputDialog.showAndWait();
+                break;
+        }
+        return result;
+    }
+
+    private Optional<String> processZipResult(Optional<String> result, ToggleGroup toggleGroup, Optional<ButtonType> zipResult) {
+        if(zipResult.isPresent()) {
+            ButtonType selectedButton = zipResult.get();
+            if (selectedButton == ButtonType.OK) {
+                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                if (selectedRadioButton != null) {
+                    String selectedOption = selectedRadioButton.getText();
+                    if (selectedOption.equals("Zip folder"))
+                        result = openFolderChooser();
+                    else
+                        result = openFileChooser();
+                }
+            }
+        }
+        return result;
+    }
+
+    public ToggleGroup createZipChooserDialogAndGetToggle(Dialog<ButtonType> dialog) {
+        dialog.setTitle("Choose zipping source");
+        dialog.setHeaderText("Please select an option:");
+        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+            dialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
+
+        RadioButton option1 = new RadioButton("Zip folder");
+        RadioButton option2 = new RadioButton("Zip file");
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        option1.setToggleGroup(toggleGroup);
+        option2.setToggleGroup(toggleGroup);
+
+        HBox hbox = new HBox(10, option1, option2);
+        hbox.setPadding(new Insets(10));
+
+        dialog.getDialogPane().setContent(hbox);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        return toggleGroup;
+    }
     private void processInput(Button button, String data) {
         ResultDTO resultDTO=engine.processInput(button.getId(), data);
         if(resultDTO.getStatus())
