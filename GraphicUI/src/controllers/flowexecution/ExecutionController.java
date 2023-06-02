@@ -6,6 +6,7 @@ import datadefinition.DataType;
 import dto.*;
 import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
+import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,6 +72,7 @@ public class ExecutionController {
         continuationButton.setDisable(true);
         continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
         choiceBoxView.setDisable(true);
+        choiceBoxView.setOpacity(0.0);
     }
 
 
@@ -83,6 +85,7 @@ public class ExecutionController {
     public void setStage(Stage stage)
     {
         elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
+        //elementLogic.setTableOpacity(0.0);
     }
 
     public void setEngine(EngineApi engine) {
@@ -143,6 +146,8 @@ public class ExecutionController {
     public void clearTab() {
         clearInputButtons();
         clearExecutionUpdate();
+        choiceBoxView.setOpacity(0.0);
+        //elementLogic.setTableOpacity(0.0);
     }
 
     public void clearInputButtons(){
@@ -412,6 +417,11 @@ public class ExecutionController {
         }
 
 
+        //elementLogic.animateTable();
+
+
+
+
 
 
     }
@@ -427,6 +437,10 @@ public class ExecutionController {
             {
                 List<String> targetFlows = continutionMenuDTO.getTargetFlows();
                 choiceBoxView.setItems(FXCollections.observableArrayList(targetFlows));
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), choiceBoxView);
+                fadeTransition.setFromValue(0.0);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
                 choiceBoxView.setDisable(false);
             }
             progressBarView.setProgress(1);

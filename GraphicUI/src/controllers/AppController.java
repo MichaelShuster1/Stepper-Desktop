@@ -171,6 +171,8 @@ public class AppController {
             // Show a confirmation dialog
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
+            if(primaryStage.getScene().getStylesheets().size()!=0)
+                alert.getDialogPane().getStylesheets().add(primaryStage.getScene().getStylesheets().get(0));
 
             if(progressTracker.areFlowsRunning())
                 alert.setHeaderText("The are still flows running in the background!\nAre you sure you want to exit?");

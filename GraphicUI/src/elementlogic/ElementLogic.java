@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -55,6 +56,19 @@ public class ElementLogic {
         elementChoiceView.getChildren().add(stepsTableView);
         VBox.setVgrow(stepsTableView, Priority.ALWAYS);
     }
+
+    public void setTableOpacity(Double opacity) {
+        stepsTableView.setOpacity(opacity);
+    }
+
+    public void animateTable() {
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), stepsTableView);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.play();
+    }
+
+
 
 
     public void setElementDetailsView(FlowExecutionDTO flowExecutionDTO)
