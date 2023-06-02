@@ -336,7 +336,6 @@ public class Flow implements Serializable {
                 }
                 break;
             case "DataString":
-            case "DataFile":
                 input.setData(rawData);
                 break;
             case "DataEnumerator":
@@ -348,9 +347,6 @@ public class Flow implements Serializable {
                             + "this enumeration data expects to receive one of the following only: " + e.getMessage();
                     return new ResultDTO(false,message);
                 }
-            case "DataFile":
-                input.setData(rawData);
-                break;
         }
 
         return new ResultDTO(true, "The input was processed successfully");
