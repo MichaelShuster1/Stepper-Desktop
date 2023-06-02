@@ -1,6 +1,7 @@
 package datadefinition;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class DataDefinition<T> implements Serializable {
     protected String name;
@@ -26,4 +27,6 @@ public abstract class DataDefinition<T> implements Serializable {
     public abstract void setData(T data);
 
     public abstract T getData();
+
+    public abstract List<String> getSecondaryData();
 }

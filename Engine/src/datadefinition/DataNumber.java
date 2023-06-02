@@ -1,6 +1,8 @@
 package datadefinition;
 
 
+import java.util.List;
+
 public class DataNumber extends DataDefinition<Integer> {
     private Integer data;
 
@@ -21,5 +23,10 @@ public class DataNumber extends DataDefinition<Integer> {
     @Override
     public Integer getData() {
         return data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }

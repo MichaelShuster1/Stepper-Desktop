@@ -16,7 +16,7 @@ public class Zipper extends Step {
         defaultName = "Zipper";
 
 
-        DataFile dataString = new DataFile("SOURCE");
+        DataString dataString = new DataString("SOURCE");
         inputs.add(new Input(dataString, true, true, "Source"));
         nameToInputIndex.put("SOURCE", 0);
 

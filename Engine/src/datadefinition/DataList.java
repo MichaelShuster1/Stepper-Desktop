@@ -41,6 +41,11 @@ public class DataList<T> extends DataDefinition<List<T>> {
     public List<T> getData() {
         return data;
     }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
+    }
 }
 
 

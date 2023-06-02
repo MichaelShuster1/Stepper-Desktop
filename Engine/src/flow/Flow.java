@@ -276,10 +276,31 @@ public class Flow implements Serializable {
 
     public FreeInputExecutionDTO getInputData(String inputName) {
 
-        int stepIndex = flowFreeInputs.get(inputName).get(0);
-        Step step = steps.get(stepIndex);
+        List<Integer> inputs = flowFreeInputs.get(inputName);
+        int resIndex = -1;
+        for(int stepIndex : inputs) {
+            Step step = steps.get(stepIndex);
+            int inputIndex = step.getNameToInputIndex().get(inputName);
+            Input input = step.getInput(inputIndex);
+            if(input.getDefaultName().equals("FILE_NAME") || input.getDefaultName().equals("FOLDER_NAME"))
+                resIndex = stepIndex;
+        }
+
+
+        Step step;
+        if(resIndex == -1)
+            step = steps.get(inputs.get(0));
+        else
+            step = steps.get(resIndex);
+
         int inputIndex = step.getNameToInputIndex().get(inputName);
         Input input = step.getInput(inputIndex);
+
+
+//        int stepIndex = flowFreeInputs.get(inputName).get(0);
+//        Step step = steps.get(stepIndex);
+//        int inputIndex = step.getNameToInputIndex().get(inputName);
+//        Input input = step.getInput(inputIndex);
 
         String data=null;
         if(input.getData()!=null)
@@ -324,9 +345,12 @@ public class Flow implements Serializable {
                 }
                 catch (EnumerationDataException e) {
                     message = "Input processing failed due to: "
-                            + "this enumeration data expects to receive on of the following only: " + e.getMessage();
+                            + "this enumeration data expects to receive one of the following only: " + e.getMessage();
                     return new ResultDTO(false,message);
                 }
+            case "DataFile":
+                input.setData(rawData);
+                break;
         }
 
         return new ResultDTO(true, "The input was processed successfully");
@@ -706,4 +730,21 @@ public class Flow implements Serializable {
         }
     }
 
+    public List<String> getEnumerationAllowedValues(String inputName) {
+        int stepIndex = flowFreeInputs.get(inputName).get(0);
+        Step step = steps.get(stepIndex);
+        int inputIndex = step.getNameToInputIndex().get(inputName);
+        Input input = step.getInput(inputIndex);
+
+        return  input.getDataDefinition().getSecondaryData();
+    }
+
+    public String getInputDefaultName(String inputName) {
+        int stepIndex = flowFreeInputs.get(inputName).get(0);
+        Step step = steps.get(stepIndex);
+        int inputIndex = step.getNameToInputIndex().get(inputName);
+        Input input = step.getInput(inputIndex);
+
+        return input.getDefaultName();
+    }
 }

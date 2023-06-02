@@ -1,6 +1,8 @@
 package datadefinition;
 
 
+import java.util.List;
+
 public class DataDouble extends DataDefinition<Double> {
     private Double data;
 
@@ -21,5 +23,10 @@ public class DataDouble extends DataDefinition<Double> {
     @Override
     public void setData(Double data) {
         this.data = data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }

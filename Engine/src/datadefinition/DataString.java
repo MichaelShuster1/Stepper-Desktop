@@ -1,5 +1,7 @@
 package datadefinition;
 
+import java.util.List;
+
 public class DataString extends DataDefinition<String> {
     private String data;
 
@@ -20,5 +22,10 @@ public class DataString extends DataDefinition<String> {
     @Override
     public String toString() {
         return data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }

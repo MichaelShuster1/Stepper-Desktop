@@ -2,6 +2,8 @@ package datadefinition;
 
 import exception.EnumerationDataException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class DataEnumerator extends DataDefinition<String>{
@@ -16,6 +18,12 @@ public class DataEnumerator extends DataDefinition<String>{
 
     public String getAllowedValues() {
         return values.toString();
+    }
+
+    public List<String> getAllowedValuesList() {
+        List<String> allowed = new ArrayList<>();
+        allowed.addAll(values);
+        return allowed;
     }
 
 
@@ -36,5 +44,10 @@ public class DataEnumerator extends DataDefinition<String>{
     @Override
     public String getData() {
         return data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return getAllowedValuesList();
     }
 }

@@ -413,6 +413,11 @@ public class Manager implements EngineApi, Serializable {
         return currentFlow.getInputData(inputName);
     }
 
+    @Override
+    public List<String> getEnumerationAllowedValues(String inputName) {
+        return currentFlow.getEnumerationAllowedValues(inputName);
+    }
+
 
 
     @Override
@@ -558,6 +563,10 @@ public class Manager implements EngineApi, Serializable {
     }
 
 
+    @Override
+    public String getInputDefaultName(String inputName) {
+        return currentFlow.getInputDefaultName(inputName);
+    }
 
 
 

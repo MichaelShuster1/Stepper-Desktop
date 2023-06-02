@@ -21,6 +21,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +188,18 @@ public class ExecutionController {
                 result =inputDialog.showAndWait();
                 break;
             case ENUMERATOR:
+                ChoiceBox<String> enumerationSetChoice = new ChoiceBox<>();
+                enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
+                enumerationSetChoice.setStyle("-fx-pref-width: 200px;");
+                inputDialog.getDialogPane().setContent(new HBox(10, new Label("Please choose an input:"), enumerationSetChoice));
+                inputDialog.setResultConverter(dialogButton -> {
+                    if (dialogButton == ButtonType.OK) {
+                        String selectedOption = enumerationSetChoice.getValue();
+                        return selectedOption;
+                    }
+                    return null;
+                });
+                result = inputDialog.showAndWait();
                 break;
             case NUMBER:
                 inputDialog.setContentText("Please enter the number here:");
@@ -200,8 +213,54 @@ public class ExecutionController {
                 result =inputDialog.showAndWait();
                 break;
             case STRING:
-                inputDialog.setContentText("Please enter the input here:");
-                result =inputDialog.showAndWait();
+                String inputDefaultName = engine.getInputDefaultName(button.getId());
+                switch (inputDefaultName) {
+                    case "FOLDER_NAME":
+                        result = openFolderChooser();
+                        break;
+                    case "FILE_NAME":
+                        result = openFileChooser();
+                        break;
+                    case "SOURCE":
+                        Dialog<ButtonType> dialog = new Dialog<>();
+                        dialog.setTitle("Choose zipping source");
+                        dialog.setHeaderText("Please select an option:");
+                        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+                           dialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
+
+                        RadioButton option1 = new RadioButton("Zip folder");
+                        RadioButton option2 = new RadioButton("Zip file");
+
+                        ToggleGroup toggleGroup = new ToggleGroup();
+                        option1.setToggleGroup(toggleGroup);
+                        option2.setToggleGroup(toggleGroup);
+
+                        HBox hbox = new HBox(10, option1, option2);
+                        hbox.setPadding(new Insets(10));
+
+                        dialog.getDialogPane().setContent(hbox);
+                        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+                        Optional<ButtonType> zipResult = dialog.showAndWait();
+
+                        if(zipResult.isPresent()) {
+                            ButtonType selectedButton = zipResult.get();
+                            if (selectedButton == ButtonType.OK) {
+                                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                                if (selectedRadioButton != null) {
+                                    String selectedOption = selectedRadioButton.getText();
+                                    if (selectedOption.equals("Zip folder"))
+                                        result = openFolderChooser();
+                                    else
+                                        result = openFileChooser();
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        inputDialog.setContentText("Please enter the input here:");
+                        result =inputDialog.showAndWait();
+                        break;
+                }
                 break;
         }
 
@@ -238,7 +297,6 @@ public class ExecutionController {
     public Optional<String> openFolderChooser() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder");
-
         File selectedFolder = directoryChooser.showDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());
@@ -246,14 +304,23 @@ public class ExecutionController {
             return Optional.empty();
     }
 
+    public Optional<String> openFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
+        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        if (selectedFolder != null)
+            return Optional.of(selectedFolder.getAbsolutePath());
+        else
+            return Optional.empty();
+    }
 
 
     public void rightInputClick(Button button)
     {
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem item1 = new MenuItem("clear input's data");
-        MenuItem item2 = new MenuItem("show input's data");
+        MenuItem item1 = new MenuItem("Clear input's data");
+        MenuItem item2 = new MenuItem("Show input's data");
 
         contextMenu.getItems().addAll(item1,item2);
 

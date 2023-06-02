@@ -1,5 +1,7 @@
 package datadefinition;
 
+import dto.DataDefintionDTO;
+
 import java.io.Serializable;
 
 public class Input implements Serializable {
@@ -8,6 +10,8 @@ public class Input implements Serializable {
     private final boolean mandatory;
     private final String userString;
     private boolean isConnected;
+
+    private final String defaultName;
 
     private boolean haveInitialValue;
 
@@ -18,6 +22,7 @@ public class Input implements Serializable {
         this.isConnected = false;
         this.userString = userString;
         this.haveInitialValue = false;
+        this.defaultName = dataDefinition.getName();
     }
 
     public Object getData() {
@@ -73,5 +78,13 @@ public class Input implements Serializable {
 
     public void setHaveInitialValue(boolean haveInitialValue) {
         this.haveInitialValue = haveInitialValue;
+    }
+
+    public DataDefinition getDataDefinition() {
+        return dataDefinition;
+    }
+
+    public String getDefaultName() {
+        return defaultName;
     }
 }

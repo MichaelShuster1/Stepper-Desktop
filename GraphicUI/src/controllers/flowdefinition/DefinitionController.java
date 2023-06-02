@@ -1,6 +1,5 @@
 package controllers.flowdefinition;
 
-import com.sun.deploy.security.SelectableSecurityManager;
 import controllers.AppController;
 import dto.*;
 import enginemanager.EngineApi;
@@ -17,10 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -28,7 +24,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +91,7 @@ public class DefinitionController {
 
         TableColumn<AvailableFlowDTO, Integer> colcontinuations = new TableColumn<>("Number of Continuations");
         colcontinuations.setCellValueFactory(new PropertyValueFactory<>("numberOfContinuations"));
+
 
 
 

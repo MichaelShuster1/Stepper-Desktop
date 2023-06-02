@@ -1,6 +1,8 @@
 package datadefinition;
 
 
+import java.util.List;
+
 public class DataRelation extends DataDefinition<Relation> {
     private Relation data;
 
@@ -24,6 +26,11 @@ public class DataRelation extends DataDefinition<Relation> {
     @Override
     public Relation getData() {
         return data;
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }
 

@@ -1,6 +1,7 @@
 package datadefinition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,5 +33,10 @@ public class DataMapping<T> extends DataDefinition<Map<String, T>> {
     @Override
     public String toString() {
         return "car: " + data.get("car").toString() + "\n" + "cdr: " + data.get("cdr").toString();
+    }
+
+    @Override
+    public List<String> getSecondaryData() {
+        return null;
     }
 }
