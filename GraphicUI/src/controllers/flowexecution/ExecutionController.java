@@ -38,6 +38,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -229,8 +230,39 @@ public class ExecutionController {
                         result = openFileChooser();
                         break;
                     case "SOURCE":
+                        Dialog<ButtonType> dialog = new Dialog<>();
+                        dialog.setTitle("Choose zipping source");
+                        dialog.setHeaderText("Please select an option:");
+                        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+                           dialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
-                        result =inputDialog.showAndWait();
+                        RadioButton option1 = new RadioButton("Zip folder");
+                        RadioButton option2 = new RadioButton("Zip file");
+
+                        ToggleGroup toggleGroup = new ToggleGroup();
+                        option1.setToggleGroup(toggleGroup);
+                        option2.setToggleGroup(toggleGroup);
+
+                        HBox hbox = new HBox(10, option1, option2);
+                        hbox.setPadding(new Insets(10));
+
+                        dialog.getDialogPane().setContent(hbox);
+                        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+                        Optional<ButtonType> zipResult = dialog.showAndWait();
+
+                        if(zipResult.isPresent()) {
+                            ButtonType selectedButton = zipResult.get();
+                            if (selectedButton == ButtonType.OK) {
+                                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                                if (selectedRadioButton != null) {
+                                    String selectedOption = selectedRadioButton.getText();
+                                    if (selectedOption.equals("Zip folder"))
+                                        result = openFolderChooser();
+                                    else
+                                        result = openFileChooser();
+                                }
+                            }
+                        }
                         break;
                     default:
                         result =inputDialog.showAndWait();
