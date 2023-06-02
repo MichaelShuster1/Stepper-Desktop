@@ -41,7 +41,7 @@
                <center>
                   <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                      <content>
-                        <VBox fx:id="elementDetailsView" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox fx:id="elementDetailsView" />
                      </content>
                   </ScrollPane>
                </center>

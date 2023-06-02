@@ -76,7 +76,6 @@ public class ExecutionController {
         continuationButton.setDisable(true);
         continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
         choiceBoxView.setDisable(true);
-        choiceBoxView.setOpacity(0.0);
     }
 
 
@@ -89,7 +88,10 @@ public class ExecutionController {
     public void setStage(Stage stage)
     {
         elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
-        //elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get())
+           elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get())
+            choiceBoxView.setOpacity(0.0);
     }
 
     public void bindAnimationBooleanProperty(BooleanProperty booleanProperty)
@@ -156,8 +158,10 @@ public class ExecutionController {
     public void clearTab() {
         clearInputButtons();
         clearExecutionUpdate();
-        choiceBoxView.setOpacity(0.0);
-        //elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get()) {
+            choiceBoxView.setOpacity(0.0);
+            elementLogic.setTableOpacity(0.0);
+        }
     }
 
     public void clearInputButtons(){
@@ -346,8 +350,8 @@ public class ExecutionController {
 
     public Optional<String> openFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select File");
-        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        fileChooser.setTitle("Save File");
+        File selectedFolder = fileChooser.showSaveDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());
         else

@@ -105,11 +105,11 @@ public class ElementLogic {
             addKeyValueLine("Name: ",stepExecutionDTO.getName());
             addKeyValueLine("Run Time: ",stepExecutionDTO.getRunTime()+ "ms");
             addKeyValueLine("Finish state: ",stepExecutionDTO.getStateAfterRun());
-            addKeyValueLine("Step's Input Data:","");
+            addKeyValueLine("\nStep's Input Data:","");
             addStepInputsOrOutputsData(stepExtensionDTO.getInputs());
-            addKeyValueLine("Step's Outputs Data:","");
+            addKeyValueLine("\nStep's Outputs Data:","");
             addStepInputsOrOutputsData(stepExtensionDTO.getOutputs());
-            addKeyValueLine("STEP LOGS:","");
+            addKeyValueLine("\nSTEP LOGS:","");
             addStepLogs(stepExtensionDTO.getLogs());
         }
     }
@@ -170,9 +170,10 @@ public class ElementLogic {
     private void addTitleLine(String title)
     {
         HBox hBox= getNewHbox();
-        Label label =new Label(title);
+        Label label = new Label(title);
         label.setFont(Font.font("System",FontWeight.BOLD,14));
-        elementDetailsView.getChildren().add(label);
+        hBox.getChildren().add(label);
+        elementDetailsView.getChildren().add(hBox);
     }
 
 
@@ -361,7 +362,7 @@ public class ElementLogic {
             addKeyValueLine("Run time: " , step.getRunTime() + " ms");
             addKeyValueLine("Finish state: " , step.getStateAfterRun());
             addKeyValueLine("Step summary:" , step.getSummaryLine());
-            addKeyValueLine("STEP LOGS:","");
+            addKeyValueLine("\nSTEP LOGS:","");
             addStepLogs(step.getStepExtensionDTO().getLogs());
         }
     }
