@@ -76,6 +76,7 @@ public class ExecutionController {
         continuationButton.setDisable(true);
         continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
         choiceBoxView.setDisable(true);
+        choiceBoxView.setOpacity(0.0);
     }
 
 
@@ -350,7 +351,7 @@ public class ExecutionController {
 
     public Optional<String> openFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
+        fileChooser.setTitle("Select File");
         File selectedFolder = fileChooser.showSaveDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());

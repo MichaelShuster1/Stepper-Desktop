@@ -26,11 +26,18 @@
             <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <StackPane fx:id="stackTableView" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowSpan="2" />
             <BorderPane GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="3">
+               <center>
+                  <ScrollPane>
+                     <content>
+                        <VBox fx:id="elementDetailsView" />
+                     </content>
+                  </ScrollPane>
+               </center>
                <bottom>
                   <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="CENTER">
                      <children>
@@ -38,13 +45,6 @@
                      </children>
                   </HBox>
                </bottom>
-               <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-                     <content>
-                        <VBox fx:id="elementDetailsView" />
-                     </content>
-                  </ScrollPane>
-               </center>
             </BorderPane>
             <VBox alignment="CENTER" GridPane.rowSpan="2">
                <children>
