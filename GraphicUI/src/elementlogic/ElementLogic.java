@@ -172,7 +172,8 @@ public class ElementLogic {
         HBox hBox= getNewHbox();
         Label label =new Label(title);
         label.setFont(Font.font("System",FontWeight.BOLD,14));
-        elementDetailsView.getChildren().add(label);
+        hBox.getChildren().add(label);
+        elementDetailsView.getChildren().add(hBox);
     }
 
 
