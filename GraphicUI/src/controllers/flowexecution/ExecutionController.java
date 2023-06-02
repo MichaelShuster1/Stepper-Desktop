@@ -163,18 +163,7 @@ public class ExecutionController {
     @FXML
     public void inputClick(Button button,ActionEvent event)
     {
-        TextInputDialog inputDialog = new TextInputDialog();
-
-        inputDialog.setTitle("submit input");
-        inputDialog.setHeaderText(null);
-        inputDialog.setGraphic(null);
-        inputDialog.getDialogPane().setPrefWidth(400);
-
-        Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
-        submitButton.setText("Submit");
-        
-        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
-            inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
+        TextInputDialog inputDialog =getNewTextInputDialog();
 
         String inputType =engine.getInputData(button.getId()).getType();
         Optional<String> result=Optional.empty();
@@ -182,11 +171,6 @@ public class ExecutionController {
 
         switch (DataType.valueOf(inputType.toUpperCase()))
         {
-            case FILE:
-                //result = openFolderChooser();
-                inputDialog.setContentText("Please enter the folder here:");
-                result =inputDialog.showAndWait();
-                break;
             case ENUMERATOR:
                 ChoiceBox<String> enumerationSetChoice = new ChoiceBox<>();
                 enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
@@ -202,8 +186,8 @@ public class ExecutionController {
                 result = inputDialog.showAndWait();
                 break;
             case NUMBER:
+                TextField textField =inputDialog.getEditor();
                 inputDialog.setContentText("Please enter the number here:");
-                TextField textField = inputDialog.getEditor();
                 textField.addEventFilter(KeyEvent.KEY_TYPED, e -> {
                     String input = e.getCharacter();
                     if (!input.matches("[0-9]")) {
@@ -292,6 +276,32 @@ public class ExecutionController {
             alert.setContentText(resultDTO.getMessage());
             alert.showAndWait();
         }
+    }
+
+
+    private TextInputDialog getNewTextInputDialog()
+    {
+        TextInputDialog inputDialog = new TextInputDialog();
+
+        inputDialog.setTitle("submit input");
+        inputDialog.setHeaderText(null);
+        inputDialog.setGraphic(null);
+        inputDialog.getDialogPane().setPrefWidth(400);
+
+        Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
+        submitButton.setText("Submit");
+
+        submitButton.setDisable(true);
+
+        TextField textField = inputDialog.getEditor();
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            submitButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        if(appController.getPrimaryStage().getScene().getStylesheets().size()!=0)
+            inputDialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
+        return  inputDialog;
     }
 
     public Optional<String> openFolderChooser() {

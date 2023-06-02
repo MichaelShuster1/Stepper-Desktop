@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import controllers.flowexecution.ExecutionController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -26,9 +27,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import progress.ProgressTracker;
+import styles.Styles;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AppController {
@@ -90,11 +93,10 @@ public class AppController {
         definitionComponentController.setAppController(this);
         historyComponentController.setAppController(this);
         statisticsComponentController.setAppController(this);
-        styleChoiceView.getItems().addAll("DEFAULT","DARK","MIDNIGHT");
-        styleChoiceView.setValue("DEFAULT");
+        styleChoiceView.getItems().addAll(Styles.getStyles());
+        styleChoiceView.setValue(Styles.DEFAULT.toString());
         styleChoiceView.setOnAction(e->setStyle());
         setTab(3);
-
         tabClicked=true;
 
 
@@ -111,27 +113,32 @@ public class AppController {
                 tabClicked =true;
             }
         });
+
     }
+
+
+
 
     private void setStyle() {
         String choice= styleChoiceView.getValue();
         primaryStage.getScene().getStylesheets().clear();
-        switch (choice)
+        switch (Styles.valueOf(choice))
         {
-            case "DARK":
+            case DARK:
                 primaryStage.getScene().getStylesheets().add(
                         getClass().getResource("../main/Dark.css").toExternalForm());
                 stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
                 break;
-            case "MIDNIGHT":
+            case MIDNIGHT:
                 primaryStage.getScene().getStylesheets().add(
                         getClass().getResource("../main/Midnight.css").toExternalForm());
                 stepperLogo.setImage(new Image(getClass().getResource("../main/purpleLogo.png").toExternalForm()));
                 break;
-            case "DEFAULT":
+            case DEFAULT:
                 stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
                 break;
         }
+
     }
 
 
@@ -180,6 +187,7 @@ public class AppController {
         }
         catch (Exception ex)
         {
+            /*
             Duration TEXT_CHANGE_DURATION = Duration.seconds(6);
             Timeline timeline = new Timeline();
             String INITIAL_TEXT = loadedXML.getText();
@@ -201,6 +209,16 @@ public class AppController {
 
             // Play the timeline
             timeline.play();
+            */
+            Alert alert =new Alert(Alert.AlertType.ERROR);
+
+            ObservableList<String> stylesheets = primaryStage.getScene().getStylesheets();
+            if(stylesheets.size()!=0)
+                alert.getDialogPane().getStylesheets().add(stylesheets.get(0));
+
+            alert.setTitle("Error");
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
         }
     }
 
