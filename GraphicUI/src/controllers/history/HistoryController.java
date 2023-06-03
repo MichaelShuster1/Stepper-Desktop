@@ -134,7 +134,7 @@ public class HistoryController {
 
     public void addRow(FlowExecutionDTO flowExecutionDTO)
     {
-        tableData.add(flowExecutionDTO);
+        tableData.add(0,flowExecutionDTO);
     }
 
     public void filterTable()
