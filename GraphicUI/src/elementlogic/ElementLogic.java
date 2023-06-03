@@ -4,6 +4,7 @@ import datadefinition.DataType;
 import datadefinition.Relation;
 import dto.*;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,6 +38,7 @@ public class ElementLogic {
     private TableColumn<StepExecutionDTO,String> stepColumnView;
 
     private TableColumn<StepExecutionDTO,String> stateColumnView;
+
 
     public ElementLogic(VBox elementChoiceView,VBox elementDetailsView,Stage primaryStage) {
         this.elementChoiceView = elementChoiceView;
@@ -80,6 +82,7 @@ public class ElementLogic {
 
         if(flowExecutionDTO.getStateAfterRun()!=null)
             updateFlowInfoView();
+
     }
 
 
