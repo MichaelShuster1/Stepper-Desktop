@@ -225,7 +225,7 @@ public class DefinitionController {
 //        textFlow.prefWidthProperty().bind(selectedFlowDetails.widthProperty());
         vbox.getChildren().addAll(addToVBox);
         Button executeBtn = new Button("Execute Flow !");
-        executeBtn.setOnAction(e -> streamFlowToTab2(engine.getFlowIndexByName(flowDefinition.getName())));
+        executeBtn.setOnAction(e -> streamFlowToTab2(flowDefinition.getName()));
         ScrollPane scrollPane = new ScrollPane(vbox);
         scrollPane.setPrefWidth(selectedFlowDetails.getPrefWidth());
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -269,8 +269,8 @@ public class DefinitionController {
 
 
 
-    private void streamFlowToTab2(int index) {
-        appController.streamFlow(index);
+    private void streamFlowToTab2(String flowName) {
+        appController.streamFlow(flowName);
     }
 
 //    private String getStrFormalOutputs(Set<String> formal_outputs) {

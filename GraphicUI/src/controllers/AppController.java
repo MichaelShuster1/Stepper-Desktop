@@ -94,7 +94,6 @@ public class AppController {
         tabClicked=true;
 
 
-
         tabPaneView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
             @Override
             public void changed(ObservableValue<? extends Tab> observable, Tab oldTab, Tab newTab) {
@@ -108,11 +107,7 @@ public class AppController {
                 tabClicked =true;
             }
         });
-
-
     }
-
-
 
 
     private void setStyle() {
@@ -134,7 +129,6 @@ public class AppController {
                 stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/blackLogo.png").toExternalForm()));
                 break;
         }
-
     }
 
 
@@ -207,29 +201,6 @@ public class AppController {
         }
         catch (Exception ex)
         {
-            /*
-            Duration TEXT_CHANGE_DURATION = Duration.seconds(6);
-            Timeline timeline = new Timeline();
-            String INITIAL_TEXT = loadedXML.getText();
-
-            // Define the initial keyframe
-            KeyFrame initialKeyFrame = new KeyFrame(Duration.ZERO, e -> {
-                loadedXML.setText("Error: " + ex.getMessage());
-                loadedXML.setTextFill(Color.RED);
-            });
-
-            // Define the final keyframe
-            KeyFrame finalKeyFrame = new KeyFrame(TEXT_CHANGE_DURATION, e -> {
-                loadedXML.setText(INITIAL_TEXT);
-                loadedXML.setTextFill(Color.BLACK);
-            });
-
-            // Add keyframes to the timeline
-            timeline.getKeyFrames().addAll(initialKeyFrame, finalKeyFrame);
-
-            // Play the timeline
-            timeline.play();
-            */
             Alert alert =new Alert(Alert.AlertType.ERROR);
 
             ObservableList<String> stylesheets = primaryStage.getScene().getStylesheets();
@@ -258,9 +229,10 @@ public class AppController {
     }
 
 
-    public void streamFlow(int index) {
+    public void streamFlow(String flowName) {
         progressTracker.resetCurrentFlowId();
-        executionComponentController.setTabView(getFlowInputs(index));
+        int index =engine.getFlowIndexByName(flowName);
+        executionComponentController.setTabView(getFlowInputs(index),flowName);
         tabClicked=false;
         setTab(2);
     }

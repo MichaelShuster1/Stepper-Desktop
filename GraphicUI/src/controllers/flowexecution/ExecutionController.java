@@ -43,6 +43,9 @@ public class ExecutionController {
     private Button executeButton;
 
     @FXML
+    private Button flowInfoView;
+
+    @FXML
     private ChoiceBox<String> choiceBoxView;
 
     @FXML
@@ -105,7 +108,7 @@ public class ExecutionController {
         this.engine = engine;
     }
 
-    public void setTabView(InputsDTO inputsDTO)
+    public void setTabView(InputsDTO inputsDTO,String flowName)
     {
         clearTab();
         int numberOfMandatoryInputs=0;
@@ -154,6 +157,7 @@ public class ExecutionController {
             }
         }
         executeButton.setDisable(numberOfInsertedMandatoryInputs != numberOfMandatoryInputs);
+        flowInfoView.setText(flowName+" Flow info");
     }
 
     public void clearTab() {
@@ -499,8 +503,7 @@ public class ExecutionController {
     void continueToFlow(ActionEvent event) {
         String targetName = choiceBoxView.getValue();
         engine.doContinuation(engine.getFlowExecution(elementLogic.getID()),targetName);
-        int index=engine.getFlowIndexByName(targetName);
-        appController.streamFlow(index);
+        appController.streamFlow(targetName);
     }
 
 }

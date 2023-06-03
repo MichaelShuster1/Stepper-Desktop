@@ -117,8 +117,7 @@ public class HistoryController {
         if(!historyTableView.getSelectionModel().isEmpty()) {
             FlowExecutionDTO flowExecutionDTO = historyTableView.getSelectionModel().getSelectedItem();
             engine.reUseInputsData(flowExecutionDTO);
-            int index=engine.getFlowIndexByName(flowExecutionDTO.getName());
-            appController.streamFlow(index);
+            appController.streamFlow(flowExecutionDTO.getName());
         }
 
     }

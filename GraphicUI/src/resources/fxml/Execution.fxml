@@ -121,7 +121,7 @@
                <content>
                   <VBox fx:id="elementChoiceView">
                      <children>
-                        <Button maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="Flow info" />
+                        <Button fx:id="flowInfoView" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onMouseClicked="#showFlowInfo" text="Flow info" />
                      </children>
                   </VBox>
                </content>
