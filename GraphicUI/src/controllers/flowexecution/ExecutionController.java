@@ -166,6 +166,7 @@ public class ExecutionController {
         choiceBoxView.setOpacity(0.0);
         elementLogic.setTableOpacity(0.0);
         isClicked = false;
+        flowInfoView.setText("Flow info");
     }
 
     public void clearInputButtons(){
