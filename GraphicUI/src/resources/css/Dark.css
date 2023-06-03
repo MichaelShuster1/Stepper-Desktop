@@ -90,6 +90,9 @@ Text {
     -fx-focus-color: black;
 }
 
+.table-cell {
+    -fx-alignment: CENTER;
+}
 
 
 

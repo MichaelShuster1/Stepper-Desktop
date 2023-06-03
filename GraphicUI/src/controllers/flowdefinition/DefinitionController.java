@@ -170,40 +170,6 @@ public class DefinitionController {
         showFlowDefinition1(flowName);
     }
 
-//
-//    private void showFlowDefinition(String name) {
-//        FlowDefinitionDTO flowDefinition = engine.getFlowDefinition(name);
-//        String data;
-//        data = "SELECTED FLOW DATA:\n\n";
-//        data += "Flow name: " + flowDefinition.getName() + "\n";
-//        data += "Flow description: " + flowDefinition.getDescription() + "\n\n";
-//        data += getStrFormalOutputs(flowDefinition.getFormal_outputs()) + "\n";
-//        data += getStrReadOnlyStatus(flowDefinition.isReadOnly());
-//        data += "------------------------------\n";
-//        data += getStrStepsData(flowDefinition.getSteps());
-//        data += "------------------------------\n";
-//        data += getStrFreeInputs(flowDefinition.getFreeInputs());
-//        data += "------------------------------\n";
-//        data += getStrOutPuts(flowDefinition.getOutputs());
-//        data += "------------------------------\n";
-//        data += getStrConnections(flowDefinition.getSteps());
-//
-//        Text flowDefinitionText = new Text(data);
-//        //flowDefinitionText.setWrapText(true);
-//        //flowDefinitionText.setPrefWidth(definition.getPrefWidth());
-//        flowDefinitionText.setFont(Font.font(16));
-//        TextFlow textFlow = new TextFlow(flowDefinitionText);
-//        textFlow.prefWidthProperty().bind(selectedFlowDetails.widthProperty());
-//        Button executeBtn = new Button("Execute Flow !");
-//        executeBtn.setOnAction(e -> streamFlowToTab2(engine.getFlowIndexByName(flowDefinition.getName())));
-//        ScrollPane scrollPane = new ScrollPane(textFlow);
-//        scrollPane.setPrefWidth(selectedFlowDetails.getPrefWidth());
-//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-//        selectedFlowDetails.getChildren().clear();
-//        selectedFlowDetails.getChildren().addAll(scrollPane, executeBtn);
-//        selectedFlowDetails.setAlignment(executeBtn, Pos.BOTTOM_RIGHT);
-//        StackPane.setMargin(executeBtn, new Insets(0, 20, 10, 0));
-//    }
 
     private void showFlowDefinition1(String name) {
         FlowDefinitionDTO flowDefinition = engine.getFlowDefinition(name);
@@ -211,18 +177,12 @@ public class DefinitionController {
         List<HBox> addToVBox = new ArrayList<>();
         addToVBox.add(createHBoxForData("Flow name: ",flowDefinition.getName() + "\n"));
         addToVBox.add(createHBoxForData("Flow description: ",flowDefinition.getDescription() + "\n\n"));
-        addToVBox.addAll(getStrFormalOutputs1(flowDefinition.getFormal_outputs()));
-        addToVBox.add(getStrReadOnlyStatus1(flowDefinition.isReadOnly()));
-        addToVBox.addAll(getStrStepsData1(flowDefinition.getSteps()));
-        addToVBox.addAll(getStrFreeInputs1(flowDefinition.getFreeInputs()));
-        addToVBox.addAll(getStrOutPuts1(flowDefinition.getOutputs()));
+        addToVBox.addAll(getStrFormalOutputs(flowDefinition.getFormal_outputs()));
+        addToVBox.add(getStrReadOnlyStatus(flowDefinition.isReadOnly()));
+        addToVBox.addAll(getStrStepsData(flowDefinition.getSteps()));
+        addToVBox.addAll(getStrFreeInputs(flowDefinition.getFreeInputs()));
+        addToVBox.addAll(getStrOutPuts(flowDefinition.getOutputs()));
 
-//        Text flowDefinitionText = new Text(data);
-//        //flowDefinitionText.setWrapText(true);
-//        //flowDefinitionText.setPrefWidth(definition.getPrefWidth());
-//        flowDefinitionText.setFont(Font.font(16));
-//        TextFlow textFlow = new TextFlow(flowDefinitionText);
-//        textFlow.prefWidthProperty().bind(selectedFlowDetails.widthProperty());
         vbox.getChildren().addAll(addToVBox);
         Button executeBtn = new Button("Execute Flow !");
         executeBtn.setOnAction(e -> streamFlowToTab2(flowDefinition.getName()));
@@ -273,142 +233,9 @@ public class DefinitionController {
         appController.streamFlow(flowName);
     }
 
-//    private String getStrFormalOutputs(Set<String> formal_outputs) {
-//        String res;
-//        if (formal_outputs.size() > 0) {
-//            res = "The formal outputs of the flow are:\n";
-//            for (String currOutput : formal_outputs) {
-//                res = res + currOutput + "\n";
-//            }
-//        } else
-//            res = "The flow doesn't have formal outputs\n";
-//
-//        return res;
-//    }
-//
-//    private String getStrReadOnlyStatus(boolean read_only) {
-//        if (read_only)
-//            return "The flow is Read-Only: YES\n";
-//        else
-//            return "The flow is Read-Only: NO\n";
-//    }
-//
-//    private String getStrStepsData(List<StepDefinitionDTO> steps) {
-//        String res = "THE FLOW'S STEPS:\n";
-//        String currStep;
-//        for (StepDefinitionDTO step : steps) {
-//            if (step.getName().equals(step.getDefaultName()))
-//                currStep = "Step name: " + step.getName() + "\n";
-//            else {
-//                currStep = "Step name: " + step.getDefaultName() + "\n";
-//                currStep += "Step alias: " + step.getName() + "\n";
-//            }
-//            if (step.isReadOnly())
-//                currStep = currStep + "The step is Read-Only: YES\n";
-//            else
-//                currStep = currStep + "This step is Read-Only: No\n";
-//            currStep = currStep + "\n";
-//            res += currStep;
-//        }
-//
-//        return res;
-//    }
-//
-//    private String getStrFreeInputs(List<FreeInputDefinitionDTO> flowFreeInputs) {
-//        String res;
-//        if (flowFreeInputs.isEmpty())
-//            res = "The flow have no free inputs\n";
-//        else {
-//            res = "Flow's free input's are:\n\n";
-//            String currInput;
-//            for (FreeInputDefinitionDTO freeInput : flowFreeInputs) {
-//                currInput = "Name: " + freeInput.getName() + "\n";
-//                currInput += "Type: " + freeInput.getType() + "\n";
-//                currInput += "Steps that are related to that input: ";
-//                for (String stepName : freeInput.getRelatedSteps())
-//                    currInput += stepName + ", ";
-//                currInput = currInput.substring(0, currInput.length() - 2);
-//                currInput += "\n";
-//                if (freeInput.isMandatory())
-//                    currInput += "This input is mandatory: Yes\n\n";
-//                else
-//                    currInput += "This input is mandatory: No\n\n";
-//                res += currInput;
-//            }
-//        }
-//
-//        return res;
-//    }
-//
-//    public String getStrOutPuts(List<OutputDefintionDTO> outputs) {
-//        String res = "THE FLOW'S OUTPUTS:\n";
-//
-//        for (OutputDefintionDTO output : outputs) {
-//            res += "Output name: " + output.getName() + "\n";
-//            res += "Type: " + output.getType() + "\n";
-//            res += "Belongs to step: " + output.getStepName() + "\n\n";
-//        }
-//
-//        if (outputs.size() > 0)
-//            return res;
-//        else
-//            return "THIS FLOW HAVE NO OUTPUTS";
-//    }
-//
-//
-//    public List<String> getStrConnections(List<StepDefinitionDTO> steps) {
-//        List<String> test = new ArrayList<>();
-//        for (StepDefinitionDTO step : steps) {
-//            String res = "";
-//            StepConnectionsDTO connections = step.getConnections();
-//            Map<String, Map<String, String>> outputsConnections = connections.getOutputsConnections();
-//            Map<String, Pair<String, String>> inputsConnections = connections.getInputsConnections();
-//            Map<String, Boolean> isMandatory = connections.getIsMandatory();
-//            res = step.getName() + " Connections: \n";
-//            if (outputsConnections != null) {
-//                for (String name : outputsConnections.keySet()) {
-//                    res += "Output name: " + name + "\n";
-//                    if (!outputsConnections.get(name).isEmpty()) {
-//                        res += "connected to:\n";
-//                        for (String stepName : outputsConnections.get(name).keySet()) {
-//                            res += outputsConnections.get(name).get(stepName) + "from step: " + stepName + "\n";
-//                        }
-//                    } else
-//                        res += name + " have no connections" + "\n";
-//
-//                }
-//            }
-//            for (String input: isMandatory.keySet()) {
-//                res += "input name: " + input + "\n";
-//                res += "the input is mandatory: ";
-//                if(isMandatory.get(input))
-//                    res+= "yes\n";
-//                else
-//                    res+= "no\n";
-//                if(inputsConnections != null && inputsConnections.containsKey(input)) {
-//                        Pair<String,String> connection = inputsConnections.get(input);
-//                        res += "This input is connected to the output" + connection.getValue() + " from the step: " + connection.getKey();
-//                    }
-//                else {
-//                    res+= "no connections\n";
-//                }
-//                }
-//            test.add(res);
-//            }
-//        return test;
-//        }
 
 
-
-
-
-
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    private List<HBox> getStrFormalOutputs1(Set<String> formal_outputs) {
+    private List<HBox> getStrFormalOutputs(Set<String> formal_outputs) {
         List<HBox> res = new ArrayList<>();
         String title = "";
         String data = "";
@@ -426,14 +253,14 @@ public class DefinitionController {
         return res;
     }
 
-    private HBox getStrReadOnlyStatus1(boolean read_only) {
+    private HBox getStrReadOnlyStatus(boolean read_only) {
         if (read_only)
             return createHBoxForData("The flow is Read-Only: ", "YES\n");
         else
             return createHBoxForData("The flow is Read-Only :" ,"NO\n");
     }
 
-    private List<HBox> getStrStepsData1(List<StepDefinitionDTO> steps) {
+    private List<HBox> getStrStepsData(List<StepDefinitionDTO> steps) {
         List<HBox> res= new ArrayList<>();
         res.add(createHBoxForTitle("THE FLOW'S STEPS\n\n"));
         for (StepDefinitionDTO step : steps) {
@@ -467,7 +294,7 @@ public class DefinitionController {
     }
 
 
-    private List<HBox> getStrFreeInputs1(List<FreeInputDefinitionDTO> flowFreeInputs) {
+    private List<HBox> getStrFreeInputs(List<FreeInputDefinitionDTO> flowFreeInputs) {
         List<HBox> res = new ArrayList<>();
         if (flowFreeInputs.isEmpty())
             res.add(createHBoxForTitle("THE FLOW HAVE NO FREE INPUTS\n"));
@@ -491,7 +318,7 @@ public class DefinitionController {
         return res;
     }
 
-    public List<HBox> getStrOutPuts1(List<OutputDefintionDTO> outputs) {
+    public List<HBox> getStrOutPuts(List<OutputDefintionDTO> outputs) {
         List<HBox> res= new ArrayList<>();
         res.add(createHBoxForTitle("THE FLOW'S OUTPUTS\n"));
 
@@ -508,47 +335,47 @@ public class DefinitionController {
     }
 
 
-    public List<HBox> getStrConnections1(List<StepDefinitionDTO> steps) {
-        List<HBox> test = new ArrayList<>();
-        for (StepDefinitionDTO step : steps) {
-            String res = "";
-            StepConnectionsDTO connections = step.getConnections();
-            Map<String, Map<String, String>> outputsConnections = connections.getOutputsConnections();
-            Map<String, Pair<String, String>> inputsConnections = connections.getInputsConnections();
-            Map<String, Boolean> isMandatory = connections.getIsMandatory();
-            res = step.getName() + " Connections: \n";
-            if (outputsConnections != null) {
-                for (String name : outputsConnections.keySet()) {
-                    res += "Output name: " + name + "\n";
-                    if (!outputsConnections.get(name).isEmpty()) {
-                        res += "connected to:\n";
-                        for (String stepName : outputsConnections.get(name).keySet()) {
-                            res += outputsConnections.get(name).get(stepName) + "from step: " + stepName + "\n";
-                        }
-                    } else
-                        res += name + " have no connections" + "\n";
-
-                }
-            }
-            for (String input: isMandatory.keySet()) {
-                res += "input name: " + input + "\n";
-                res += "the input is mandatory: ";
-                if(isMandatory.get(input))
-                    res+= "yes\n";
-                else
-                    res+= "no\n";
-                if(inputsConnections != null && inputsConnections.containsKey(input)) {
-                    Pair<String,String> connection = inputsConnections.get(input);
-                    res += "This input is connected to the output" + connection.getValue() + " from the step: " + connection.getKey();
-                }
-                else {
-                    res+= "no connections\n";
-                }
-            }
-            //test.add(res);
-        }
-        return test;
-    }
+//    public List<HBox> getStrConnections1(List<StepDefinitionDTO> steps) {
+//        List<HBox> test = new ArrayList<>();
+//        for (StepDefinitionDTO step : steps) {
+//            String res = "";
+//            StepConnectionsDTO connections = step.getConnections();
+//            Map<String, Map<String, String>> outputsConnections = connections.getOutputsConnections();
+//            Map<String, Pair<String, String>> inputsConnections = connections.getInputsConnections();
+//            Map<String, Boolean> isMandatory = connections.getIsMandatory();
+//            res = step.getName() + " Connections: \n";
+//            if (outputsConnections != null) {
+//                for (String name : outputsConnections.keySet()) {
+//                    res += "Output name: " + name + "\n";
+//                    if (!outputsConnections.get(name).isEmpty()) {
+//                        res += "connected to:\n";
+//                        for (String stepName : outputsConnections.get(name).keySet()) {
+//                            res += outputsConnections.get(name).get(stepName) + "from step: " + stepName + "\n";
+//                        }
+//                    } else
+//                        res += name + " have no connections" + "\n";
+//
+//                }
+//            }
+//            for (String input: isMandatory.keySet()) {
+//                res += "input name: " + input + "\n";
+//                res += "the input is mandatory: ";
+//                if(isMandatory.get(input))
+//                    res+= "yes\n";
+//                else
+//                    res+= "no\n";
+//                if(inputsConnections != null && inputsConnections.containsKey(input)) {
+//                    Pair<String,String> connection = inputsConnections.get(input);
+//                    res += "This input is connected to the output" + connection.getValue() + " from the step: " + connection.getKey();
+//                }
+//                else {
+//                    res+= "no connections\n";
+//                }
+//            }
+//            //test.add(res);
+//        }
+//        return test;
+//    }
 
     private void setStepConnectionPopUp(String stepName, StepConnectionsDTO connections,Hyperlink link) {
         Map<String, Map<String, String>> outputsConnections = connections.getOutputsConnections();
@@ -605,7 +432,6 @@ public class DefinitionController {
         popupStage.setResizable(true);
         popupStage.initStyle(StageStyle.UTILITY);
 
-        //vbox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
         vbox.setAlignment(Pos.CENTER);
         vbox.setFillWidth(true);
 
@@ -615,9 +441,7 @@ public class DefinitionController {
         scroll.setMinHeight(300);
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
-        //popup = new Popup();
-        //popup.getContent().add(scroll);
-        //popup.show(openLink, openLink.localToScreen(0, 0).getX(), openLink.localToScreen(0, 0).getY() + openLink.getHeight());
+
         Scene popupScene = new Scene(scroll);
         if(ownerStage.getScene().getStylesheets().size()!=0)
             popupScene.getStylesheets().add(ownerStage.getScene().getStylesheets().get(0));

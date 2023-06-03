@@ -38,6 +38,7 @@ public class main extends Application {
 
         Scene scene = new Scene(root,desiredWidth,desiredHeight);
         Image icon = new Image(getClass().getResource("/resources/pictures/Icon.png").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/resources/css/Default.css").toExternalForm());
         primaryStage.getIcons().add(icon);
         primaryStage.setTitle("Stepper");
         primaryStage.setScene(scene);

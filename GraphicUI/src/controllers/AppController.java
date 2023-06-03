@@ -126,6 +126,8 @@ public class AppController {
                 stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/purpleLogo.png").toExternalForm()));
                 break;
             case DEFAULT:
+                primaryStage.getScene().getStylesheets().add(
+                        getClass().getResource("/resources/css/Default.css").toExternalForm());
                 stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/blackLogo.png").toExternalForm()));
                 break;
         }
@@ -217,13 +219,7 @@ public class AppController {
     private File openFileChooserAndGetFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
-
-        // Set initial directory (optional)
-        //fileChooser.setInitialDirectory(new File("C:\\Users\\Igal\\Desktop\\New folder (2)"));
-
-        // Add file extension filters (optional)
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
-        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         return  selectedFile;
     }
