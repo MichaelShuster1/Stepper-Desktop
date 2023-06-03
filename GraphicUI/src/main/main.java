@@ -21,7 +21,7 @@ public class main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL resource =getClass().getResource("MainScreen.fxml");
+        URL resource =getClass().getResource("/resources/fxml/MainScreen.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(resource);
         Parent root = loader.load(resource.openStream());
@@ -37,8 +37,7 @@ public class main extends Application {
         double desiredHeight = screenBounds.getHeight() * heightFraction;
 
         Scene scene = new Scene(root,desiredWidth,desiredHeight);
-        scene.getStylesheets().add(getClass().getResource("Midnight.css").toExternalForm());
-        Image icon = new Image(getClass().getResource("Icon.png").toExternalForm());
+        Image icon = new Image(getClass().getResource("/resources/pictures/Icon.png").toExternalForm());
         primaryStage.getIcons().add(icon);
         primaryStage.setTitle("Stepper");
         primaryStage.setScene(scene);

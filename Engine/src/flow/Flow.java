@@ -718,6 +718,7 @@ public class Flow implements Serializable {
                 for(int currTarget : currTargets) {
                     steps.get(currTarget).getInputByName(sourceName).setData(continuationInitialValues.get(sourceName));
                 }
+                freeMandatoryInputs.remove(sourceName);
             }
         }
     }

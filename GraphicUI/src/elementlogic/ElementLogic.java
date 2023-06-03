@@ -110,15 +110,15 @@ public class ElementLogic {
             StepExtensionDTO stepExtensionDTO =stepExecutionDTO.getStepExtensionDTO();
             tableClicked = true;
 
-
+            addTitleLine("STEP'S DETAILS: ");
             addKeyValueLine("Name: ",stepExecutionDTO.getName());
             addKeyValueLine("Run Time: ",stepExecutionDTO.getRunTime()+ "ms");
             addKeyValueLine("Finish state: ",stepExecutionDTO.getStateAfterRun());
-            addKeyValueLine("\nStep's Input Data:","");
+            addTitleLine("\nSTEP'S INPUT DATA:");
             addStepInputsOrOutputsData(stepExtensionDTO.getInputs());
-            addKeyValueLine("\nStep's Outputs Data:","");
+            addTitleLine("\nSTEP'S OUTPUTS DATA:");
             addStepInputsOrOutputsData(stepExtensionDTO.getOutputs());
-            addKeyValueLine("\nSTEP LOGS:","");
+            addTitleLine("\nSTEP LOGS: ");
             addStepLogs(stepExtensionDTO.getLogs());
         }
     }
@@ -223,9 +223,9 @@ public class ElementLogic {
             }
             else
                 addKeyValueLine(name+": ","No Data Received");
-
-
         }
+        if(io.keySet().size()==0)
+            addKeyValueLine("No outputs exist","");
     }
 
 

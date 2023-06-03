@@ -122,16 +122,16 @@ public class AppController {
         {
             case DARK:
                 primaryStage.getScene().getStylesheets().add(
-                        getClass().getResource("../main/Dark.css").toExternalForm());
-                stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
+                        getClass().getResource("/resources/css/Dark.css").toExternalForm());
+                stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/blackLogo.png").toExternalForm()));
                 break;
             case MIDNIGHT:
                 primaryStage.getScene().getStylesheets().add(
-                        getClass().getResource("../main/Midnight.css").toExternalForm());
-                stepperLogo.setImage(new Image(getClass().getResource("../main/purpleLogo.png").toExternalForm()));
+                        getClass().getResource("/resources/css/Midnight.css").toExternalForm());
+                stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/purpleLogo.png").toExternalForm()));
                 break;
             case DEFAULT:
-                stepperLogo.setImage(new Image(getClass().getResource("../main/blackLogo.png").toExternalForm()));
+                stepperLogo.setImage(new Image(getClass().getResource("/resources/pictures/blackLogo.png").toExternalForm()));
                 break;
         }
 
