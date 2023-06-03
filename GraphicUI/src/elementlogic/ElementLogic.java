@@ -40,6 +40,7 @@ public class ElementLogic {
     private TableColumn<StepExecutionDTO,String> stateColumnView;
     boolean tableClicked;
 
+
     public ElementLogic(VBox elementChoiceView,VBox elementDetailsView,Stage primaryStage) {
         this.elementChoiceView = elementChoiceView;
         this.elementDetailsView = elementDetailsView;
@@ -83,6 +84,7 @@ public class ElementLogic {
 
         if(flowExecutionDTO.getStateAfterRun()!=null)
             updateFlowInfoView();
+
     }
 
 

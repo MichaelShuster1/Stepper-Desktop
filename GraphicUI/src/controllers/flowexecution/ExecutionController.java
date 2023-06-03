@@ -194,7 +194,10 @@ public class ExecutionController {
                 ChoiceBox<String> enumerationSetChoice = new ChoiceBox<>();
                 enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
                 enumerationSetChoice.setStyle("-fx-pref-width: 200px;");
-                inputDialog.getDialogPane().setContent(new HBox(10, new Label("Please choose an input:"), enumerationSetChoice));
+
+                inputDialog.getDialogPane().setContent(
+                        new HBox(10, new Label("Please choose one of the options:"), enumerationSetChoice));
+
                 inputDialog.setResultConverter(dialogButton -> {
                     if (dialogButton == ButtonType.OK) {
                         String selectedOption = enumerationSetChoice.getValue();
@@ -202,6 +205,14 @@ public class ExecutionController {
                     }
                     return null;
                 });
+
+                Button submitButton=(Button) inputDialog.getDialogPane().lookupButton(ButtonType.OK);
+
+                enumerationSetChoice.valueProperty().addListener((observable, oldValue, newValue) -> {
+                    submitButton.setDisable(newValue == null);
+                });
+
+
                 result = inputDialog.showAndWait();
                 break;
             case NUMBER:
