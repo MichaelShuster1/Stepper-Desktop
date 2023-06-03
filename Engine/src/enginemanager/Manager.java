@@ -77,6 +77,9 @@ public class Manager implements EngineApi, Serializable {
 
     private void createThreadPool(STStepper stepper)
     {
+        int threadPoolSize=stepper.getSTThreadPool();
+        if(threadPoolSize<=0)
+            throw new RuntimeException("The given thread pool size is non-positive number");
         threadPool= Executors.newFixedThreadPool(stepper.getSTThreadPool());
     }
 
