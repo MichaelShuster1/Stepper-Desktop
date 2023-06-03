@@ -772,8 +772,10 @@ public class Flow implements Serializable {
     public void clearFlowInputsData() {
         for(Step step: steps) {
             List<Input> currInputs = step.getInputs();
-            for(Input input : currInputs)
-                input.setData(null);
+            for(Input input : currInputs) {
+                if(!input.haveInitialValue())
+                       input.setData(null);
+            }
         }
     }
 }
