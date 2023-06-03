@@ -102,9 +102,9 @@ public class Manager implements EngineApi, Serializable {
             addFlowOutputs(stFlow);
             addSteps(stFlow);
             implementAliasing(stFlow);
+            currentFlow.setInitialValues(getInitialValues(stFlow));
             currentFlow.customMapping(getCustomMappings(stFlow));
             currentFlow.automaticMapping();
-            currentFlow.setInitialValues(getInitialValues(stFlow));
             currentFlow.calculateFreeInputs();
             currentFlow.setFlowOutputs();
             if(getContinuations(stFlow).size() != 0)

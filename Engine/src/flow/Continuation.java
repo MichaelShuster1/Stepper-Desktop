@@ -108,7 +108,7 @@ public class Continuation {
                         addForcedMapping(targetFreeInputs, targetName, sourcePair, sourceSteps, targetSteps, true);
                         forcedAssignedInputs.add(targetName);
                     } else
-                        throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists, target input: " + targetName);
+                        throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists or contains an initial value, target input: " + targetName);
                 }
             }
             else if (sourceFreeInputs.containsKey(sourceName)) {
@@ -118,7 +118,7 @@ public class Continuation {
                         addForcedMapping(targetFreeInputs,targetName,sourcePair, sourceSteps, targetSteps, false);
                         forcedAssignedInputs.add(targetName);
                     } else
-                        throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists, target input: " + targetName);
+                        throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists or contains an initial value, target input: " + targetName);
                 }
             }
             else
