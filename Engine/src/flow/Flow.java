@@ -5,6 +5,7 @@ import datadefinition.DataEnumerator;
 import dto.*;
 import datadefinition.Input;
 import datadefinition.Output;
+import initialvalue.InitialValue;
 import step.State;
 import step.Step;
 import exception.*;
@@ -29,6 +30,8 @@ public class Flow implements Serializable {
     private Map<String, Boolean> freeInputsIsReq;
     private Set<String> freeMandatoryInputs;
     private Map<String,String> initialValues;
+
+    private Map<String, InitialValue> initialValueMap;
 
     private Map<String,Integer> flowOutputs;
 
@@ -634,6 +637,7 @@ public class Flow implements Serializable {
                 throw new InitialValueException("The flow \"" + this.name + "\" contains an initial value to an input that doesn't exists (input:" + name + ")");
         }
         this.initialValues = initialValues;
+        this.initialValueMap = new HashMap<>();
         applyInitialValues();
     }
 
@@ -653,6 +657,7 @@ public class Flow implements Serializable {
                        throw new InitialValueDataTypeException("The initial value for the input \"" + inputName + "\" have a wrong value\n" +
                            "this input is an enumerator data type and the entered values isn't allowed" );
                }
+               initialValueMap.put(inputName, new InitialValue(inputName,initialValues.get(inputName), stepIndex, currInput.getType()));
                currInput.setHaveInitialValue(true);
            }
         }
@@ -703,12 +708,12 @@ public class Flow implements Serializable {
     public void applyContinuation(FlowExecution flowExecution, Continuation continuation) {
         Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationMapping = continuation.getContinuationMapping();
         Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationForcedMapping = continuation.getContinuationForcedMapping();
-        Map<String,String> continuationInitialValues = continuation.getSourceInitialValues();
+        //Map<String,String> continuationInitialValues = continuation.getSourceInitialValues();
         List<Step> sourceSteps = flowExecution.getSteps();
 
         setContinuationData(continuationMapping, sourceSteps);
         setContinuationData(continuationForcedMapping, sourceSteps);
-        setContinuationInitialValues(continuationInitialValues);
+        //setContinuationInitialValues(continuationInitialValues);
     }
 
     private void setContinuationInitialValues(Map<String, String> continuationInitialValues) {
@@ -777,5 +782,9 @@ public class Flow implements Serializable {
                        input.setData(null);
             }
         }
+    }
+
+    public Map<String, InitialValue> getInitialValueMap() {
+        return initialValueMap;
     }
 }

@@ -1,6 +1,7 @@
 package flow;
 
 import exception.ContinuationException;
+import initialvalue.InitialValue;
 import javafx.util.Pair;
 import step.Step;
 
@@ -15,6 +16,8 @@ public class Continuation {
     private Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationForcedMapping;
 
     private Map<String, String> sourceInitialValues;
+
+    private Map<String, InitialValue> initialValueMap;
 
     public Continuation(String targetFlow) {
         this.targetFlow = targetFlow;
@@ -57,14 +60,15 @@ public class Continuation {
         Map<String, List<Integer>> targetFreeInputs = targetFlow.getFlowFreeInputs();
         Map<String, Integer> sourceOutputs = sourceFlow.getFlowOutputs();
         Map<String, List<Integer>> sourceFreeInputs = sourceFlow.getFlowFreeInputs();
-        copyInitialValues(sourceFlow.getInitialValues());
+        //copyInitialValues(sourceFlow.getInitialValues());
+        this.initialValueMap = sourceFlow.getInitialValueMap();
         Set<String> forcedAssignedInputs = null;
         if (oldFlow2NewForcedMapping.size() != 0) {
            forcedAssignedInputs =  doForcedMapping(sourceSteps, targetSteps, targetFreeInputs, sourceOutputs, sourceFreeInputs);
         }
         doMapping(sourceSteps, targetSteps, targetFreeInputs, sourceOutputs, sourceFreeInputs, forcedAssignedInputs);
-        if(forcedAssignedInputs != null)
-            removeForcedAssignedInputsFromInitialValues(forcedAssignedInputs);
+        //if(forcedAssignedInputs != null)
+          //  removeForcedAssignedInputsFromInitialValues(forcedAssignedInputs);
     }
 
     private void copyInitialValues(Map<String, String> initialValues) {
@@ -88,6 +92,29 @@ public class Continuation {
         }
         for(String sourceName : sourceOutputs.keySet()) {
             addMapping(sourceSteps, targetSteps, targetFreeInputs, sourceFreeInputs, forcedAssignedInputs, sourceName, true);
+        }
+        for(String sourceName : initialValueMap.keySet()) {
+            addInitialValueMapping(sourceSteps,targetSteps,targetFreeInputs,this.initialValueMap,forcedAssignedInputs,sourceName);
+        }
+    }
+
+    private void addInitialValueMapping(List<Step> sourceSteps, List<Step> targetSteps, Map<String, List<Integer>> targetFreeInputs, Map<String, InitialValue> initialValueMap, Set<String> forcedAssignedInputs, String sourceName) {
+        if(targetFreeInputs.containsKey(sourceName)) {
+            if(!(forcedAssignedInputs != null && forcedAssignedInputs.contains(sourceName))) {
+                List<Integer> allCurrFreeInputs = targetFreeInputs.get(sourceName);
+                Pair<Integer,String> sourcePair = new Pair<>(initialValueMap.get(sourceName).getStepIndex(), sourceName);
+                if(!continuationMapping.containsKey(sourcePair)) {
+                    List<Pair<Integer,String>> newList = new ArrayList<>();
+                    continuationMapping.put(sourcePair,newList);
+                }
+
+                for(Integer currIndex : allCurrFreeInputs) {
+                    Pair<Integer,String> targetPair = new Pair<>(currIndex, sourceName);
+                    String sourceType = sourceSteps.get(sourcePair.getKey()).getInputByName(sourcePair.getValue()).getType();
+                    if(sourceType.equals(targetSteps.get(targetPair.getKey()).getInputByName(targetPair.getValue()).getType()))
+                        continuationMapping.get(sourcePair).add(targetPair);
+                }
+            }
         }
     }
 
@@ -140,12 +167,23 @@ public class Continuation {
                         throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists or contains an initial value, target input: " + targetName);
                 }
             }
+            else if (sourceInitialValues.containsKey(sourceName)) {
+                for(String targetName : forcedTargets) {
+                    if(targetFreeInputs.containsKey(targetName)) {
+                        Pair<Integer,String> sourcePair = new Pair<>(initialValueMap.get(sourceName).getStepIndex(), sourceName);
+                        addForcedMapping(targetFreeInputs,targetName,sourcePair, sourceSteps, targetSteps, false);
+                        forcedAssignedInputs.add(targetName);
+                    } else
+                        throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists or contains an initial value, target input: " + targetName);
+                }
+            }
             else
                 throw new ContinuationException("Continuation contains mapping to a source data that doesnt exists, source data: " + sourceName);
             }
 
         return forcedAssignedInputs;
     }
+
 
     private void addForcedMapping(Map<String,List<Integer>> targetFreeInputs, String targetName, Pair<Integer, String> sourcePair, List<Step> sourceSteps, List<Step> targetSteps, boolean flag) {
         List<Integer> allCurrFreeInputs = targetFreeInputs.get(targetName);
@@ -172,6 +210,7 @@ public class Continuation {
     public Map<String, String> getSourceInitialValues() {
         return sourceInitialValues;
     }
+
 }
 
 
