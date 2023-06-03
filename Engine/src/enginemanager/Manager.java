@@ -536,6 +536,7 @@ public class Manager implements EngineApi, Serializable {
         String flowName = flowExecutionDTO.getName();
         int flowIndex = flowNames2Index.get(flowName);
         Flow flow = flows.get(flowIndex);
+        flow.clearFlowInputsData();
         List<FreeInputExecutionDTO> inputs = flowExecutionDTO.getFreeInputs();
         for(FreeInputExecutionDTO currInput : inputs) {
             if(currInput.getData() != null)
@@ -549,6 +550,7 @@ public class Manager implements EngineApi, Serializable {
         String sourceFlowName = flowExecution.getName();
         Flow sourceFlow = flows.get(getFlowIndexByName(sourceFlowName));
         Continuation continuation = sourceFlow.getContinuation(targetName);
+        flows.get(getFlowIndexByName(targetName)).clearFlowInputsData();
         flows.get(getFlowIndexByName(targetName)).applyContinuation(flowExecution, continuation);
     }
 
