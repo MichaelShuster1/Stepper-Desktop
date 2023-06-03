@@ -14,6 +14,8 @@ public class Continuation {
 
     private Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationForcedMapping;
 
+    private Map<String, String> sourceInitialValues;
+
     public Continuation(String targetFlow) {
         this.targetFlow = targetFlow;
         this.oldFlow2NewForcedMapping = new HashMap<>();
@@ -55,13 +57,30 @@ public class Continuation {
         Map<String, List<Integer>> targetFreeInputs = targetFlow.getFlowFreeInputs();
         Map<String, Integer> sourceOutputs = sourceFlow.getFlowOutputs();
         Map<String, List<Integer>> sourceFreeInputs = sourceFlow.getFlowFreeInputs();
+        copyInitialValues(sourceFlow.getInitialValues());
         Set<String> forcedAssignedInputs = null;
         if (oldFlow2NewForcedMapping.size() != 0) {
            forcedAssignedInputs =  doForcedMapping(sourceSteps, targetSteps, targetFreeInputs, sourceOutputs, sourceFreeInputs);
         }
         doMapping(sourceSteps, targetSteps, targetFreeInputs, sourceOutputs, sourceFreeInputs, forcedAssignedInputs);
-
+        if(forcedAssignedInputs != null)
+            removeForcedAssignedInputsFromInitialValues(forcedAssignedInputs);
     }
+
+    private void copyInitialValues(Map<String, String> initialValues) {
+        this.sourceInitialValues = new HashMap<>();
+        for(String input: initialValues.keySet()) {
+            this.sourceInitialValues.put(input, initialValues.get(input));
+        }
+    }
+
+    private void removeForcedAssignedInputsFromInitialValues(Set<String> forcedAssignedInputs) {
+        for(String inputName: forcedAssignedInputs) {
+            if (sourceInitialValues.containsKey(inputName))
+                sourceInitialValues.remove(inputName);
+        }
+    }
+
 
     private void doMapping(List<Step> sourceSteps, List<Step> targetSteps, Map<String, List<Integer>> targetFreeInputs, Map<String, Integer> sourceOutputs, Map<String, List<Integer>> sourceFreeInputs, Set<String> forcedAssignedInputs) {
         for(String sourceName: sourceFreeInputs.keySet()) {
@@ -148,6 +167,10 @@ public class Continuation {
                         targetPair.getValue() +" while they have different data types");
             continuationForcedMapping.get(sourcePair).add(targetPair);
         }
+    }
+
+    public Map<String, String> getSourceInitialValues() {
+        return sourceInitialValues;
     }
 }
 

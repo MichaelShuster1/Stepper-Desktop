@@ -703,10 +703,23 @@ public class Flow implements Serializable {
     public void applyContinuation(FlowExecution flowExecution, Continuation continuation) {
         Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationMapping = continuation.getContinuationMapping();
         Map<Pair<Integer,String>,List<Pair<Integer,String>>> continuationForcedMapping = continuation.getContinuationForcedMapping();
+        Map<String,String> continuationInitialValues = continuation.getSourceInitialValues();
         List<Step> sourceSteps = flowExecution.getSteps();
 
         setContinuationData(continuationMapping, sourceSteps);
         setContinuationData(continuationForcedMapping, sourceSteps);
+        setContinuationInitialValues(continuationInitialValues);
+    }
+
+    private void setContinuationInitialValues(Map<String, String> continuationInitialValues) {
+        for(String sourceName : continuationInitialValues.keySet()) {
+            if(flowFreeInputs.containsKey(sourceName)) {
+                List<Integer> currTargets = flowFreeInputs.get(sourceName);
+                for(int currTarget : currTargets) {
+                    steps.get(currTarget).getInputByName(sourceName).setData(continuationInitialValues.get(sourceName));
+                }
+            }
+        }
     }
 
     private void setContinuationData(Map<Pair<Integer, String>, List<Pair<Integer, String>>> continuationMapping, List<Step> sourceSteps) {
@@ -748,5 +761,9 @@ public class Flow implements Serializable {
         Input input = step.getInput(inputIndex);
 
         return input.getDefaultName();
+    }
+
+    public Map<String, String> getInitialValues() {
+        return initialValues;
     }
 }

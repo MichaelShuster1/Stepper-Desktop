@@ -37,7 +37,7 @@ public class main extends Application {
         double desiredHeight = screenBounds.getHeight() * heightFraction;
 
         Scene scene = new Scene(root,desiredWidth,desiredHeight);
-        //scene.getStylesheets().add(getClass().getResource("Midnight.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("Midnight.css").toExternalForm());
         Image icon = new Image(getClass().getResource("Icon.png").toExternalForm());
         primaryStage.getIcons().add(icon);
         primaryStage.setTitle("Stepper");
