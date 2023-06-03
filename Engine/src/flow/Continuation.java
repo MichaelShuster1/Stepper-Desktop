@@ -167,7 +167,7 @@ public class Continuation {
                         throw new ContinuationException("Continuation contains mapping to a target input that doesnt exists or contains an initial value, target input: " + targetName);
                 }
             }
-            else if (sourceInitialValues.containsKey(sourceName)) {
+            else if (initialValueMap.containsKey(sourceName)) {
                 for(String targetName : forcedTargets) {
                     if(targetFreeInputs.containsKey(targetName)) {
                         Pair<Integer,String> sourcePair = new Pair<>(initialValueMap.get(sourceName).getStepIndex(), sourceName);
