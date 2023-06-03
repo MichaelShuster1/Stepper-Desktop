@@ -89,7 +89,10 @@ public class ExecutionController {
     public void setStage(Stage stage)
     {
         elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
-        //elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get())
+           elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get())
+            choiceBoxView.setOpacity(0.0);
     }
 
     public void bindAnimationBooleanProperty(BooleanProperty booleanProperty)
@@ -156,8 +159,10 @@ public class ExecutionController {
     public void clearTab() {
         clearInputButtons();
         clearExecutionUpdate();
-        choiceBoxView.setOpacity(0.0);
-        //elementLogic.setTableOpacity(0.0);
+        if(isAnimationsOn.get()) {
+            choiceBoxView.setOpacity(0.0);
+            elementLogic.setTableOpacity(0.0);
+        }
     }
 
     public void clearInputButtons(){
@@ -464,6 +469,7 @@ public class ExecutionController {
             if(isAnimationsOn.get()) {
                 createFadeAnimation(elementDetailsView);
             }
+
 
             progressBarView.setProgress(1);
         }

@@ -41,7 +41,7 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Label>
-                        <RadioButton fx:id="animationsRadioButtonVIew" mnemonicParsing="false" text="animations" />
+                        <RadioButton fx:id="animationsRadioButtonVIew" mnemonicParsing="false" text="Animations" />
                         <Label text="Style:" />
                         <ChoiceBox fx:id="styleChoiceView" prefWidth="150.0">
                            <HBox.margin>
