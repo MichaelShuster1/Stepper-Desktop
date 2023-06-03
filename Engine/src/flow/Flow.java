@@ -92,14 +92,20 @@ public class Flow implements Serializable {
 
             if (outPutStepIndex >= inputStepIndex) {
                 throw new StepsMappingOrderException("The Custom mapping in the flow \""
-                        + name + "\" contains mapping from the step:" + currValue.getKey() + " to the step:" + key.getKey() +
-                        " while the step:" + key.getKey() + " is executed in the flow before the step:" + currValue.getKey());
+                        + name + "\" contains mapping from the step: " + currValue.getKey() + " to the step: " + key.getKey() +
+                        " while the step: " + key.getKey() + " is executed in the flow before the step: " + currValue.getKey());
             }
 
             if (!(steps.get(outPutStepIndex).getOutput(outPutIndex).getType().equals(steps.get(inputStepIndex).getInput(inputIndex).getType()))) {
                 throw new StepsMappingOrderException("The Custom mapping in the flow \"" + name
-                        + "\" contains mapping for the input:" + key.getValue() + "\nfrom the output:"
+                        + "\" contains mapping for the input: " + key.getValue() + "\nfrom the output: "
                         + currValue.getValue() + " while the input and output have data of different types");
+            }
+
+            if(steps.get(inputStepIndex).getInput(inputIndex).haveInitialValue()) {
+                throw new InitialValueException("The Custom mapping in the flow \"" + name
+                        + "\" contains mapping for the input: " + key.getValue() + "\nfrom the output: "
+                        + currValue.getValue() + " while the input already have an initial value");
             }
 
 
@@ -113,22 +119,22 @@ public class Flow implements Serializable {
         if (inputIndex == null) {
             throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name
                     + "\" contains mapping for a step's input that doesn't exist\nstep name:"
-                    + currValue.getKey() + ", input name:" + key.getValue());
+                    + currValue.getKey() + ", input name: " + key.getValue());
         }
     }
 
     private void checkIfOutputDataValid(Pair<String, String> currValue, Integer outPutIndex) {
         if (outPutIndex == null) {
             throw new InputOutputNotExistException("The Custom mapping in the flow \"" + name
-                    + "\" contains mapping for a step's output that doesn't exist, step name:"
-                    + currValue.getKey() + ", output name:" + currValue.getValue());
+                    + "\" contains mapping for a step's output that doesn't exist, step name: "
+                    + currValue.getKey() + ", output name: " + currValue.getValue());
         }
     }
 
     private void checkIfStepValid(Pair<String, String> pair, Integer StepIndex) {
         if (StepIndex == null) {
             throw new StepNameNotExistException("The Custom mapping in the flow \"" + name
-                    + "\" contains mapping for a step that doesn't exist, step name:" + pair.getKey());
+                    + "\" contains mapping for a step that doesn't exist, step name: " + pair.getKey());
         }
     }
 
@@ -137,7 +143,6 @@ public class Flow implements Serializable {
         int a;
         readOnly = true;
 
-        initFlowInputs();
         if (connections == null)
             initConnections();
 
@@ -170,7 +175,7 @@ public class Flow implements Serializable {
                 if (stepIndex > index) {
                     Integer inputIndex = step.getNameToInputIndex().get(output.getName());
                     Input input = step.getInput(inputIndex);
-                    if (input.getType().equals(output.getType()) && !input.isConnected()) {
+                    if (input.getType().equals(output.getType()) && !input.isConnected() && !input.haveInitialValue()) {
                         input.setConnected(true);
                         pairs.add(new Pair<>(stepIndex, inputIndex));
                     }
@@ -623,6 +628,7 @@ public class Flow implements Serializable {
     }
 
     public void setInitialValues(Map<String, String> initialValues) {
+        initFlowInputs();
         for (String name : initialValues.keySet()) {
             if (!flowInputs.containsKey(name))
                 throw new InitialValueException("The flow \"" + this.name + "\" contains an initial value to an input that doesn't exists (input:" + name + ")");

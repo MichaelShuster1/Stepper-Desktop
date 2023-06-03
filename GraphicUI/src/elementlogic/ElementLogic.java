@@ -4,6 +4,7 @@ import datadefinition.DataType;
 import datadefinition.Relation;
 import dto.*;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,11 +38,13 @@ public class ElementLogic {
     private TableColumn<StepExecutionDTO,String> stepColumnView;
 
     private TableColumn<StepExecutionDTO,String> stateColumnView;
+    boolean tableClicked;
 
     public ElementLogic(VBox elementChoiceView,VBox elementDetailsView,Stage primaryStage) {
         this.elementChoiceView = elementChoiceView;
         this.elementDetailsView = elementDetailsView;
         this.primaryStage=primaryStage;
+        this.tableClicked = false;
 
         stepsTableView=new TableView<>();
         stepColumnView=new TableColumn<>("step");
@@ -89,9 +92,12 @@ public class ElementLogic {
         elementDetailsView.getChildren().clear();
         stepsTableView.getItems().clear();
         flowExecutionDTO=null;
+        tableClicked = false;
     }
 
-
+    public boolean isTableClicked() {
+        return tableClicked;
+    }
 
     @FXML
     private void rowClick(ActionEvent event)
@@ -100,6 +106,7 @@ public class ElementLogic {
             elementDetailsView.getChildren().clear();
             StepExecutionDTO stepExecutionDTO=stepsTableView.getSelectionModel().getSelectedItem();
             StepExtensionDTO stepExtensionDTO =stepExecutionDTO.getStepExtensionDTO();
+            tableClicked = true;
 
 
             addKeyValueLine("Name: ",stepExecutionDTO.getName());
@@ -394,4 +401,5 @@ public class ElementLogic {
     public String getID() {
         return flowExecutionDTO.getId();
     }
+
 }

@@ -69,6 +69,8 @@ public class ExecutionController {
 
     private BooleanProperty isAnimationsOn;
 
+    private boolean isClicked;
+
 
 
     @FXML
@@ -76,7 +78,7 @@ public class ExecutionController {
         continuationButton.setDisable(true);
         continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
         choiceBoxView.setDisable(true);
-        choiceBoxView.setOpacity(0.0);
+        isClicked = false;
     }
 
 
@@ -89,10 +91,8 @@ public class ExecutionController {
     public void setStage(Stage stage)
     {
         elementLogic=new ElementLogic(elementChoiceView,elementDetailsView,stage);
-        if(isAnimationsOn.get())
-           elementLogic.setTableOpacity(0.0);
-        if(isAnimationsOn.get())
-            choiceBoxView.setOpacity(0.0);
+        elementLogic.setTableOpacity(0.0);
+        choiceBoxView.setOpacity(0.0);
     }
 
     public void bindAnimationBooleanProperty(BooleanProperty booleanProperty)
@@ -159,10 +159,9 @@ public class ExecutionController {
     public void clearTab() {
         clearInputButtons();
         clearExecutionUpdate();
-        if(isAnimationsOn.get()) {
-            choiceBoxView.setOpacity(0.0);
-            elementLogic.setTableOpacity(0.0);
-        }
+        choiceBoxView.setOpacity(0.0);
+        elementLogic.setTableOpacity(0.0);
+        isClicked = false;
     }
 
     public void clearInputButtons(){
@@ -425,6 +424,8 @@ public class ExecutionController {
 
         if(isAnimationsOn.get())
             elementLogic.animateTable();
+        else
+            elementLogic.setTableOpacity(1.0);
     }
 
     private void createButtonFlipAnimation(Button button,int direction)
@@ -453,9 +454,11 @@ public class ExecutionController {
                 if(isAnimationsOn.get()) {
                     createFadeAnimation(choiceBoxView);
                 }
+                else
+                    choiceBoxView.setOpacity(1.0);
                 choiceBoxView.setDisable(false);
             }
-            if(isAnimationsOn.get()) {
+            if(isAnimationsOn.get() && !elementLogic.isTableClicked() && !isClicked) {
                 createFadeAnimation(elementDetailsView);
             }
 
@@ -477,6 +480,7 @@ public class ExecutionController {
 
     @FXML
     void showFlowInfo(MouseEvent event) {
+        isClicked = true;
         elementLogic.updateFlowInfoView();
     }
 
