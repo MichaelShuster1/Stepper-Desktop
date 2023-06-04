@@ -114,14 +114,14 @@ public class Manager implements EngineApi, Serializable {
             flowList.add(currentFlow);
             i++;
         }
-        this.flowNames2Index = flowNames;
-        createContinuations(continuationMap,flowList);
+        createContinuations(continuationMap,flowList, flowNames);
 
         flows.clear();
         flowsStatistics.clear();
         flowsHistory.clear();
         currentFlow = null;
 
+        this.flowNames2Index = flowNames;
         flows = flowList;
         setFlowsContinuations(continuationMap);
         flowsStatistics = statisticsMap;
@@ -134,12 +134,12 @@ public class Manager implements EngineApi, Serializable {
         }
     }
 
-    private void createContinuations(Map<String,List<Continuation>> mapping,List<Flow> flowList) {
+    private void createContinuations(Map<String,List<Continuation>> mapping,List<Flow> flowList,  Map<String,Integer> flowNames) {
         for(String name : mapping.keySet()) {
-            Integer sourceIndex = flowNames2Index.get(name);
+            Integer sourceIndex = flowNames.get(name);
             List<Continuation> currContinuationList = mapping.get(name);
             for (Continuation continuation : currContinuationList) {
-                Integer targetIndex = flowNames2Index.get(continuation.getTargetFlow());
+                Integer targetIndex = flowNames.get(continuation.getTargetFlow());
                 if (targetIndex == null)
                     throw new ContinuationException("The flow \""+name+"\" contains a continuation to a flow that doesn't exists, flow name: " + continuation.getTargetFlow());
 
