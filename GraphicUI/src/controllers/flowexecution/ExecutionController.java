@@ -6,7 +6,6 @@ import datadefinition.DataType;
 import dto.*;
 import elementlogic.ElementLogic;
 import enginemanager.EngineApi;
-import flow.FlowExecution;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.beans.property.BooleanProperty;
