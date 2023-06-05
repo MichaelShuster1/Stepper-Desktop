@@ -72,7 +72,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <HBox fx:id="hBoxView" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
                         <ProgressBar fx:id="progressBarView" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="executeButton" disable="true" mnemonicParsing="false" onAction="#executeFlow" text="Execute !">

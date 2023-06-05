@@ -6,6 +6,7 @@ import datadefinition.Input;
 import datadefinition.Output;
 
 import java.io.*;
+import java.nio.file.Files;
 
 public class FileDumper extends Step {
     public FileDumper(String name, boolean continue_if_failing) {
@@ -47,7 +48,7 @@ public class FileDumper extends Step {
             if (content != null && content.length() > 0) {
                 try (Writer writer = new BufferedWriter(
                         new OutputStreamWriter(
-                                new FileOutputStream(file), "UTF-8"))) {
+                                Files.newOutputStream(file.toPath()), "UTF-8"))) {
                     writer.write(content);
                 }
                 setStateAfterRun(State.SUCCESS);

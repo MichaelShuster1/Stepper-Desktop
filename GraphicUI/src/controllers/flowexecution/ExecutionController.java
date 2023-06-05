@@ -60,6 +60,8 @@ public class ExecutionController {
 
     @FXML
     private Button continuationButton;
+    @FXML
+    private HBox hBoxView;
 
     private AppController appController;
 
@@ -68,6 +70,8 @@ public class ExecutionController {
     private List<Button> mandatoryInputButtons;
 
     private List<Button> optionalInputButtons;
+
+    private Button rerunButton;
 
     private ElementLogic elementLogic;
 
@@ -83,6 +87,8 @@ public class ExecutionController {
         continuationButton.disableProperty().bind(choiceBoxView.valueProperty().isNull());
         choiceBoxView.setDisable(true);
         isClicked = false;
+        rerunButton=new Button("Rerun flow");
+        HBox.setMargin(rerunButton,new Insets(0,10,0,0));
     }
 
 
@@ -108,6 +114,8 @@ public class ExecutionController {
     public void setEngine(EngineApi engine) {
         this.engine = engine;
     }
+
+
 
     public void setTabView(InputsDTO inputsDTO,String flowName)
     {
@@ -136,6 +144,7 @@ public class ExecutionController {
             String inputPresentation =inputData.getSystemName().replace("_"," ").toLowerCase();
             inputPresentation+="\nDescription: "+inputData.getUserString();
             button.setText(inputPresentation);
+            button.setDisable(false);
             FlowPane.setMargin(button,new Insets(0,10,10,0));
 
 
@@ -168,6 +177,11 @@ public class ExecutionController {
         elementLogic.setTableOpacity(0.0);
         isClicked = false;
         flowInfoView.setText("Flow info");
+        if(hBoxView.getChildren().contains(rerunButton)){
+            hBoxView.getChildren().remove(rerunButton);
+            hBoxView.getChildren().add(executeButton);
+        }
+
     }
 
     public void clearInputButtons(){
@@ -429,18 +443,17 @@ public class ExecutionController {
 
         for(Button button:mandatoryInputButtons) {
             button.setDisable(true);
-            //button.setStyle("-fx-background-color: #ff0000; ");
             if(isAnimationsOn.get()) {
                 createButtonFlipAnimation(button,-360);
             }
         }
         for (Button button:optionalInputButtons) {
             button.setDisable(true);
-            //button.setStyle("");
             if(isAnimationsOn.get()) {
                 createButtonFlipAnimation(button,360);
             }
         }
+
 
         if(isAnimationsOn.get())
             elementLogic.animateTable();
@@ -481,13 +494,20 @@ public class ExecutionController {
             if(isAnimationsOn.get() && !elementLogic.isTableClicked() && !isClicked) {
                 createFadeAnimation(elementDetailsView);
             }
-
-
             progressBarView.setProgress(1);
+            hBoxView.getChildren().remove(executeButton);
+            rerunButton.setOnAction(e->reRunFlow(flowExecutionDTO));
+            hBoxView.getChildren().add(rerunButton);
         }
 
     }
 
+
+    private void reRunFlow(FlowExecutionDTO flowExecutionDTO)
+    {
+        engine.reUseInputsData(flowExecutionDTO);
+        appController.streamFlow(flowExecutionDTO.getName());
+    }
     private void createFadeAnimation(Node node)
     {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), node);
