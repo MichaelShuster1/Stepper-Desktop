@@ -147,10 +147,11 @@ public class Zipper extends Step {
                 addFolderToZip(path, srcFile, zip);
             }
             else {
+                FileInputStream in;
                 try {
                     byte[] buf = new byte[1024];
                     int len;
-                    FileInputStream in = new FileInputStream(srcFile);
+                    in = new FileInputStream(srcFile);
                     if (!oneFile)
                         zip.putNextEntry(new ZipEntry(path + "/" + folder.getName()));
                     else
@@ -161,6 +162,12 @@ public class Zipper extends Step {
                 }
                 catch (Exception e)
                 {
+                    return "Step failed, failed to zip contents of " + folder.getAbsolutePath();
+                }
+                try {
+                    in.close();
+                }
+                catch (Exception e) {
                     return "Step failed, failed to zip contents of " + folder.getAbsolutePath();
                 }
             }
