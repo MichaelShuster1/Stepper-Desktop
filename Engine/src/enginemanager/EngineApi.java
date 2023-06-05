@@ -47,6 +47,8 @@ public interface EngineApi {
 
     ContinutionMenuDTO getContinutionMenuDTO();
 
+    ContinutionMenuDTO getContinuationMenuDTOByName(String flowName);
+
     void reUseInputsData(FlowExecutionDTO flowExecutionDTO);
 
     void doContinuation(FlowExecution flowExecution, String targetName);

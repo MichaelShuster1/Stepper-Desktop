@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -39,8 +40,13 @@
                   </ScrollPane>
                </center>
                <bottom>
-                  <HBox alignment="BOTTOM_RIGHT" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER" minHeight="60.0" BorderPane.alignment="CENTER">
                      <children>
+                        <Button fx:id="continuationButton" mnemonicParsing="false" onAction="#openContinuationPopUp" text="Continuation options">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="reRunButton" mnemonicParsing="false" onAction="#reRunFlow" text="Rerun flow" />
                      </children>
                   </HBox>

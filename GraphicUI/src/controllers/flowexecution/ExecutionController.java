@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -200,8 +201,9 @@ public class ExecutionController {
                 enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
                 enumerationSetChoice.setStyle("-fx-pref-width: 200px;");
 
-                inputDialog.getDialogPane().setContent(
-                        new HBox(10, new Label("Please choose one of the options:"), enumerationSetChoice));
+                HBox hbox = new HBox(10, new Label("Please choose one of the options:"),  enumerationSetChoice);
+                hbox.setAlignment(Pos.CENTER);
+                inputDialog.getDialogPane().setContent(hbox);
 
                 inputDialog.setResultConverter(dialogButton -> {
                     if (dialogButton == ButtonType.OK) {
@@ -426,13 +428,15 @@ public class ExecutionController {
         executeButton.setDisable(true);
 
         for(Button button:mandatoryInputButtons) {
-            button.setStyle("-fx-background-color: #ff0000; ");
+            button.setDisable(true);
+            //button.setStyle("-fx-background-color: #ff0000; ");
             if(isAnimationsOn.get()) {
                 createButtonFlipAnimation(button,-360);
             }
         }
         for (Button button:optionalInputButtons) {
-            button.setStyle("");
+            button.setDisable(true);
+            //button.setStyle("");
             if(isAnimationsOn.get()) {
                 createButtonFlipAnimation(button,360);
             }
