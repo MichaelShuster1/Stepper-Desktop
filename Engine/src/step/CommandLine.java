@@ -7,6 +7,8 @@ import datadefinition.Output;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class CommandLine extends Step{
     public CommandLine(String name, boolean continueIfFailing) {
@@ -37,18 +39,15 @@ public class CommandLine extends Step{
             return;
         }
 
-        ProcessBuilder process;
+        ProcessBuilder process=new ProcessBuilder("cmd.exe","/c",command);
 
         if(commandArguments!=null) {
-            process = new ProcessBuilder("cmd.exe", "/c", command, commandArguments);
+            String[] arguments = commandArguments.split(" ");
+            process.command().addAll(Arrays.asList(arguments));
             logLine+=" "+commandArguments;
         }
 
-        else
-            process= new ProcessBuilder("cmd.exe","/c",command);
-
         process.redirectErrorStream(true);
-
         addLineToLog(logLine);
 
         try {
