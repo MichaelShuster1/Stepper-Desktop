@@ -268,7 +268,7 @@ public class ExecutionController {
                 result = openFolderChooser();
                 break;
             case "FILE_NAME":
-                result = openFileChooser();
+                result = openNotExistFileChooser();
                 break;
             case "SOURCE":
                 Dialog<ButtonType> dialog = new Dialog<>();
@@ -294,7 +294,7 @@ public class ExecutionController {
                     if (selectedOption.equals("Zip folder"))
                         result = openFolderChooser();
                     else
-                        result = openFileChooser();
+                        result = openExistFileChooser(null);
                 }
             }
         }
@@ -380,15 +380,33 @@ public class ExecutionController {
             return Optional.empty();
     }
 
-    public Optional<String> openFileChooser() {
+    public Optional<String> openNotExistFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select File");
+        fileChooser.setTitle("first navigate to where you want to save the file and then write his name");
         File selectedFolder = fileChooser.showSaveDialog(appController.getPrimaryStage());
         if (selectedFolder != null)
             return Optional.of(selectedFolder.getAbsolutePath());
         else
             return Optional.empty();
     }
+
+    public Optional<String> openExistFileChooser(String filter) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
+
+        if(filter!=null)
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter(filter.toUpperCase()+" Files", "*."+filter));
+
+
+        File selectedFolder = fileChooser.showOpenDialog(appController.getPrimaryStage());
+        if (selectedFolder != null)
+            return Optional.of(selectedFolder.getAbsolutePath());
+        else
+            return Optional.empty();
+    }
+
+
 
 
     public void rightInputClick(Button button)
