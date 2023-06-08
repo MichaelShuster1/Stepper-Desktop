@@ -215,7 +215,7 @@ public class ExecutionController {
                 enumerationSetChoice.getItems().addAll(engine.getEnumerationAllowedValues(button.getId()));
                 enumerationSetChoice.setStyle("-fx-pref-width: 200px;");
 
-                HBox hbox = new HBox(10, new Label("Please choose one of the options:"),  enumerationSetChoice);
+                HBox hbox = new HBox(10, new Label("Please select an option:"),  enumerationSetChoice);
                 hbox.setAlignment(Pos.CENTER);
                 inputDialog.getDialogPane().setContent(hbox);
 
