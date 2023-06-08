@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="consoleUI">
+    <output-path>$PROJECT_DIR$/out/artifacts/consoleUI</output-path>
+    <root id="archive" name="consoleUI.jar">
+      <element id="module-output" name="ConsoleUI" />
+    </root>
+  </artifact>
+</component>

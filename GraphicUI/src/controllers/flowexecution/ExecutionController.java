@@ -308,7 +308,7 @@ public class ExecutionController {
             dialog.getDialogPane().getStylesheets().add(appController.getPrimaryStage().getScene().getStylesheets().get(0));
 
         RadioButton option1 = new RadioButton("Zip folder");
-        RadioButton option2 = new RadioButton("Zip file");
+        RadioButton option2 = new RadioButton("Unzip/Zip file");
 
         ToggleGroup toggleGroup = new ToggleGroup();
         option1.setToggleGroup(toggleGroup);

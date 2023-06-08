@@ -48,7 +48,6 @@ public class CollectFiles extends Step {
         formatter.format(new Date());
 
 
-
         String log = "Reading folder " + directory.getAbsolutePath() + " content with filter: ";
         if (filter != null)
             log += filter;
