@@ -79,7 +79,7 @@ public class ProgressTracker extends Task<Boolean> {
                 }
             }
             try {
-                Thread.sleep(200);
+                Thread.sleep(700);
             } catch (InterruptedException e) {
             }
         }

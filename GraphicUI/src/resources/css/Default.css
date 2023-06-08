@@ -12,3 +12,14 @@
 .hyperlink:hover {
     -fx-underline: true;
 }
+
+
+
+.tree-table-row-cell:selected *, .table-row-cell:selected * {
+    -fx-text-fill: #ffffff;
+}
+
+.table-row-cell:selected Text {
+    -fx-fill: #ffffff;
+}
+
